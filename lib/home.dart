@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import './placeholder_widget.dart'; 
-
+import './placeholder_widget.dart';
+import './page_home.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -9,18 +9,20 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _currentIndex = 0 ; 
- List<Widget> _children = <Widget> [
-    PlaceholderWidget(Colors.black),
+  Widget appBarTitle = new Text("AppBar Title");
+  Icon actionIcon = new Icon(Icons.search);
+  int _currentIndex = 0;
+
+  List<Widget> _children = <Widget>[
+    PageHome(),
     PlaceholderWidget(Colors.pink),
     PlaceholderWidget(Colors.yellow),
     PlaceholderWidget(Colors.red)
-  ] ; 
+  ];
 
   void _onTabTapped(int index) {
-    
     setState(() {
-      _currentIndex = index ; 
+      _currentIndex = index;
     });
   }
 
@@ -32,25 +34,26 @@ class _HomeState extends State<Home> {
         title: Text("Anan"),
         actions: <Widget>[
           IconButton(
-            icon: const Icon(Icons.notifications),
-            tooltip: "Show Notification",
-            onPressed: (){
-
-            },
-          ), 
+              icon: const Icon(Icons.search),
+              tooltip: "Search",
+              onPressed: () {
+                print("test");
+              }),
+          IconButton(
+              icon: const Icon(Icons.notifications),
+              tooltip: "Show Notification",
+              onPressed: () {}),
           IconButton(
             icon: const Icon(Icons.shopping_basket),
             tooltip: "Charts",
-            onPressed: (){
-              
-            },
+            onPressed: () {},
           )
         ],
       ),
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         onTap: _onTabTapped,
-        currentIndex: _currentIndex ,
+        currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
@@ -83,6 +86,7 @@ class _HomeState extends State<Home> {
               icon: Icon(Icons.person)),
         ],
       ),
+
     );
   }
 }
