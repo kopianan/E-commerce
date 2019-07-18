@@ -4,18 +4,17 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import './register.dart';
 
-void main() => runApp(LoginPage());
-
-class LoginPage extends StatefulWidget {
-  @override
-  _LoginPageState createState() => _LoginPageState();
+void main() {
+  runApp(MaterialApp(
+    title: 'Navigation Basics',
+    home: LoginPage(),
+  ));
 }
 
-class _LoginPageState extends State<LoginPage> {
+class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-    
       home: Scaffold(
         backgroundColor: Color.fromARGB(255, 238, 238, 238),
         body: Container(
@@ -87,9 +86,11 @@ class _LoginPageState extends State<LoginPage> {
                     Expanded(
                       flex: 1,
                       child: RaisedButton(
-                
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Register()),);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Register()),
+                          );
                         },
                         color: Color.fromARGB(255, 130, 39, 74),
                         shape: RoundedRectangleBorder(
