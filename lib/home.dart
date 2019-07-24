@@ -1,7 +1,9 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import './placeholder_widget.dart';
 import './page_home.dart';
+import './page_me.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -17,7 +19,7 @@ class _HomeState extends State<Home> {
     PageHome(),
     PlaceholderWidget(Colors.pink),
     PlaceholderWidget(Colors.yellow),
-    PlaceholderWidget(Colors.red)
+    PageMe()
   ];
 
   void _onTabTapped(int index) {

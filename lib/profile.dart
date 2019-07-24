@@ -6,7 +6,7 @@ class Profile extends StatelessWidget {
     return MaterialApp(
         home: Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 0, 0, 0),
+        backgroundColor: Color.fromARGB(255, 49, 49, 49),
         title: Text(""),
         automaticallyImplyLeading: true,
         leading: IconButton(
@@ -101,6 +101,9 @@ class Profile extends StatelessWidget {
               ],
             ),
           ),
+          
+          
+          
           Container(
             padding: EdgeInsets.all(25),
             color: Colors.white70,
@@ -108,44 +111,26 @@ class Profile extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 Expanded(
-                  child: Text("Date of Birth",style: TextStyle(color: Colors.deepPurple),),
+                  child: Text(
+                    "Date of Birth",
+                    style: TextStyle(color: Colors.deepPurple),
+                  ),
                 ),
                 Expanded(
-                  child: Text("1 January 1990",
-                  textAlign: TextAlign.end,
-                  style: TextStyle(fontWeight: FontWeight.bold),),
+                  child: Text(
+                    "1 January 1990",
+                    textAlign: TextAlign.end,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 )
               ],
             ),
           ),
           Container(
             decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(color: Colors.grey)), 
+              border: Border(bottom: BorderSide(color: Colors.grey)),
             ),
           ),
-Container(
-            padding: EdgeInsets.all(25),
-            color: Colors.white70,
-            width: double.infinity,
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: Text("Full Name",style: TextStyle(color: Colors.deepPurple),),
-                ),
-                Expanded(
-                  child: Text("Yusmin Joe",
-                  textAlign: TextAlign.end,
-                  style: TextStyle(fontWeight: FontWeight.bold),),
-                )
-              ],
-            ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(color: Colors.grey)), 
-            ),
-          ),
-
           Container(
             padding: EdgeInsets.all(25),
             color: Colors.white70,
@@ -153,22 +138,26 @@ Container(
             child: Row(
               children: <Widget>[
                 Expanded(
-                  child: Text("Email",style: TextStyle(color: Colors.deepPurple),),
+                  child: Text(
+                    "Full Name",
+                    style: TextStyle(color: Colors.deepPurple),
+                  ),
                 ),
                 Expanded(
-                  child: Text("yusminjoe@yahoo.com",
-                  textAlign: TextAlign.end,
-                  style: TextStyle(fontWeight: FontWeight.bold),),
+                  child: Text(
+                    "Yusmin Joe",
+                    textAlign: TextAlign.end,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 )
               ],
             ),
           ),
           Container(
             decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(color: Colors.grey)), 
+              border: Border(bottom: BorderSide(color: Colors.grey)),
             ),
           ),
-
           Container(
             padding: EdgeInsets.all(25),
             color: Colors.white70,
@@ -176,22 +165,26 @@ Container(
             child: Row(
               children: <Widget>[
                 Expanded(
-                  child: Text("Username",style: TextStyle(color: Colors.deepPurple),),
+                  child: Text(
+                    "Email",
+                    style: TextStyle(color: Colors.deepPurple),
+                  ),
                 ),
                 Expanded(
-                  child: Text("yusminjoe123",
-                  textAlign: TextAlign.end,
-                  style: TextStyle(fontWeight: FontWeight.bold),),
+                  child: Text(
+                    "yusminjoe@yahoo.com",
+                    textAlign: TextAlign.end,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 )
               ],
             ),
           ),
           Container(
             decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(color: Colors.grey)), 
+              border: Border(bottom: BorderSide(color: Colors.grey)),
             ),
           ),
-
           Container(
             padding: EdgeInsets.all(25),
             color: Colors.white70,
@@ -199,19 +192,52 @@ Container(
             child: Row(
               children: <Widget>[
                 Expanded(
-                  child: Text("Password",style: TextStyle(color: Colors.deepPurple),),
+                  child: Text(
+                    "Username",
+                    style: TextStyle(color: Colors.deepPurple),
+                  ),
                 ),
                 Expanded(
-                  child: Text("Ubah Kata Sandi",
-                  textAlign: TextAlign.end,
-                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.yellow),),
+                  child: Text(
+                    "yusminjoe123",
+                    textAlign: TextAlign.end,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 )
               ],
             ),
           ),
           Container(
             decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(color: Colors.grey)), 
+              border: Border(bottom: BorderSide(color: Colors.grey)),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(25),
+            color: Colors.white70,
+            width: double.infinity,
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    "Password",
+                    style: TextStyle(color: Colors.deepPurple),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    "Ubah Kata Sandi",
+                    textAlign: TextAlign.end,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.yellow),
+                  ),
+                )
+              ],
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              border: Border(bottom: BorderSide(color: Colors.grey)),
             ),
           ),
         ],
