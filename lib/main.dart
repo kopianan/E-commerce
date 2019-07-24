@@ -1,8 +1,10 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import './register.dart';
+import './profile.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -131,13 +133,19 @@ class LoginPage extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: RaisedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Profile()),
+                          );
+                        },
                   color: Color.fromARGB(255, 130, 39, 74),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
                   child: Text(
                     "Register NOW!",
                     style: TextStyle(color: Colors.yellowAccent),
+                  
                   ),
                 ),
               ),
