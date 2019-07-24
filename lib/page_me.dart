@@ -86,13 +86,48 @@ class PageMe extends StatelessWidget {
               color: Colors.white,
               splashColor: Colors.yellow,
               padding: const EdgeInsets.all(20),
-              child: Container(
-                child: Text("Profile Saya")),
+              child: Container(child: Text("Profile Saya")),
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Profile()),
                 );
+              },
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            child: RaisedButton(
+              color: Colors.white,
+              splashColor: Colors.yellow,
+              padding: const EdgeInsets.all(20),
+              child: Container(child: Text("Daftar Transaksi")),
+              onPressed: () {
+                
+              },
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            child: RaisedButton(
+              color: Colors.white,
+              splashColor: Colors.yellow,
+              padding: const EdgeInsets.all(20),
+              child: Container(child: Text("Belanjaan Saya")),
+              onPressed: () {
+                
+              },
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            child: RaisedButton(
+              color: Colors.white,
+              splashColor: Colors.yellow,
+              padding: const EdgeInsets.all(20),
+              child: Container(child: Text("Tukar Poin")),
+              onPressed: () {
+                
               },
             ),
           )
