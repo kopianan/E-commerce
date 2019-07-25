@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import './register.dart';
-import './profile.dart';
+import 'home.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -88,10 +88,11 @@ class LoginPage extends StatelessWidget {
                     Expanded(
                       flex: 1,
                       child: RaisedButton(
+                        
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => Register()),
+                            MaterialPageRoute(builder: (context) => Home()),
                           );
                         },
                         color: Color.fromARGB(255, 130, 39, 74),
@@ -136,7 +137,7 @@ class LoginPage extends StatelessWidget {
                   onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => Profile()),
+                            MaterialPageRoute(builder: (context) => Register()),
                           );
                         },
                   color: Color.fromARGB(255, 130, 39, 74),

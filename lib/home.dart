@@ -1,4 +1,4 @@
-
+import 'package:ecommerce_test/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import './placeholder_widget.dart';
@@ -31,9 +31,44 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              child: Text(
+                'Menu',
+                style: TextStyle(color: Colors.yellowAccent),
+              ),
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 49, 49, 49),
+              ),
+            ),
+            ListTile(
+              title: Text('Tentang'),
+              trailing: Icon(Icons.arrow_forward),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+            ListTile(
+              title: Text('Keluar'),
+              trailing: Icon(Icons.arrow_forward),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 49, 49, 49),
-        title: Text("Anan"),
+        title: Text("Roomart Dashboard"),
         actions: <Widget>[
           IconButton(
               icon: const Icon(Icons.search),
@@ -88,7 +123,6 @@ class _HomeState extends State<Home> {
               icon: Icon(Icons.person)),
         ],
       ),
-
     );
   }
 }
