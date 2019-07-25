@@ -2,6 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import 'detail_item.dart';
+
 class PageHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -117,44 +119,53 @@ class PageHome extends StatelessWidget {
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2, childAspectRatio: 9 / 12),
             delegate: SliverChildListDelegate([
-              Card(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Image.asset('assets/item1.png'),
-                    Container(
-                      margin: EdgeInsets.all(10),
-                      child: Column(
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Image.asset('assets/SALE.png'),
-                              Text("Pink Dress")
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Container(
-                                  margin: EdgeInsets.only(right: 5),
-                                  child: Text(
-                                    "Rp. 350.000",
-                                    style: TextStyle(
-                                        color: Colors.grey,
-                                        decoration: TextDecoration.lineThrough),
-                                  )),
-                              Container(
-                                  child: Text(
-                                "Rp. 150.000",
-                                style: TextStyle(
-                                    color: Colors.purple,
-                                    fontWeight: FontWeight.bold),
-                              )),
-                            ],
-                          )
-                        ],
-                      ),
-                    )
-                  ],
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => DetailItem()),
+                          );
+                },
+                child: Card(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Image.asset('assets/item1.png'),
+                      Container(
+                        margin: EdgeInsets.all(10),
+                        child: Column(
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                Image.asset('assets/SALE.png'),
+                                Text("Pink Dress")
+                              ],
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Container(
+                                    margin: EdgeInsets.only(right: 5),
+                                    child: Text(
+                                      "Rp. 350.000",
+                                      style: TextStyle(
+                                          color: Colors.grey,
+                                          decoration:
+                                              TextDecoration.lineThrough),
+                                    )),
+                                Container(
+                                    child: Text(
+                                  "Rp. 150.000",
+                                  style: TextStyle(
+                                      color: Colors.purple,
+                                      fontWeight: FontWeight.bold),
+                                )),
+                              ],
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
               Card(
@@ -247,9 +258,7 @@ class PageHome extends StatelessWidget {
                       child: Column(
                         children: <Widget>[
                           Row(
-                            children: <Widget>[
-                              Text("Pink Dress")
-                            ],
+                            children: <Widget>[Text("Pink Dress")],
                           ),
                           Row(
                             children: <Widget>[
