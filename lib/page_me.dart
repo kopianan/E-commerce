@@ -1,6 +1,8 @@
+import 'package:ecommerce_test/models/tukar_point.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import './profile.dart';
+import 'daftar_transaction.dart';
 
 class PageMe extends StatelessWidget {
   @override
@@ -103,7 +105,10 @@ class PageMe extends StatelessWidget {
               padding: const EdgeInsets.all(20),
               child: Container(child: Text("Daftar Transaksi")),
               onPressed: () {
-                
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => DaftarTransaction()));
               },
             ),
           ),
@@ -114,9 +119,7 @@ class PageMe extends StatelessWidget {
               splashColor: Colors.yellow,
               padding: const EdgeInsets.all(20),
               child: Container(child: Text("Belanjaan Saya")),
-              onPressed: () {
-                
-              },
+              onPressed: () {},
             ),
           ),
           Container(
@@ -127,7 +130,11 @@ class PageMe extends StatelessWidget {
               padding: const EdgeInsets.all(20),
               child: Container(child: Text("Tukar Poin")),
               onPressed: () {
-                
+
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => TukarPoint()));
               },
             ),
           )
