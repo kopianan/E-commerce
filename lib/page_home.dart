@@ -1,10 +1,47 @@
+import 'dart:convert';
+
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:ecommerce_test/models/data_banner_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
+import 'package:http/http.dart' as http;
 import 'detail_item.dart';
 
-class PageHome extends StatelessWidget {
+
+
+class PageHome extends StatefulWidget {
+  PageHome({Key key}) : super(key: key);
+
+  _PageHomeState createState() => _PageHomeState();
+}
+
+class _PageHomeState extends State<PageHome> {
+  @override
+  void initState() { 
+    super.initState();
+    getDataBanner(); 
+  }
+  Future<List<DataBannerModel>> getDataBanner() async {
+    http.Response response;
+    response = await http.get(
+        "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,SPGBanner.vm");
+
+    if (response.statusCode == 200) {
+      // If the call to the server was successful, parse the JSON
+
+      List responseJson = json.decode(response.body);
+      final listData = responseJson
+          .map((m) => new DataBannerModel.fromJson(m))
+          .toList();
+
+        print(listData.length.toString() + " Jumalah List Cuk ") ; 
+          return listData; 
+    } else {
+      // If that call was not successful, throw an error.
+      throw Exception('Failed to load post');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -122,9 +159,9 @@ class PageHome extends StatelessWidget {
               InkWell(
                 onTap: () {
                   Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => DetailItem()),
-                          );
+                    context,
+                    MaterialPageRoute(builder: (context) => DetailItem()),
+                  );
                 },
                 child: Card(
                   child: Column(

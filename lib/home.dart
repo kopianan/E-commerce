@@ -1,9 +1,10 @@
-import 'package:ecommerce_test/main.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import './placeholder_widget.dart';
 import './page_home.dart';
 import './page_me.dart';
+import 'pages/login_page.dart';
 
 class Home extends StatefulWidget {
   @override
