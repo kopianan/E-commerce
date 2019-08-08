@@ -2,9 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import './placeholder_widget.dart';
-import './page_home.dart';
 import './page_me.dart';
 import 'pages/login_page.dart';
+import 'pages/page_home.dart';
 
 class Home extends StatefulWidget {
   @override
