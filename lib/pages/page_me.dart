@@ -1,8 +1,9 @@
 import 'package:ecommerce_test/models/tukar_point.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import './profile.dart';
-import 'daftar_transaction.dart';
+
+import '../daftar_transaction.dart';
+import '../profile.dart';
 
 class PageMe extends StatelessWidget {
   @override

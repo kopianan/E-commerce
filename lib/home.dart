@@ -1,8 +1,9 @@
 
+import 'package:ecommerce_test/pages/kategori.dart';
+import 'package:ecommerce_test/pages/page_me.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import './placeholder_widget.dart';
-import './page_me.dart';
 import 'pages/login_page.dart';
 import 'pages/page_home.dart';
 
@@ -18,7 +19,7 @@ class _HomeState extends State<Home> {
 
   List<Widget> _children = <Widget>[
     PageHome(),
-    PlaceholderWidget(Colors.pink),
+    Kategori(),
     PlaceholderWidget(Colors.yellow),
     PageMe()
   ];
