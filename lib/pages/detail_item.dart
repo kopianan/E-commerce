@@ -50,9 +50,7 @@ class DetailItem extends StatelessWidget {
                     dotVerticalPadding: 0.0,
                     showIndicator: true,
                     images: [
-                      Image.asset('http://datacloud.erp.web.id:8081${data.pic}'),
-                      Image.asset('assets/item1.png'),
-                      Image.asset('assets/item1.png')
+                      Image.network('http://datacloud.erp.web.id:8081${data.pic}')
                     ],
                   ),
                 ),

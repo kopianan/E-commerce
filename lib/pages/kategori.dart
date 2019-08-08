@@ -7,6 +7,8 @@ import 'package:ecommerce_test/widgets/banner_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'item_list.dart';
+
 class Kategori extends StatefulWidget {
   Kategori({Key key}) : super(key: key);
 
@@ -80,22 +82,35 @@ class _KategoriState extends State<Kategori> {
               ),
               itemBuilder: (BuildContext context, int index) {
                 return Container(
-                  child: Card(
-                    elevation: 1,
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: Row(
-                        children: <Widget>[
-                          IconButton(
-                            icon: Icon(Icons.category),
-                          ),
-
-                          Text(
-                            listKategori[index].description,
-                            textAlign: TextAlign.center,
-
-                          ),
-                        ],
+                  child: InkWell(
+                    onTap: (){
+                      
+                    },
+                    child: Card(
+                      elevation: 1,
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Row(
+                          children: <Widget>[
+                            IconButton(
+                              icon: Icon(Icons.category),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ItemList(
+                                        listKategori[index].kategoriId,
+                                        listKategori[index].description),
+                                  ),
+                                );
+                              },
+                            ),
+                            Text(
+                              listKategori[index].description,
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

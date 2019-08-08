@@ -1,9 +1,10 @@
 import 'dart:convert';
 
 import 'package:ecommerce_test/models/login_model.dart';
-import 'package:flutter/material.dart' ;
-import 'package:flutter_auth_buttons/flutter_auth_buttons.dart'; 
+import 'package:flutter/material.dart';
+import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../home.dart';
 import '../register.dart';
@@ -15,6 +16,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  SharedPreferences sharedPreferences;
 
 
   Future<LoginModel> loginAsync() async {
@@ -23,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
         "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,User.vm?method=login&email=andy@gmail.com&password=123");
 
     if (response.statusCode == 200) {
-      // If the call to the server was successful, parse the JSON
+      // If the callto the server was successful, parse the JSON
 
       final data = LoginModel.fromJson(json.decode(response.body));
       if (data.userId != "") {
@@ -40,7 +42,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       home: Scaffold(
         backgroundColor: Color.fromARGB(255, 238, 238, 238),
@@ -115,6 +116,8 @@ class _LoginPageState extends State<LoginPage> {
                       child: RaisedButton(
                         onPressed: () async {
                           loginAsync();
+
+                          // _saveUser("Data"); 
                           // Navigator.push(
                           //   context,
                           //   MaterialPageRoute(builder: (context) => Home()),

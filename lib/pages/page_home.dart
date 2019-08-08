@@ -15,7 +15,7 @@ class PageHome extends StatefulWidget {
 }
 
 class _PageHomeState extends State<PageHome> {
-  String baseUrl = "http://datacloud.erp.web.id:8081"; 
+  String baseUrl = "http://datacloud.erp.web.id:8081";
   List<DataBannerModel> listData;
   List<DataItemModel> itemData;
   @override
@@ -171,7 +171,8 @@ class _PageHomeState extends State<PageHome> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
-                              Image.network("http://datacloud.erp.web.id:8081${data.pic}"), 
+                              Image.network(
+                                  "http://datacloud.erp.web.id:8081${data.pic}"),
                               Container(
                                 margin: EdgeInsets.all(10),
                                 child: Column(
@@ -179,16 +180,21 @@ class _PageHomeState extends State<PageHome> {
                                     Row(
                                       children: <Widget>[
                                         Image.asset('assets/SALE.png'),
-                                        Container(
-                                          width: MediaQuery.of(context).size.width*0.8,
-                                          child: Text(data.itemName, textAlign: TextAlign.left,))
+                                        Flexible(
+                                          child: Text(
+                                            data.itemName,
+                                            textAlign: TextAlign.left,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
                                       ],
-                                    ), 
+                                    ),
                                     Row(
                                       children: <Widget>[
                                         Container(
                                             margin: EdgeInsets.only(right: 5),
-                                            child: Text(data.itmPriceFmt,
+                                            child: Text(
+                                              data.itmPriceFmt,
                                               style: TextStyle(
                                                   color: Colors.grey,
                                                   decoration: TextDecoration
