@@ -30,11 +30,17 @@ dependencies:
   carousel_pro: ^1.0.0
   http: ^0.12.0+2
   collection: ^1.14.11
-  shared_preferences: "^0.4.2"
+  chopper: ^3.0.0
+  shared_preferences: 
+  flutter_bloc: ^0.17.0
+  equatable: ^0.2.6
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  build_runner:
+  chopper_generator:
 
 
 # For information on the generic Dart part of this file, see the
