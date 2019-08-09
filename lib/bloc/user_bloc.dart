@@ -13,14 +13,17 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   Stream<UserState> mapEventToState(
     UserEvent event,
   ) async* {
-
-      if(event is UserEmailLogin){
-        yield UserLoading();
-        final user = await _loginAsync(event.email, event.password);
+    if (event is UserEmailLogin) {
+      yield UserLoading();
+      final user = await _loginAsync(event.email, event.password);
+      if (user.error ==1 ) {
+         yield UserEmailLoginFailed("Login Gagal");
+       
+      } else {
         yield UserEmailLoginSuccess(user);
       }
+    }
 
-    
   }
 
   Future<User> _loginAsync(String email, String password) async {
@@ -28,14 +31,21 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     response = await http.get(
         "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,User.vm?method=login&email=$email&password=$password");
 
+    print(response.statusCode);
+    print(response.body);
+
     if (response.statusCode == 200) {
       // If the callto the server was successful, parse the JSON
-
-      final user = User.fromJson(json.decode(response.body));
-      return user;
+      try {
+        final user = User.fromJson(json.decode(response.body));
+        return user;
+      } catch (Exception) {
+        final user = User.fromJsonError(json.decode(response.body));
+        return user;
+      }
     } else {
       // If that call was not successful, throw an error.
-      throw Exception('Failed to load post');
+      print("status code nya bukan 200 cuyy");
     }
   }
 }

@@ -83,9 +83,7 @@ class _KategoriState extends State<Kategori> {
               itemBuilder: (BuildContext context, int index) {
                 return Container(
                   child: InkWell(
-                    onTap: (){
-                      
-                    },
+                    onTap: () {},
                     child: Card(
                       elevation: 1,
                       child: Container(
@@ -105,9 +103,11 @@ class _KategoriState extends State<Kategori> {
                                 );
                               },
                             ),
-                            Text(
-                              listKategori[index].description,
-                              textAlign: TextAlign.center,
+                            Flexible(
+                              child: Text(
+                                listKategori[index].description,
+                                textAlign: TextAlign.center,
+                              ),
                             ),
                           ],
                         ),

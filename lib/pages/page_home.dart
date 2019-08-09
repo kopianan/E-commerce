@@ -20,28 +20,25 @@ class _PageHomeState extends State<PageHome> {
   List<DataItemModel> itemData;
   @override
   void initState() {
-    super.initState();
-
     getDataBanner();
     getItemList();
+    super.initState();
   }
-
-  getItemList() async {
+  void getItemList() async {
     http.Response response;
     response = await http.get(
-        "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,SPGApps.vm?cmd=2&loccode=GODM&kategoriid=140513828168532755861&limit=20&offset=0");
+        "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,SPGApps.vm?cmd=2&loccode=GODM&kategoriid=140513828168532755861&limit=1&offset=4");
 
     if (response.statusCode == 200) {
-      List responseJson = await json.decode(response.body);
+      List responseJson =  json.decode(response.body);
       final data =
           responseJson.map((m) => new DataItemModel.fromJson(m)).toList();
-      setState(() {
+     
         itemData = data;
-      });
+    
     }
   }
-
-  getDataBanner() async {
+  void getDataBanner() async {
     http.Response response;
     response = await http.get(
         "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,SPGBanner.vm");
@@ -49,20 +46,21 @@ class _PageHomeState extends State<PageHome> {
     if (response.statusCode == 200) {
       // If the call to the server was successful, parse the JSON
 
-      List responseJson = await json.decode(response.body);
+      List responseJson =  json.decode(response.body);
       final data =
           responseJson.map((m) => new DataBannerModel.fromJson(m)).toList();
 
-      setState(() {
+    
         listData = data;
-      });
+    
     } else {}
-
     print(listData[0].picture.toString());
   }
 
   @override
   Widget build(BuildContext context) {
+    
+    
     return Container(
       width: double.infinity,
       child: CustomScrollView(
@@ -171,8 +169,9 @@ class _PageHomeState extends State<PageHome> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
-                              Image.network(
-                                  "http://datacloud.erp.web.id:8081${data.pic}"),
+                               FadeInImage(image: NetworkImage("http://datacloud.erp.web.id:8081${data.pic}"), placeholder: AssetImage('assets/banner2.png')),
+                              // Image.network(
+                              //     "http://datacloud.erp.web.id:8081${data.pic}"),
                               Container(
                                 margin: EdgeInsets.all(10),
                                 child: Column(

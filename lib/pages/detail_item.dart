@@ -7,7 +7,6 @@ class DetailItem extends StatelessWidget {
   final DataItemModel data;
 
   DetailItem(this.data);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +49,8 @@ class DetailItem extends StatelessWidget {
                     dotVerticalPadding: 0.0,
                     showIndicator: true,
                     images: [
-                      Image.network('http://datacloud.erp.web.id:8081${data.pic}')
+                      // Image.network('http://datacloud.erp.web.id:8081${data.pic}' )
+                      FadeInImage(image: NetworkImage('http://datacloud.erp.web.id:8081${data.pic}'), placeholder: AssetImage('assets/SALE.png'))
                     ],
                   ),
                 ),

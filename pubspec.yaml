@@ -34,6 +34,7 @@ dependencies:
   shared_preferences: 
   flutter_bloc: ^0.17.0
   equatable: ^0.2.6
+  toast: ^0.1.5
 
 
 dev_dependencies:

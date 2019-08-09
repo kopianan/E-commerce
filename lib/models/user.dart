@@ -1,13 +1,14 @@
 import 'package:equatable/equatable.dart';
 
 class User extends Equatable{
-   String userId;
-   String userName;
-   String email;
-   String phone;
-   String fullName;
-   String birthDate;
-   String address;
+   String userId = "";
+   String userName = "";
+   String email= "";
+   String phone= "";
+   String fullName= "";
+   String birthDate= "";
+   String address= "";
+   int error = 0 ; 
 
   User({
     this.userId,
@@ -17,7 +18,8 @@ class User extends Equatable{
     this.fullName,
     this.birthDate,
     this.address
-  }) : super([userId,userName,email,phone,fullName,birthDate,address]);
+    , this.error
+  }) : super([userId,userName,email,phone,fullName,birthDate,address, error]);
 
    User.fromJson(Map<String, dynamic> json) {
     this.userId = json['userId'];
@@ -27,6 +29,11 @@ class User extends Equatable{
     fullName = json['fullName'];
     birthDate = json['birthDate'];
     address = json['address'];
+    error = json['error'];
+  }
+
+  User.fromJsonError(Map<String, dynamic> json) {
+    error = json['error'];
   }
 
 }
