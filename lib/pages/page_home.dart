@@ -30,12 +30,12 @@ class _PageHomeState extends State<PageHome> {
         "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,SPGApps.vm?cmd=2&loccode=GODM&kategoriid=140513828168532755861&limit=1&offset=4");
 
     if (response.statusCode == 200) {
-      List responseJson =  json.decode(response.body);
+      List responseJson = await json.decode(response.body);
       final data =
           responseJson.map((m) => new DataItemModel.fromJson(m)).toList();
-     
+      setState(() {
         itemData = data;
-    
+      });
     }
   }
   void getDataBanner() async {
@@ -46,13 +46,13 @@ class _PageHomeState extends State<PageHome> {
     if (response.statusCode == 200) {
       // If the call to the server was successful, parse the JSON
 
-      List responseJson =  json.decode(response.body);
+      List responseJson = await json.decode(response.body);
       final data =
           responseJson.map((m) => new DataBannerModel.fromJson(m)).toList();
 
-    
+      setState(() {
         listData = data;
-    
+      });
     } else {}
     print(listData[0].picture.toString());
   }
