@@ -10,7 +10,6 @@ import 'detail_item.dart';
 
 class PageHome extends StatefulWidget {
   PageHome({Key key}) : super(key: key);
-
   _PageHomeState createState() => _PageHomeState();
 }
 
@@ -20,11 +19,14 @@ class _PageHomeState extends State<PageHome> {
   List<DataItemModel> itemData;
   @override
   void initState() {
+
     getDataBanner();
+
     getItemList();
+
     super.initState();
   }
-  void getItemList() async {
+   void getItemList() async {
     http.Response response;
     response = await http.get(
         "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,SPGApps.vm?cmd=2&loccode=GODM&kategoriid=140513828168532755861&limit=1&offset=4");
@@ -59,8 +61,7 @@ class _PageHomeState extends State<PageHome> {
 
   @override
   Widget build(BuildContext context) {
-    
-    
+  
     return Container(
       width: double.infinity,
       child: CustomScrollView(

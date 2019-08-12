@@ -1,6 +1,6 @@
 import 'package:ecommerce_test/bloc/bloc.dart';
-import 'package:ecommerce_test/bloc/user_bloc.dart';
-import 'package:ecommerce_test/bloc/user_state.dart';
+import 'package:ecommerce_test/bloc/login/user_bloc.dart';
+import 'package:ecommerce_test/bloc/login/user_state.dart';
 import 'package:ecommerce_test/models/user.dart';
 import 'package:ecommerce_test/util/shared_preference.dart';
 import 'package:flutter/material.dart';
