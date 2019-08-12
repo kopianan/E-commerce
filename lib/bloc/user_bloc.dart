@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:ecommerce_test/models/user.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import './bloc.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
@@ -18,7 +19,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       final user = await _loginAsync(event.email, event.password);
       if (user.error ==1 ) {
          yield UserEmailLoginFailed("Login Gagal");
-       
       } else {
         yield UserEmailLoginSuccess(user);
       }
@@ -38,6 +38,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       // If the callto the server was successful, parse the JSON
       try {
         final user = User.fromJson(json.decode(response.body));
+         SharedPreferences prefs = await SharedPreferences.getInstance();
+         prefs.setString("user_data", response.body);
         return user;
       } catch (Exception) {
         final user = User.fromJsonError(json.decode(response.body));

@@ -1,14 +1,39 @@
+import 'dart:convert';
+
 import 'package:ecommerce_test/models/tukar_point.dart';
+import 'package:ecommerce_test/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../daftar_transaction.dart';
 import '../profile.dart';
 
-class PageMe extends StatelessWidget {
+
+
+class PageMe extends StatefulWidget {
+  @override
+  _PageMeState createState() => _PageMeState();
+}
+
+class _PageMeState extends State<PageMe> {
+String userFullname;
+@override
+void initState() {
+  super.initState();
+    getUserData();
+  }
+getUserData() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  User user =  User.fromJsonError(json.decode(prefs.getString("user_data")));
+  userFullname = user.fullName;
+  print(prefs.getString("user_data"));
+}
+
 
   @override
   Widget build(BuildContext context) {
+  
     return Container(
       child: Column(
         children: <Widget>[
@@ -30,7 +55,7 @@ class PageMe extends StatelessWidget {
                 ),
                 Container(
                   child: Text(
-                    "YUSMIN JOE",
+                    userFullname == null ? '-' : userFullname,
                     style: TextStyle(color: Colors.white),
                   ),
                 ),

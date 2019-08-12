@@ -17,8 +17,8 @@ class User extends Equatable{
     this.phone,
     this.fullName,
     this.birthDate,
-    this.address
-    , this.error
+    this.address,
+     this.error
   }) : super([userId,userName,email,phone,fullName,birthDate,address, error]);
 
    User.fromJson(Map<String, dynamic> json) {
@@ -35,5 +35,15 @@ class User extends Equatable{
   User.fromJsonError(Map<String, dynamic> json) {
     error = json['error'];
   }
+
+  Map<String, dynamic> toJson() =><String,dynamic>{
+    'userId' : userId,
+    'userName' : userName,
+    'email' : email,
+    'fullName' : fullName,
+    'birthDate' : birthDate,
+    'address' : address,
+    'error' : error
+  };
 
 }

@@ -13,12 +13,10 @@ class UserLoading extends UserState{}
 
 class UserEmailLoginSuccess extends UserState{
   final User user;
-
   UserEmailLoginSuccess(this.user) : super([user]);
 }
 
 class UserEmailLoginFailed extends UserState {
   final String errorMessage;
-
   UserEmailLoginFailed(this.errorMessage) : super([errorMessage]);
 }

@@ -1,8 +1,27 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'models/user.dart';
 
 class Profile extends StatelessWidget {
+  String userFullname;
+String userEmail;
+String userBirthDate;
+String userName;
+
+  getUserData() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  User user = User.fromJsonError(json.decode(prefs.getString("user_data")));
+  userFullname = user.fullName;
+  userEmail = user.email;
+  userBirthDate = userBirthDate;
+  userName = user.userName;
+}
   @override
   Widget build(BuildContext context) {
+    getUserData();
     return MaterialApp(
         home: Scaffold(
       appBar: AppBar(
@@ -47,7 +66,7 @@ class Profile extends StatelessWidget {
                 ),
                 Container(
                   child: Text(
-                    "YUSMIN JOE",
+                    userFullname,
                     style: TextStyle(color: Colors.white),
                   ),
                 )
@@ -118,7 +137,7 @@ class Profile extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    "1 January 1990",
+                    userBirthDate,
                     textAlign: TextAlign.end,
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
@@ -145,7 +164,7 @@ class Profile extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    "Yusmin Joe",
+                    userFullname,
                     textAlign: TextAlign.end,
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
@@ -172,7 +191,7 @@ class Profile extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    "yusminjoe@yahoo.com",
+                    userEmail,
                     textAlign: TextAlign.end,
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
@@ -199,7 +218,7 @@ class Profile extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    "yusminjoe123",
+                    userName,
                     textAlign: TextAlign.end,
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),

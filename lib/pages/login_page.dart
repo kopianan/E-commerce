@@ -1,18 +1,13 @@
-import 'dart:convert';
-
 import 'package:ecommerce_test/bloc/bloc.dart';
 import 'package:ecommerce_test/bloc/user_bloc.dart';
 import 'package:ecommerce_test/bloc/user_state.dart';
-import 'package:ecommerce_test/models/login_model.dart';
-import 'package:ecommerce_test/models/user.dart' as prefix0;
 import 'package:ecommerce_test/models/user.dart';
+import 'package:ecommerce_test/util/shared_preference.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
-
 import '../home.dart';
 import '../register.dart';
 
@@ -23,8 +18,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  SharedPreferences sharedPreferences;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -235,6 +228,7 @@ class LoginPageChild extends StatelessWidget {
   }
 
   Widget buildLoginSuccess(User user) {
+    
     return Scaffold(
       body: Center(child: Text(user.fullName)),
     );
