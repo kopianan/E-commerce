@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import './placeholder_widget.dart';
 import 'pages/login_page.dart';
-import 'pages/page_home.dart';
+import 'pages/home_page.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -18,7 +18,7 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;
 
   List<Widget> _children = <Widget>[
-    PageHome(),
+    HomePage(),
     Kategori(),
     PlaceholderWidget(Colors.yellow),
     PageMe()

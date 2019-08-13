@@ -2,11 +2,9 @@ import 'package:ecommerce_test/bloc/bloc.dart';
 import 'package:ecommerce_test/bloc/login/user_bloc.dart';
 import 'package:ecommerce_test/bloc/login/user_state.dart';
 import 'package:ecommerce_test/models/user.dart';
-import 'package:ecommerce_test/util/shared_preference.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import '../home.dart';
 import '../register.dart';
@@ -39,7 +37,7 @@ class LoginPageChild extends StatelessWidget {
     return MaterialApp(
       home: BlocListener(
         bloc: BlocProvider.of<UserBloc>(context),
-        listener: (BuildContext context, UserState state) async {
+        listener: (BuildContext context, UserState state) {
           if (state is UserEmailLoginSuccess) {
             Navigator.push(
               context,
@@ -59,11 +57,9 @@ class LoginPageChild extends StatelessWidget {
                 return buildInitial(context);
               } else if (state is UserLoading) {
                 return buildLoading();
-              } else if (state is UserEmailLoginSuccess) {
-                return buildLoginSuccess(state.user);
               } else if (state is UserEmailLoginFailed) {
                 return buildInitial(context);
-              }
+              } return buildInitial(context);
             }),
       ),
     );
@@ -224,13 +220,6 @@ class LoginPageChild extends StatelessWidget {
   Widget buildLoading() {
     return Scaffold(
       body: Center(child: CircularProgressIndicator()),
-    );
-  }
-
-  Widget buildLoginSuccess(User user) {
-    
-    return Scaffold(
-      body: Center(child: Text(user.fullName)),
     );
   }
 
