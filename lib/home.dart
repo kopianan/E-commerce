@@ -32,7 +32,8 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return MaterialApp(
+      home: Scaffold(
       drawer: Drawer(
         child: ListView(
           // Important: Remove any padding from the ListView.
@@ -125,6 +126,7 @@ class _HomeState extends State<Home> {
               icon: Icon(Icons.person)),
         ],
       ),
+    ),
     );
   }
 }

@@ -18,8 +18,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocProvider(
+    return MaterialApp(
+      home: BlocProvider(
         builder: (context) => UserBloc(),
         child: LoginPageChild(),
       ),
@@ -34,8 +34,8 @@ class LoginPageChild extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: BlocListener(
+    return Scaffold(
+      body: BlocListener(
         bloc: BlocProvider.of<UserBloc>(context),
         listener: (BuildContext context, UserState state) {
           if (state is UserEmailLoginSuccess) {

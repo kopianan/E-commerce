@@ -20,8 +20,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: BlocProvider(
+    return Scaffold(
+      body: BlocProvider(
         builder: (context) => HomeBloc(),
         child: HomePageChild(),
       ),
@@ -36,8 +36,8 @@ class HomePageChild extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: BlocListener(
+    return Container(
+      child: BlocListener(
         bloc: BlocProvider.of<HomeBloc>(context),
         listener: (BuildContext context, HomeState state) async {
           if (state is HomeFailed) {
