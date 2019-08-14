@@ -1,11 +1,12 @@
 
-import 'package:ecommerce_test/pages/kategori.dart';
-import 'package:ecommerce_test/pages/page_me.dart';
+import 'package:ecommerce_test/layouts/pages/home_page.dart';
+import 'package:ecommerce_test/layouts/pages/kategori.dart';
+import 'package:ecommerce_test/layouts/pages/login_page.dart';
+import 'package:ecommerce_test/layouts/pages/page_me.dart';
+import 'package:ecommerce_test/layouts/widgets/placeholder_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import './placeholder_widget.dart';
-import 'pages/login_page.dart';
-import 'pages/home_page.dart';
+
 
 class Home extends StatefulWidget {
   @override

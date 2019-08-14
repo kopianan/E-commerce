@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:ecommerce_test/models/data_banner_model.dart';
 import 'package:ecommerce_test/models/kategori_model.dart';
-import 'package:ecommerce_test/widgets/banner_slider.dart';
+import 'package:ecommerce_test/layouts/widgets/banner_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 

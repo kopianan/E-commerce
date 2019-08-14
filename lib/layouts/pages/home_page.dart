@@ -2,7 +2,7 @@ import 'package:ecommerce_test/bloc/home/home_bloc.dart';
 import 'package:ecommerce_test/bloc/home/home_event.dart';
 import 'package:ecommerce_test/bloc/home/home_state.dart';
 import 'package:ecommerce_test/models/data_banner_model.dart';
-import 'package:ecommerce_test/widgets/banner_slider.dart';
+import 'package:ecommerce_test/layouts/widgets/banner_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ecommerce_test/models/data_item_model.dart';
@@ -15,8 +15,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // List<DataBannerModel> listData;
-  // List<DataItemModel> itemData;
 
   @override
   Widget build(BuildContext context) {

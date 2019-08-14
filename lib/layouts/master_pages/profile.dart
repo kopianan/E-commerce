@@ -1,9 +1,9 @@
 import 'dart:convert';
 
+import 'package:ecommerce_test/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'models/user.dart';
 
 class Profile extends StatelessWidget {
   String userFullname;

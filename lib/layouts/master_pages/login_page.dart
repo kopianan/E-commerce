@@ -1,13 +1,15 @@
 import 'package:ecommerce_test/bloc/bloc.dart';
 import 'package:ecommerce_test/bloc/login/user_bloc.dart';
 import 'package:ecommerce_test/bloc/login/user_state.dart';
+import 'package:ecommerce_test/layouts/master_pages/home.dart';
+import 'package:ecommerce_test/layouts/master_pages/register.dart';
 import 'package:ecommerce_test/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toast/toast.dart';
-import '../home.dart';
-import '../register.dart';
+
+
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);

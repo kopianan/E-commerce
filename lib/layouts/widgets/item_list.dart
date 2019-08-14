@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:ecommerce_test/models/data_item_model.dart';
-import 'package:ecommerce_test/pages/kategori.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 

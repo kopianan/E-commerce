@@ -24,7 +24,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         yield UserEmailLoginSuccess(user);
       }
     }
-
   }
 
   Future<User> _loginAsync(String email, String password) async {
