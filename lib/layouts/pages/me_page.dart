@@ -1,17 +1,12 @@
 import 'dart:convert';
 
-import 'package:ecommerce_test/layouts/master_pages/daftar_transaction.dart';
+import 'package:ecommerce_test/layouts/master_pages/transaction_list.dart';
 import 'package:ecommerce_test/layouts/master_pages/profile.dart';
 import 'package:ecommerce_test/models/tukar_point.dart';
 import 'package:ecommerce_test/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-
-
-
-
 
 class PageMe extends StatefulWidget {
   @override
@@ -35,7 +30,6 @@ getUserData() async {
 
   @override
   Widget build(BuildContext context) {
-  
     return Container(
       child: Column(
         children: <Widget>[
@@ -94,13 +88,13 @@ getUserData() async {
                       Container(
                           alignment: Alignment.center,
                           child: Text(
-                            "DATA",
+                            "Point",
                             style: TextStyle(color: Colors.white),
                           )),
                       Container(
                           alignment: Alignment.center,
                           child: Text(
-                            "Rp 4.500,-",
+                            "4500",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),
@@ -137,7 +131,7 @@ getUserData() async {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => DaftarTransaction()));
+                        builder: (context) => TransactionList()));
               },
             ),
           ),

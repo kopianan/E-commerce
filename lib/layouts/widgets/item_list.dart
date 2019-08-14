@@ -1,9 +1,7 @@
 import 'dart:convert';
-
 import 'package:ecommerce_test/models/data_item_model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
 import 'detail_item.dart';
 
 class ItemList extends StatefulWidget {
@@ -31,7 +29,7 @@ class _ItemListState extends State<ItemList> {
   _getItemListByCategoryId(String id) async {
     http.Response response;
     response = await http.get(
-        "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,SPGApps.vm?cmd=2&loccode=GODM&kategoriid=${id}&limit=20&offset=0");
+        "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,SPGApps.vm?cmd=2&loccode=GODM&kategoriid=$id&limit=20&offset=0");
 
     if (response.statusCode == 200) {
       List responseJson = await json.decode(response.body);

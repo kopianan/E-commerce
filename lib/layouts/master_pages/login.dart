@@ -3,21 +3,20 @@ import 'package:ecommerce_test/bloc/login/user_bloc.dart';
 import 'package:ecommerce_test/bloc/login/user_state.dart';
 import 'package:ecommerce_test/layouts/master_pages/home.dart';
 import 'package:ecommerce_test/layouts/master_pages/register.dart';
-import 'package:ecommerce_test/models/user.dart';
+import 'package:ecommerce_test/util/shared_preference.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
+class Login extends StatefulWidget {
+  Login({Key key}) : super(key: key);
 
-
-class LoginPage extends StatefulWidget {
-  LoginPage({Key key}) : super(key: key);
-
-  _LoginPageState createState() => _LoginPageState();
+  _LoginState createState() => _LoginState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -39,8 +38,16 @@ class LoginPageChild extends StatelessWidget {
     return Scaffold(
       body: BlocListener(
         bloc: BlocProvider.of<UserBloc>(context),
-        listener: (BuildContext context, UserState state) {
+        listener: (BuildContext context, UserState state) async {
           if (state is UserEmailLoginSuccess) {
+            
+            final prefs = await SharedPreferences.getInstance();
+            prefs.setString('userFullname', state.user.fullName);
+            print(prefs.getString('userFullname'));
+
+            SharedPreference localData = SharedPreference() ;
+            localData.saveUserData(state.user);
+
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => Home()),
@@ -61,7 +68,8 @@ class LoginPageChild extends StatelessWidget {
                 return buildLoading();
               } else if (state is UserEmailLoginFailed) {
                 return buildInitial(context);
-              } return buildInitial(context);
+              }
+              return buildInitial(context);
             }),
       ),
     );

@@ -36,7 +36,7 @@ class User extends Equatable{
     error = json['error'];
   }
 
-  Map<String, dynamic> toJson() =><String,dynamic>{
+  Map<String, dynamic> toJson() =>{
     'userId' : userId,
     'userName' : userName,
     'email' : email,

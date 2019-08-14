@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class DaftarTransaction extends StatefulWidget {
+class TransactionList extends StatefulWidget {
   @override
-  _DaftarTransactionState createState() => _DaftarTransactionState();
+  _TransactionListState createState() => _TransactionListState();
 }
 
-class _DaftarTransactionState extends State<DaftarTransaction> {
+class _TransactionListState extends State<TransactionList> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

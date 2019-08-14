@@ -27,10 +27,17 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class HomePageChild extends StatelessWidget {
+class HomePageChild extends StatefulWidget {
   const HomePageChild({
     Key key,
   }) : super(key: key);
+
+  @override
+  _HomePageChildState createState() => _HomePageChildState();
+}
+
+class _HomePageChildState extends State<HomePageChild> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +97,6 @@ class HomePageChild extends StatelessWidget {
     return Scaffold(
       body: Center(child: Text(products.first.itemName)),
     );
-   
   }
 
   Widget buildLayout(

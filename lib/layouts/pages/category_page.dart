@@ -1,13 +1,10 @@
 import 'dart:convert';
-
-import 'package:collection/collection.dart';
+import 'package:ecommerce_test/layouts/widgets/item_list.dart';
 import 'package:ecommerce_test/models/data_banner_model.dart';
 import 'package:ecommerce_test/models/kategori_model.dart';
 import 'package:ecommerce_test/layouts/widgets/banner_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
-import 'item_list.dart';
 
 class Kategori extends StatefulWidget {
   Kategori({Key key}) : super(key: key);
@@ -19,7 +16,6 @@ class _KategoriState extends State<Kategori> {
   @override
   void initState() {
     super.initState();
-
     getDataBanner();
     getCategory();
   }
