@@ -57,7 +57,7 @@ Future<List<DataBannerModel>> _getBanner() async {
 Future<List<DataItemModel>> _getDataItem() async {
   http.Response response;
   response = await http.get(
-      "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,SPGApps.vm?cmd=2&loccode=GODM&kategoriid=140513828168532755861&limit=1&offset=4");
+      "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,SPGApps.vm?cmd=2&loccode=GODM&kategoriid=140513828168532755861&limit=10&offset=4");
 
   print(response.statusCode);
   print(response.body);

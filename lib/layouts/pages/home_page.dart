@@ -1,6 +1,7 @@
 import 'package:ecommerce_test/bloc/home/home_bloc.dart';
 import 'package:ecommerce_test/bloc/home/home_event.dart';
 import 'package:ecommerce_test/bloc/home/home_state.dart';
+import 'package:ecommerce_test/layouts/widgets/detail_item.dart';
 import 'package:ecommerce_test/models/data_banner_model.dart';
 import 'package:ecommerce_test/layouts/widgets/banner_slider.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +37,8 @@ class HomePageChild extends StatefulWidget {
 }
 
 class _HomePageChildState extends State<HomePageChild> {
-
+  List<DataBannerModel> banners = List<DataBannerModel>();
+  List<DataItemModel> products = List<DataItemModel>();
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +50,14 @@ class _HomePageChildState extends State<HomePageChild> {
             Toast.show("Home Failed!", context,
                 duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
           }
+
+          if (state is HomeGetProductSuccess) {
+            products = state.productList;
+          }
+
+          if (state is HomeGetBannerSuccess) {
+            banners = state.bannerList;
+          }
         },
         child: BlocBuilder(
             bloc: BlocProvider.of<HomeBloc>(context),
@@ -58,12 +67,10 @@ class _HomePageChildState extends State<HomePageChild> {
               } else if (state is HomeLoading) {
                 return buildLoading();
               } else if (state is HomeGetBannerSuccess) {
-                return buildHomeBanner(context,state.bannerList);
-              } 
-              else if (state is HomeGetProductSuccess) {
-                return buildHomeProduct(state.productList);
-              } 
-              else return buildInitial(context);
+                return buildLayout(context);
+              } else {
+                return buildLayout(context);
+              }
             }),
       ),
     );
@@ -71,14 +78,11 @@ class _HomePageChildState extends State<HomePageChild> {
 
   Widget buildInitial(BuildContext context) {
     final homeBloc = BlocProvider.of<HomeBloc>(context);
+    products.add(DataItemModel());
+    banners.add(DataBannerModel());
     homeBloc.dispatch(HomeGetBanner());
-    // homeBloc.dispatch(HomeGetProduct());
-
-    return Scaffold(
-      body: Center(
-        child: Text("Loading Home"),
-      ),
-    );
+    homeBloc.dispatch(HomeGetProduct());
+    return buildLayout(context);
   }
 
   Widget buildLoading() {
@@ -87,21 +91,8 @@ class _HomePageChildState extends State<HomePageChild> {
     );
   }
 
-  Widget buildHomeBanner(BuildContext context, List<DataBannerModel> banners) {
-    return Scaffold(
-      body: buildLayout(context,banners),
-    );
-  }
-
-  Widget buildHomeProduct(List<DataItemModel> products) {
-    return Scaffold(
-      body: Center(child: Text(products.first.itemName)),
-    );
-  }
-
   Widget buildLayout(
     BuildContext context,
-    List<DataBannerModel> banners,
   ) {
     return Container(
       width: double.infinity,
@@ -192,80 +183,80 @@ class _HomePageChildState extends State<HomePageChild> {
               ),
             ]),
           ),
-          // SliverGrid(
-          //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          //       crossAxisCount: 2, childAspectRatio: 9 / 12),
-          //   delegate: SliverChildListDelegate(
-          //     products
-          //         .map(
-          //           (data) => Container(
-          //             child: InkWell(
-          //               onTap: () {
-          //                 Navigator.push(
-          //                   context,
-          //                   MaterialPageRoute(
-          //                       builder: (context) => DetailItem(data)),
-          //                 );
-          //               },
-          //               child: Card(
-          //                 child: Column(
-          //                   crossAxisAlignment: CrossAxisAlignment.center,
-          //                   children: <Widget>[
-          //                     FadeInImage(
-          //                         image: NetworkImage(
-          //                             "http://datacloud.erp.web.id:8081${data.pic}"),
-          //                         placeholder:
-          //                             AssetImage('assets/banner2.png')),
-          //                     // Image.network(
-          //                     //     "http://datacloud.erp.web.id:8081${data.pic}"),
-          //                     Container(
-          //                       margin: EdgeInsets.all(10),
-          //                       child: Column(
-          //                         children: <Widget>[
-          //                           Row(
-          //                             children: <Widget>[
-          //                               Image.asset('assets/SALE.png'),
-          //                               Flexible(
-          //                                 child: Text(
-          //                                   data.itemName,
-          //                                   textAlign: TextAlign.left,
-          //                                   overflow: TextOverflow.ellipsis,
-          //                                 ),
-          //                               ),
-          //                             ],
-          //                           ),
-          //                           Row(
-          //                             children: <Widget>[
-          //                               Container(
-          //                                   margin: EdgeInsets.only(right: 5),
-          //                                   child: Text(
-          //                                     data.itmPriceFmt,
-          //                                     style: TextStyle(
-          //                                         color: Colors.grey,
-          //                                         decoration: TextDecoration
-          //                                             .lineThrough),
-          //                                   )),
-          //                               Container(
-          //                                   child: Text(
-          //                                 data.itmPriceFmt,
-          //                                 style: TextStyle(
-          //                                     color: Colors.purple,
-          //                                     fontWeight: FontWeight.bold),
-          //                               )),
-          //                             ],
-          //                           )
-          //                         ],
-          //                       ),
-          //                     )
-          //                   ],
-          //                 ),
-          //               ),
-          //             ),
-          //           ),
-          //         )
-          //         .toList(),
-          //   ),
-          // ),
+          SliverGrid(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2, childAspectRatio: 9 / 12),
+            delegate: SliverChildListDelegate(
+              products
+                  .map(
+                    (data) => Container(
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DetailItem(data)),
+                          );
+                        },
+                        child: Card(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              FadeInImage(
+                                  image: NetworkImage(
+                                      "http://datacloud.erp.web.id:8081${data.pic}"),
+                                  placeholder:
+                                      new AssetImage('assets/banner2.png')),
+                              // Image.network(
+                              //     "http://datacloud.erp.web.id:8081${data.pic}"),
+                              Container(
+                                margin: EdgeInsets.all(10),
+                                child: Column(
+                                  children: <Widget>[
+                                    Row(
+                                      children: <Widget>[
+                                        Image.asset('assets/SALE.png'),
+                                        Flexible(
+                                          child: Text(
+                                            data.itemName,
+                                            textAlign: TextAlign.left,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        Container(
+                                            margin: EdgeInsets.only(right: 5),
+                                            child: Text(
+                                              data.itmPriceFmt,
+                                              style: TextStyle(
+                                                  color: Colors.grey,
+                                                  decoration: TextDecoration
+                                                      .lineThrough),
+                                            )),
+                                        Container(
+                                            child: Text(
+                                          data.itmPriceFmt,
+                                          style: TextStyle(
+                                              color: Colors.purple,
+                                              fontWeight: FontWeight.bold),
+                                        )),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+          ),
         ],
       ),
     );

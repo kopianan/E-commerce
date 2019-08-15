@@ -68,6 +68,31 @@ class DataItemModel {
     this._weight = weight;
     this._inOrder = inOrder;
   }
+  
+  DataItemModel(){
+    this._sId = "";
+    this._kategoriId = "";
+    this._internalCode = "";
+    this._kategoriCode = "";
+    this._kategori = "";
+    this._katPicture = "";
+    this._itemId = "";
+    this._itemCode = "";
+    this._barcode = "";
+    this._itemName = "";
+    this._description = "";
+    this._itemPrice = "";
+    this._itmPriceFmt = "";
+    this._isFixedPrice = "";
+    this._qty = "";
+    this._unitCode = "";
+    this._taxCode = "";
+    this._code = "";
+    this._pic = "";
+    this._displayStore = "";
+    this._weight = "";
+    this._inOrder = "";
+  }
 
   String get sId => _sId;
   set sId(String sId) => _sId = sId;

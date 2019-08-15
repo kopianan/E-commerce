@@ -27,6 +27,17 @@ class DataBannerModel {
     this._lastUpdateBy = lastUpdateBy;
   }
 
+  // DataBannerModel(){
+  //    this._bannerId = "";
+  //   this._kategoriId = "";
+  //   this._messages = "";
+  //   this._picture = "";
+  //   this._startDate = "";
+  //   this._endDate = "";
+  //   this._updateDate = "";
+  //   this._lastUpdateBy = "";
+  // }
+
   String get bannerId => _bannerId;
   set bannerId(String bannerId) => _bannerId = bannerId;
   String get kategoriId => _kategoriId;

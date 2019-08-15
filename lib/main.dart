@@ -27,14 +27,11 @@ class _MyAppState extends State<MyApp> {
     String userData = "";
     userData = prefs.getString('userFullname');
 
-try{
- SharedPreference localData ;
-    User userLocalData = localData.getUserData() as User;
-    print(userLocalData.fullName);
-} catch(Exception){
-  
-}
-   
+    try {
+      SharedPreference localData;
+      User userLocalData = localData.getUserData() as User;
+      print(userLocalData.fullName);
+    } catch (Exception) {}
 
     setState(() {
       if (userData == "andy lianto") {
