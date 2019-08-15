@@ -1,3 +1,5 @@
+import 'package:ecommerce_test/layouts/pages/cart_page.dart';
+import 'package:ecommerce_test/layouts/widgets/cart_list_item.dart';
 import 'package:ecommerce_test/models/data_item_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -49,8 +51,9 @@ class DetailItem extends StatelessWidget {
                     dotVerticalPadding: 0.0,
                     showIndicator: true,
                     images: [
-                      // Image.network('http://datacloud.erp.web.id:8081${data.pic}' )
-                      FadeInImage(image: NetworkImage('http://datacloud.erp.web.id:8081${data.pic}'), placeholder: AssetImage('assets/SALE.png'))
+                      Image.network(
+                          'http://datacloud.erp.web.id:8081${data.pic}')
+                      // FadeInImage(image: NetworkImage('http://datacloud.erp.web.id:8081${data.pic}'), placeholder: AssetImage('assets/SALE.png'))
                     ],
                   ),
                 ),
@@ -128,15 +131,20 @@ class DetailItem extends StatelessWidget {
               ),
               Container(
                 margin: EdgeInsets.all(5),
-                child: Text(
-                    data.description),
+                child: Text(data.description),
               ),
               Expanded(
                 child: Align(
                   child: Align(
                     alignment: FractionalOffset.bottomCenter,
                     child: FlatButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CartPage(dataItemmodel: data,)),
+                        );
+                      },
                       child: Text("Beli Sekarang"),
                     ),
                   ),

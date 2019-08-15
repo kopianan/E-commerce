@@ -36,8 +36,8 @@ dependencies:
   equatable: ^0.2.6
   toast: ^0.1.5
   json_annotation: ^3.0.0
-
-
+  spinner_input: ^0.1.2
+  rflutter_alert: ^1.0.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
