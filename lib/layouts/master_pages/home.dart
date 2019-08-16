@@ -28,7 +28,7 @@ class _HomeState extends State<Home> {
 
   List<Widget> _children = <Widget>[
     HomePage(),
-    Kategori(),
+    Category(),
     PlaceholderWidget(Colors.yellow),
     PageMe()
   ];
@@ -46,7 +46,7 @@ class _HomeState extends State<Home> {
     final prefs = await SharedPreferences.getInstance();
     String userData = "";
     userData = prefs.getString("user_data_preference");
-    print("USER LOCAL DATA : "+ userData);
+    // print("USER LOCAL DATA : "+ userData);
     
     // userData = prefs.getString('userFullname');
     // print("USER DATA : "+user.toString());

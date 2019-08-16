@@ -1,4 +1,4 @@
-class KategoriModel {
+class CategoryModel {
   String _kategoriId;
   String _parentId;
   String _internalCode;
@@ -7,7 +7,7 @@ class KategoriModel {
   String _picture;
   String _displayStore;
 
-  KategoriModel(
+  CategoryModel(
       {String kategoriId,
       String parentId,
       String internalCode,
@@ -39,7 +39,7 @@ class KategoriModel {
   String get displayStore => _displayStore;
   set displayStore(String displayStore) => _displayStore = displayStore;
 
-  KategoriModel.fromJson(Map<String, dynamic> json) {
+  CategoryModel.fromJson(Map<String, dynamic> json) {
     _kategoriId = json['kategori_id'];
     _parentId = json['parent_id'];
     _internalCode = json['internal_code'];

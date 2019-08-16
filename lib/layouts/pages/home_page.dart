@@ -206,7 +206,7 @@ class _HomePageChildState extends State<HomePageChild> {
                                   image: NetworkImage(
                                       "http://datacloud.erp.web.id:8081${data.pic}"),
                                   placeholder:
-                                      new AssetImage('assets/banner2.png')),
+                                       AssetImage('assets/banner2.png')),
                               // Image.network(
                               //     "http://datacloud.erp.web.id:8081${data.pic}"),
                               Container(
