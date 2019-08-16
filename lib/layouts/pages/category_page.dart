@@ -1,77 +1,124 @@
-import 'dart:convert';
+import 'package:ecommerce_test/bloc/category/category_bloc.dart';
+import 'package:ecommerce_test/bloc/category/category_event.dart';
+import 'package:ecommerce_test/bloc/category/category_state.dart';
+import 'package:ecommerce_test/layouts/master_pages/subcategory.dart';
 import 'package:ecommerce_test/layouts/widgets/item_list.dart';
 import 'package:ecommerce_test/models/data_banner_model.dart';
-import 'package:ecommerce_test/models/kategori_model.dart';
+import 'package:ecommerce_test/models/category_model.dart';
 import 'package:ecommerce_test/layouts/widgets/banner_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class Kategori extends StatefulWidget {
-  Kategori({Key key}) : super(key: key);
+class Category extends StatefulWidget {
+  Category({Key key}) : super(key: key);
 
-  _KategoriState createState() => _KategoriState();
+  _CategoryState createState() => _CategoryState();
 }
 
-class _KategoriState extends State<Kategori> {
+class _CategoryState extends State<Category> {
+  // String baseUrl = "http://datacloud.erp.web.id:8081";
   @override
-  void initState() {
-    super.initState();
-    getDataBanner();
-    getCategory();
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: BlocProvider(
+      builder: (context) => CategoryBloc(),
+      child: CategoryChild(),
+    ));
   }
+}
 
-  String baseUrl = "http://datacloud.erp.web.id:8081";
-  List<DataBannerModel> listData;
-  List<KategoriModel> listKategori;
+//////////////////
+class CategoryChild extends StatefulWidget {
+  const CategoryChild({
+    Key key,
+  }) : super(key: key);
 
-  getCategory() async {
-    http.Response response;
-    response = await http.get(
-        "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,KategoriData.vm");
+  @override
+  _CategoryChildState createState() => _CategoryChildState();
+}
 
-    if (response.statusCode == 200) {
-      // If the call to the server was successful, parse the JSON
-
-      List responseJson = await json.decode(response.body);
-
-      final data =
-          responseJson.map((md) => new KategoriModel.fromJson(md)).toList();
-
-      setState(() {
-        listKategori = data;
-      });
-    } else {}
-  }
-
-  getDataBanner() async {
-    http.Response response;
-    response = await http.get(
-        "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,SPGBanner.vm");
-
-    if (response.statusCode == 200) {
-      // If the call to the server was successful, parse the JSON
-
-      List responseJson = await json.decode(response.body);
-      final data =
-          responseJson.map((m) => new DataBannerModel.fromJson(m)).toList();
-      setState(() {
-        listData = data;
-      });
-    } else {}
-    print(listData[0].picture.toString());
-  }
+class _CategoryChildState extends State<CategoryChild> {
+  List<DataBannerModel> banners = List<DataBannerModel>();
+  List<CategoryModel> categories = List<CategoryModel>();
 
   @override
   Widget build(BuildContext context) {
     return Container(
+        child: BlocListener(
+            bloc: BlocProvider.of<CategoryBloc>(context),
+            listener: (BuildContext context, CategoryState state) async {
+              //coding
+
+              if (state is GetAllCategorySuccess) {
+                categories = state.categories;
+              }
+
+              if (state is GetBannerSuccess) {
+                banners = state.bannerList;
+              }
+
+              if (state is GetAllCategoryByParentIDFailed) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        ItemList(state.categoryId, state.description),
+                  ),
+                );
+              }
+
+              if (state is GetAllCategoryByParentIDSuccess) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                       builder: (context) => SubCategory(subCategoryName: state.subCategoryName, categories: state.categories,)
+                  ),
+                );
+              }
+            },
+            child: BlocBuilder(
+              bloc: BlocProvider.of<CategoryBloc>(context),
+              builder: (BuildContext context, CategoryState state) {
+                if (state is InitialCategoryState) {
+                  return buildInitial(context);
+                } else if (state is CategoryLoading) {
+                  return buildLoading();
+                } else if (state is GetAllCategoryByParentIDSuccess){
+                  return buildLoading();
+                } else if(state is GetAllCategoryByParentIDFailed){
+                  return buildLayout(context);
+                }else {
+                  return buildLayout(context);}
+              }
+            )));
+  }
+
+  Widget buildInitial(BuildContext context) {
+    final categoryBloc = BlocProvider.of<CategoryBloc>(context);
+    banners.add(DataBannerModel());
+    categories.add(CategoryModel());
+    categoryBloc.dispatch(GetBanners());
+    categoryBloc.dispatch(GetAllCategory());
+    return buildLayout(context);
+  }
+
+  Widget buildLoading() {
+    return Scaffold(
+      body: Center(child: CircularProgressIndicator()),
+    );
+  }
+
+  Widget buildLayout(BuildContext context) {
+    final categoryBloc = BlocProvider.of<CategoryBloc>(context);
+    return Container(
       child: Column(
         children: <Widget>[
           BannerSlider(
-            listData: listData,
+            listData: banners,
           ),
           Expanded(
             child: GridView.builder(
-              itemCount: listKategori.length,
+              itemCount: categories.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 childAspectRatio: 7 / 2,
@@ -79,7 +126,12 @@ class _KategoriState extends State<Kategori> {
               itemBuilder: (BuildContext context, int index) {
                 return Container(
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      categoryBloc.dispatch(GetAllCategoryByParentID(
+                          categories[index].kategoriId, categories[index].description
+                          ));
+                  
+                    },
                     child: Card(
                       elevation: 1,
                       child: Container(
@@ -88,20 +140,11 @@ class _KategoriState extends State<Kategori> {
                           children: <Widget>[
                             IconButton(
                               icon: Icon(Icons.category),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ItemList(
-                                        listKategori[index].kategoriId,
-                                        listKategori[index].description),
-                                  ),
-                                );
-                              },
+                              onPressed: () {},
                             ),
                             Flexible(
                               child: Text(
-                                listKategori[index].description,
+                                categories[index].description,
                                 textAlign: TextAlign.center,
                               ),
                             ),

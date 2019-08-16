@@ -34,7 +34,7 @@ class _MyAppState extends State<MyApp> {
     } catch (Exception) {}
 
     setState(() {
-      if (userData == "andy lianto") {
+      if (userData != "") {
         hasUserData = true;
       } else {
         hasUserData = false;
