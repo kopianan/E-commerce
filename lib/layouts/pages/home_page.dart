@@ -12,6 +12,7 @@ import 'package:toast/toast.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
+
   _HomePageState createState() => _HomePageState();
 }
 
@@ -185,7 +186,9 @@ class _HomePageChildState extends State<HomePageChild> {
           ),
           SliverGrid(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, childAspectRatio: 9 / 12),
+              crossAxisSpacing: 4,
+                mainAxisSpacing: 4,
+                crossAxisCount: 2, childAspectRatio: 9 / 14),
             delegate: SliverChildListDelegate(
               products
                   .map(
@@ -199,58 +202,34 @@ class _HomePageChildState extends State<HomePageChild> {
                           );
                         },
                         child: Card(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              FadeInImage(
+                          elevation: 4,
+                            child: GridTile(
+                                header: GridTileBar(
+                                  trailing: IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(Icons.favorite_border),
+                                  ),
+                                  title: Text(
+                                    data.itemName,
+                                    maxLines: 2,
+                                  ),
+                                  backgroundColor:
+                                      Color.fromRGBO(105, 105, 105, 30),
+                                ),
+                                footer: GridTileBar(
+                                  leading: Text(
+                                    'Rp ${data.itmPriceFmt}',
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
+                                  ),
+                                  backgroundColor:
+                                      Color.fromRGBO(220, 220, 220, 10),
+                                ),
+                                child: FadeInImage(
                                   image: NetworkImage(
                                       "http://datacloud.erp.web.id:8081${data.pic}"),
-                                  placeholder:
-                                       AssetImage('assets/banner2.png')),
-                              // Image.network(
-                              //     "http://datacloud.erp.web.id:8081${data.pic}"),
-                              Container(
-                                margin: EdgeInsets.all(10),
-                                child: Column(
-                                  children: <Widget>[
-                                    Row(
-                                      children: <Widget>[
-                                        Image.asset('assets/SALE.png'),
-                                        Flexible(
-                                          child: Text(
-                                            data.itemName,
-                                            textAlign: TextAlign.left,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: <Widget>[
-                                        Container(
-                                            margin: EdgeInsets.only(right: 5),
-                                            child: Text(
-                                              data.itmPriceFmt,
-                                              style: TextStyle(
-                                                  color: Colors.grey,
-                                                  decoration: TextDecoration
-                                                      .lineThrough),
-                                            )),
-                                        Container(
-                                            child: Text(
-                                          data.itmPriceFmt,
-                                          style: TextStyle(
-                                              color: Colors.purple,
-                                              fontWeight: FontWeight.bold),
-                                        )),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
+                                  placeholder: AssetImage('assets/banner2.png'),
+                                ))),
                       ),
                     ),
                   )

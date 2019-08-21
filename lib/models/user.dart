@@ -8,7 +8,8 @@ class User extends Equatable{
    String fullName= "";
    String birthDate= "";
    String address= "";
-   int error = 0 ; 
+   int error = 0 ;
+
 
   User({
     this.userId,

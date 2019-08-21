@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:ecommerce_test/layouts/widgets/cart_list_item.dart';
 import 'package:ecommerce_test/models/data_item_model.dart';
+import 'package:ecommerce_test/models/user.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PaymentPage extends StatefulWidget {
   final DataItemModel dataItemmodel;
@@ -12,8 +16,22 @@ class PaymentPage extends StatefulWidget {
 }
 
 int _groupValue = -1;
-
 class _PaymentPageState extends State<PaymentPage> {
+  User user ;
+
+
+  @override
+  void initState() {
+    super.initState();
+    getUserData();
+  }
+
+  getUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+     user =  await User.fromJson(json.decode(prefs.getString("user_data")));
+     print("Ini User Lol" + user.address);
+  }
+
   @override
   Widget build(BuildContext context) {
     DataItemModel data = widget.dataItemmodel;
@@ -38,8 +56,7 @@ class _PaymentPageState extends State<PaymentPage> {
                   ),
                   Expanded(
                     flex: 8,
-                    child: Text(
-                        "Alamat Pengiriman\nadfadfasdfa\nadfadfasdfasdf\nadfgasdfasdf"),
+                    child: Text(user.address),
                   ),
                   Expanded(
                     child: Text(

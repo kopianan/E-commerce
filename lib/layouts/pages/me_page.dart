@@ -15,15 +15,19 @@ class PageMe extends StatefulWidget {
 
 class _PageMeState extends State<PageMe> {
 String userFullname;
+User localUser  ;
+
 @override
 void initState() {
   super.initState();
     getUserData();
   }
+
 getUserData() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  User user =  User.fromJsonError(json.decode(prefs.getString("user_data")));
-  userFullname = user.fullName;
+  User user =  User.fromJson(json.decode(prefs.getString("user_data")));
+  localUser = user ;
+
   print(prefs.getString("user_data"));
 }
 
