@@ -8,11 +8,15 @@ class CartPage extends StatefulWidget {
 
   CartPage({this.dataItemmodel});
 
+
   @override
   _CartPageState createState() => _CartPageState();
 }
 
 class _CartPageState extends State<CartPage> {
+     String jsonDocs;
+    @override
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +44,6 @@ class _CartPageState extends State<CartPage> {
                     child: new FlatButton(
                       textColor: Colors.yellow,
                       onPressed: () {
-                        
                       },
                       child: Text(
                         
@@ -59,7 +62,7 @@ class _CartPageState extends State<CartPage> {
                          Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => PaymentPage(dataItemmodel: widget.dataItemmodel,)),
+                              builder: (context) => PaymentPage(dataItemmodel: widget.dataItemmodel)),
                         );
                       },
                       child: Text(

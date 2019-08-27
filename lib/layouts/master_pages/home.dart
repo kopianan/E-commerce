@@ -29,7 +29,6 @@ class _HomeState extends State<Home> {
   List<Widget> _children = <Widget>[
     HomePage(),
     Category(),
-    PlaceholderWidget(Colors.yellow),
     PageMe()
   ];
 
@@ -102,10 +101,6 @@ class _HomeState extends State<Home> {
                   print("test");
                 }),
             IconButton(
-                icon: const Icon(Icons.notifications),
-                tooltip: "Show Notification",
-                onPressed: () {}),
-            IconButton(
               icon: const Icon(Icons.shopping_basket),
               tooltip: "Charts",
               onPressed: () {},
@@ -132,13 +127,7 @@ class _HomeState extends State<Home> {
                       color: Colors.black, fontWeight: FontWeight.w700),
                 ),
                 icon: Icon(Icons.timeline)),
-            BottomNavigationBarItem(
-                title: Text(
-                  "Notification",
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.w700),
-                ),
-                icon: Icon(Icons.notifications_active)),
+
             BottomNavigationBarItem(
                 title: Text(
                   "Me",

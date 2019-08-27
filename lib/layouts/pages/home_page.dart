@@ -1,6 +1,7 @@
 import 'package:ecommerce_test/bloc/home/home_bloc.dart';
 import 'package:ecommerce_test/bloc/home/home_event.dart';
 import 'package:ecommerce_test/bloc/home/home_state.dart';
+import 'package:ecommerce_test/data/backend_service.dart';
 import 'package:ecommerce_test/layouts/widgets/detail_item.dart';
 import 'package:ecommerce_test/models/data_banner_model.dart';
 import 'package:ecommerce_test/layouts/widgets/banner_slider.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ecommerce_test/models/data_item_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:toast/toast.dart';
 
 class HomePage extends StatefulWidget {
@@ -40,6 +42,7 @@ class HomePageChild extends StatefulWidget {
 class _HomePageChildState extends State<HomePageChild> {
   List<DataBannerModel> banners = List<DataBannerModel>();
   List<DataItemModel> products = List<DataItemModel>();
+  static const int PAGE_SIZE = 6;
 
   @override
   Widget build(BuildContext context) {
@@ -133,6 +136,7 @@ class _HomePageChildState extends State<HomePageChild> {
                               "Fashion Pria",
                               style: TextStyle(fontSize: 18.0),
                             ),
+
                           ),
                         ),
                         Container(
@@ -184,60 +188,60 @@ class _HomePageChildState extends State<HomePageChild> {
               ),
             ]),
           ),
-          SliverGrid(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisSpacing: 4,
-                mainAxisSpacing: 4,
-                crossAxisCount: 2, childAspectRatio: 9 / 14),
-            delegate: SliverChildListDelegate(
-              products
-                  .map(
-                    (data) => Container(
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DetailItem(data)),
-                          );
-                        },
-                        child: Card(
-                          elevation: 4,
-                            child: GridTile(
-                                header: GridTileBar(
-                                  trailing: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(Icons.favorite_border),
-                                  ),
-                                  title: Text(
-                                    data.itemName,
-                                    maxLines: 2,
-                                  ),
-                                  backgroundColor:
-                                      Color.fromRGBO(105, 105, 105, 30),
-                                ),
-                                footer: GridTileBar(
-                                  leading: Text(
-                                    'Rp ${data.itmPriceFmt}',
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
-                                  ),
-                                  backgroundColor:
-                                      Color.fromRGBO(220, 220, 220, 10),
-                                ),
-                                child: FadeInImage(
-                                  image: NetworkImage(
-                                      "http://datacloud.erp.web.id:8081${data.pic}"),
-                                  placeholder: AssetImage('assets/banner2.png'),
-                                ))),
-                      ),
-                    ),
-                  )
-                  .toList(),
-            ),
-          ),
+          SliverPadding(
+            padding: const EdgeInsets.all(8.0),
+            sliver: PagewiseSliverGrid.count(
+                pageSize: 6,
+                crossAxisCount: 2,
+                childAspectRatio: 9 / 14,
+                itemBuilder: this._itemBuilder,
+                pageFuture: (pageIndex) => BackendService.getDataItem(
+                    pageIndex * PAGE_SIZE, PAGE_SIZE)),
+          )
         ],
       ),
+    );
+  }
+
+  Widget _itemBuilder(context, DataItemModel entry, _) {
+    return GestureDetector(
+      onTap: (){
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => DetailItem(entry)),
+        );
+      },
+      child: Card(
+
+          elevation: 4,
+          child: GridTile(
+              header: GridTileBar(
+                trailing: IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.favorite_border),
+                ),
+                title: Text(
+                  entry.itemName,
+                  maxLines: 2,
+                ),
+                backgroundColor: Color.fromRGBO(105, 105, 105, 30),
+              ),
+              footer: GridTileBar(
+                leading: Text(
+                  'Rp ${entry.itmPriceFmt}',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
+                ),
+                backgroundColor: Color.fromRGBO(220, 220, 220, 10),
+              ),
+              child: FadeInImage(
+                image:
+                    NetworkImage("http://datacloud.erp.web.id:8081${entry.pic}"),
+                placeholder: AssetImage('assets/broken_image.png'),
+              ))),
     );
   }
 }

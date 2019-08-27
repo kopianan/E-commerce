@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:ecommerce_test/layouts/master_pages/my_order.dart';
 import 'package:ecommerce_test/layouts/master_pages/transaction_list.dart';
 import 'package:ecommerce_test/layouts/master_pages/profile.dart';
 import 'package:ecommerce_test/models/tukar_point.dart';
@@ -139,16 +140,21 @@ getUserData() async {
               },
             ),
           ),
-          Container(
-            width: double.infinity,
-            child: RaisedButton(
-              color: Colors.white,
-              splashColor: Colors.yellow,
-              padding: const EdgeInsets.all(20),
-              child: Container(child: Text("Belanjaan Saya")),
-              onPressed: () {},
+        Container(
+              width: double.infinity,
+              child: RaisedButton(
+                color: Colors.white,
+                splashColor: Colors.yellow,
+                padding: const EdgeInsets.all(20),
+                child: Container(child: Text("Belanjaan Saya")),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MyOrder()));
+                },
+              ),
             ),
-          ),
           Container(
             width: double.infinity,
             child: RaisedButton(

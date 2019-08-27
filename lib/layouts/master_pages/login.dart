@@ -29,10 +29,6 @@ class _LoginState extends State<Login> {
 }
 
 class LoginPageChild extends StatelessWidget {
-  const LoginPageChild({
-    Key key,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
