@@ -28,6 +28,8 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
     FormData formData =
         new FormData.from({"docs": json.encode(widget.data).toString()});
 
+    print(json.encode(widget.data).toString());
+
     var response = await dio.post(
         "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,CreateSI.vm",
         data: formData);
@@ -39,6 +41,7 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 49, 49, 49),
         title: Text("Keranjang Belanja"),
       ),
       body: FutureBuilder<TransactionResponse>(

@@ -65,6 +65,7 @@ class _PaymentPageState extends State<PaymentPage> {
     DataItemModel data = widget.dataItemmodel;
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 49, 49, 49),
         title: Text("Pembayaran"),
       ),
       body: Column(
@@ -255,7 +256,12 @@ class _PaymentPageState extends State<PaymentPage> {
    while (next < 100) {
      next *= 10;
    }
-   var number = prefix + customerId + "/"+ DateFormat("yy/MM").format(DateTime.now())+"/"+ next.toInt().toString().padLeft(3, '0');
+   var rndCust = Random();
+   var nextCust = rndCust.nextDouble() * 100;
+   while (nextCust < 100) {
+     nextCust *= 10;
+   }
+   var number = prefix + nextCust.toInt().toString().padLeft(3, '0') + "/"+ DateFormat("yy/MM").format(DateTime.now())+"/"+ next.toInt().toString().padLeft(3, '0');
    print(number);
    return number ;
  }

@@ -1,23 +1,11 @@
 import 'package:ecommerce_test/models/AllTransactionListModel.dart';
 import 'package:ecommerce_test/models/transaction_history_model.dart';
 import 'package:ecommerce_test/models/transaction_response.dart';
-import 'package:ecommerce_test/models/user.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
-   User localUser ;
-
-  getUserData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    User user =  User.fromJson(json.decode(prefs.getString("user_data")));
-    localUser = user ;
-
-    print(prefs.getString("user_data"));
-  }
 
   static Future getDataItem() {
     return http.get(
@@ -46,10 +34,10 @@ class ApiService {
     return TransactionResponse.fromJson(mapResponse);
   }
 
-  static Future<List<TransactionHistoryModel>> getTransactionHistoryData() async {
+  static Future<List<TransactionHistoryModel>> getTransactionHistoryData(String userId) async {
     http.Response response;
     response = await http.get(
-        "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,AR.vm?cmd=1&custid=DM152204830857645176904");
+        "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,AR.vm?cmd=1&custid=$userId");
 
     if (response.statusCode == 200) {
       // If the call to the server was successful, parse the JSON
@@ -65,10 +53,11 @@ class ApiService {
     }
   }
 
-  static Future<List<AllTransactionListModel>> getAllTransactionModel() async {
+  static Future<List<AllTransactionListModel>> getAllTransactionModel(String userId) async {
+    print(userId);
     http.Response response;
     response = await http.get(
-        "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,SPGApps.vm?cmd=4&custcode=DM152204830857645176904");
+        "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,SPGApps.vm?cmd=4&custcode=$userId");
 
     if (response.statusCode == 200) {
       // If the call to the server was successful, parse the JSON

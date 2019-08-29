@@ -11,12 +11,19 @@ class CartListItem extends StatefulWidget {
 }
 
 class _CartListItemState extends State<CartListItem> {
-  double spinner = 0;
+  double spinner = 1;
+
+  double priceAndItem= 0;
+  @override
+  void initState() {
+    priceAndItem =  double.parse(widget.dataItemModel.itemPrice.toString());
+    super.initState();
+  }
 
 
   @override
   Widget build(BuildContext context) {
-      DataItemModel data = widget.dataItemModel; 
+      DataItemModel data = widget.dataItemModel;
     return Container(
       child: ListView.builder(
         itemCount: 1,
@@ -61,6 +68,7 @@ class _CartListItemState extends State<CartListItem> {
                             onChange: (newValue) {
                               setState(() {
                                 spinner = newValue;
+                                priceAndItem = spinner * double.parse(widget.dataItemModel.itemPrice);
                               });
                             },
                           )
@@ -80,7 +88,7 @@ class _CartListItemState extends State<CartListItem> {
                         padding: EdgeInsets.only(top: 20),
                       ),
                       Text(
-                        'Rp. ${widget.dataItemModel.itmPriceFmt}',
+                        'Rp. ${priceAndItem}',
                         style: TextStyle(
                             fontSize: 18,
                             color: Colors.deepPurple,
