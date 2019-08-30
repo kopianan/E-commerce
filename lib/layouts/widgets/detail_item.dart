@@ -1,19 +1,14 @@
 import 'dart:convert';
 
-import 'package:ecommerce_test/data/cart_list_data.dart';
 import 'package:ecommerce_test/layouts/pages/cart_page.dart';
-import 'package:ecommerce_test/layouts/widgets/cart_list_item.dart';
-import 'package:ecommerce_test/models/bought_item_model.dart';
 import 'package:ecommerce_test/models/data_item_model.dart';
-import 'package:ecommerce_test/models/sales_transaction_detail_model.dart';
-import 'package:ecommerce_test/models/sales_transaction_model.dart';
 import 'package:ecommerce_test/models/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import 'package:ecommerce_test/data/cart_list_data.dart';
 
 class DetailItem extends StatefulWidget {
   final DataItemModel dataOri;
@@ -37,13 +32,12 @@ class _DetailItemState extends State<DetailItem> {
 
   getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    User user =  User.fromJson(json.decode(prefs.getString("user_data")));
+    User user = User.fromJson(json.decode(prefs.getString("user_data")));
 
     setState(() {
-      userData = user ;
+      userData = user;
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -170,22 +164,19 @@ class _DetailItemState extends State<DetailItem> {
               child: Align(
                 child: Align(
                   alignment: FractionalOffset.bottomCenter,
-                  child: FlatButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (ctx) => CartPage(
-                              dataItemmodel: data,
-                            )),
-                      );
-
+                  child: Consumer<CartListData>(
+                    builder: (context, listData, _) => FlatButton(
+                        onPressed: () {
+                          listData.addItemListToList(data);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (ctx) => CartPage()),
+                          );
 
 //                      var json = jsonEncode(listTransaction.map((e) => e.toJson()).toList());
 //                      print( json.encode(listTransaction));
-
-                    },
-                    child: Text("Beli Sekarang"),
+                        },
+                        child: Text("Beli Sekarang ")),
                   ),
                 ),
               ),
