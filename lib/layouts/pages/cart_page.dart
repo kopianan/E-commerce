@@ -1,4 +1,5 @@
 import 'package:ecommerce_test/data/cart_list_data.dart';
+import 'package:ecommerce_test/layouts/master_pages/home.dart';
 import 'package:ecommerce_test/layouts/pages/payment_page.dart';
 import 'package:ecommerce_test/layouts/widgets/cart_list_item.dart';
 import 'package:ecommerce_test/models/data_item_model.dart';
@@ -18,9 +19,7 @@ class CartPage extends StatelessWidget {
           children: <Widget>[
             Expanded(
               flex: 9,
-              child: CartListItem(
-                dataItemModel: dataList.cartListItem[0],
-              ),
+              child: CartListItem(),
             ),
             Expanded(
               flex: 1,
@@ -34,7 +33,12 @@ class CartPage extends StatelessWidget {
                       width: MediaQuery.of(context).size.width / 2,
                       child: new FlatButton(
                         textColor: Colors.yellow,
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Home()),
+                          );
+                        },
                         child: Text(
                           "Saya Masih Ingin Belanja",
                           textAlign: TextAlign.center,

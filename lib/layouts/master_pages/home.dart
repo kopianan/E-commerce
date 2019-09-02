@@ -1,4 +1,5 @@
 import 'package:ecommerce_test/data/cart_list_data.dart';
+import 'package:ecommerce_test/data/list_deliver_fee.dart';
 import 'package:ecommerce_test/layouts/pages/home_page.dart';
 import 'package:ecommerce_test/layouts/pages/category_page.dart';
 import 'package:ecommerce_test/layouts/pages/me_page.dart';
@@ -28,11 +29,7 @@ class _HomeState extends State<Home> {
     super.initState();
   }
 
-  List<Widget> _children = <Widget>[
-    HomePage(),
-    Category(),
-    PageMe()
-  ];
+  List<Widget> _children = <Widget>[HomePage(), Category(), PageMe()];
 
   void _onTabTapped(int index) {
     setState(() {
@@ -48,15 +45,19 @@ class _HomeState extends State<Home> {
     String userData = "";
     userData = prefs.getString("user_data_preference");
     // print("USER LOCAL DATA : "+ userData);
-    
+
     // userData = prefs.getString('userFullname');
     // print("USER DATA : "+user.toString());
   }
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<CartListData>(
-      builder: (context) => CartListData(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(builder: (context)=>CartListData(),),
+        ChangeNotifierProvider(builder: (context)=>ListDeliverFee(),),
+
+      ],
       child: MaterialApp(
         home: Scaffold(
           drawer: Drawer(
@@ -104,10 +105,38 @@ class _HomeState extends State<Home> {
                   onPressed: () {
                     print("test");
                   }),
-              IconButton(
-                icon: const Icon(Icons.shopping_basket),
-                tooltip: "Charts",
-                onPressed: () {},
+              Consumer<CartListData>(
+                builder: (context, data, _) => IconButton(
+                  icon: Stack(children: <Widget>[
+                    new Icon(Icons.shopping_cart),
+                    new Positioned(
+                      // draw a red marble
+                      top: 0.0,
+                      right: 0.0,
+                      child: Container(
+                        padding: EdgeInsets.all(2),
+                        decoration: new BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        constraints: BoxConstraints(
+                          minWidth: 14,
+                          minHeight: 14,
+                        ),
+                        child: Text(
+                          data.getCartLength(),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 8,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    )
+                  ]),
+                  tooltip: "Charts",
+                  onPressed: () {},
+                ),
               )
             ],
           ),
@@ -131,7 +160,6 @@ class _HomeState extends State<Home> {
                         color: Colors.black, fontWeight: FontWeight.w700),
                   ),
                   icon: Icon(Icons.timeline)),
-
               BottomNavigationBarItem(
                   title: Text(
                     "Me",

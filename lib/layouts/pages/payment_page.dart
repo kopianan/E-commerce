@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:ecommerce_test/data/list_deliver_fee.dart';
 import 'package:ecommerce_test/layouts/pages/payment_success_page.dart';
+import 'package:ecommerce_test/layouts/widgets/bottomsheet_deliver_method.dart';
 import 'package:ecommerce_test/layouts/widgets/cart_list_item.dart';
 import 'package:ecommerce_test/models/bought_item_model.dart';
 import 'package:ecommerce_test/models/check_onkir_model.dart';
@@ -10,6 +12,7 @@ import 'package:ecommerce_test/models/sales_transaction_model.dart';
 import 'package:ecommerce_test/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -30,10 +33,10 @@ class _PaymentPageState extends State<PaymentPage> {
 
   getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    User user =  User.fromJson(json.decode(prefs.getString("user_data")));
+    User user = User.fromJson(json.decode(prefs.getString("user_data")));
 
     setState(() {
-      userData = user ;
+      userData = user;
     });
   }
 
@@ -41,24 +44,31 @@ class _PaymentPageState extends State<PaymentPage> {
   void initState() {
     super.initState();
     getUserData();
+    _getPaymentTypeRequest();
   }
 
   _getPaymentTypeRequest() async {
     final String _baseurl = "https://api.rajaongkir.com/starter/cost";
+    final List<String> listPengiriman = ["jne", "tiki" ];
+
     final String keyString = "e1eedfd1a43f04a99122dbcc2f4a0291";
     Map<String, String> headers = {"Content-type": "application/json"};
-    String requestJne =
-        '{"key" : "e1eedfd1a43f04a99122dbcc2f4a0291","origin": "10","destination" : "20","weight" : 1000,"courier" : "tiki"}';
 
     // make POST request
-    http.Response response =
-    await http.post(_baseurl, headers: headers, body: requestJne);
-    Map jsonResult = await jsonDecode(response.body);
-    var ongkir = CheckOngkirModel.fromJson(jsonResult);
-    print(ongkir.rajaongkir.results[0].costs[0].cost[0].value.toString() +
-        " cost");
-  }
+    listPengiriman.forEach((it) async {
+      String requestJne =
+          '{"key" : "e1eedfd1a43f04a99122dbcc2f4a0291","origin": "10","destination" : "20","weight" : 1000,"courier" : "${it.toString()}"}';
 
+      http.Response response =
+          await http.post(_baseurl, headers: headers, body: requestJne);
+      Map jsonResult = await jsonDecode(response.body);
+      var ongkir = CheckOngkirModel.fromJson(jsonResult);
+      print(ongkir.rajaongkir.results[0].costs[0].cost[0].value.toString() +
+          " cost $it");
+    });
+
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,10 +80,7 @@ class _PaymentPageState extends State<PaymentPage> {
       ),
       body: Column(
         children: <Widget>[
-          Expanded(
-              child: CartListItem(
-                dataItemModel: data,
-              )),
+          Expanded(child: CartListItem()),
           Container(
             child: Row(
               children: <Widget>[
@@ -97,21 +104,31 @@ class _PaymentPageState extends State<PaymentPage> {
               ],
             ),
           ),
-          Container(
-            margin: EdgeInsets.all(15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  "Pengiriman",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  "Pilih",
-                  style: TextStyle(
-                      color: Colors.purple, fontStyle: FontStyle.italic),
-                )
-              ],
+          Consumer<ListDeliverFee>(
+            builder: (context, data, _) => Container(
+              margin: EdgeInsets.all(15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "Pengiriman",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      data.multipleRequest();
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (context) => AddDeliverMethodBottomSheet());
+                    },
+                    child: Text(
+                      "Pilih",
+                      style: TextStyle(
+                          color: Colors.purple, fontStyle: FontStyle.italic),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           Container(
@@ -191,13 +208,15 @@ class _PaymentPageState extends State<PaymentPage> {
                     color: Colors.yellow,
                     textColor: Colors.purple,
                     onPressed: () {
-
-                      List<SalesTransactionDetailModel> listDetail = List<SalesTransactionDetailModel>();
+                      List<SalesTransactionDetailModel> listDetail =
+                          List<SalesTransactionDetailModel>();
                       List<BoughItem> listBoughtItem = List<BoughItem>();
-                      SalesTransactionModel listTransaction = SalesTransactionModel();
+                      SalesTransactionModel listTransaction =
+                          SalesTransactionModel();
 
-                      print(new DateFormat("dd/MM/yyyy").format(DateTime.now()));
-                      if(userData == null){
+                      print(
+                          new DateFormat("dd/MM/yyyy").format(DateTime.now()));
+                      if (userData == null) {
                         getUserData();
                       }
 
@@ -212,14 +231,15 @@ class _PaymentPageState extends State<PaymentPage> {
                       ));
                       var generatedTransNo;
                       setState(() {
-                        generatedTransNo =   _getRandomnumber("APPS-GODM" ,"c");
+                        generatedTransNo = _getRandomnumber("APPS-GODM", "c");
                       });
 
                       listDetail.add(SalesTransactionDetailModel(
-                          transNo:  generatedTransNo,
+                          transNo: generatedTransNo,
                           transType: "SO",
                           location: "GODM",
-                          transDt: DateFormat("dd/MM/yyyy").format(DateTime.now()),
+                          transDt:
+                              DateFormat("dd/MM/yyyy").format(DateTime.now()),
                           customer: userData.userId,
                           createBy: "m0101",
                           pmtterm: "",
@@ -231,7 +251,9 @@ class _PaymentPageState extends State<PaymentPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (ctx) => PaymentSuccess(data: listTransaction,)),
+                            builder: (ctx) => PaymentSuccess(
+                                  data: listTransaction,
+                                )),
                       );
                     },
                     label: Text(
@@ -250,24 +272,26 @@ class _PaymentPageState extends State<PaymentPage> {
   }
 }
 
- String _getRandomnumber(String prefix, String customerId){
-   var rnd = Random();
-   var next = rnd.nextDouble() * 100;
-   while (next < 100) {
-     next *= 10;
-   }
-   var rndCust = Random();
-   var nextCust = rndCust.nextDouble() * 100;
-   while (nextCust < 100) {
-     nextCust *= 10;
-   }
-   var number = prefix + nextCust.toInt().toString().padLeft(3, '0') + "/"+ DateFormat("yy/MM").format(DateTime.now())+"/"+ next.toInt().toString().padLeft(3, '0');
-   print(number);
-   return number ;
- }
-
-
-
+String _getRandomnumber(String prefix, String customerId) {
+  var rnd = Random();
+  var next = rnd.nextDouble() * 100;
+  while (next < 100) {
+    next *= 10;
+  }
+  var rndCust = Random();
+  var nextCust = rndCust.nextDouble() * 100;
+  while (nextCust < 100) {
+    nextCust *= 10;
+  }
+  var number = prefix +
+      nextCust.toInt().toString().padLeft(3, '0') +
+      "/" +
+      DateFormat("yy/MM").format(DateTime.now()) +
+      "/" +
+      next.toInt().toString().padLeft(3, '0');
+  print(number);
+  return number;
+}
 
 Widget _myRadioButton({String title, int value, Function onChanged}) {
   return RadioListTile(

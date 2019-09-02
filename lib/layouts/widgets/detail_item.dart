@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:ecommerce_test/layouts/pages/cart_page.dart';
+import 'package:ecommerce_test/models/bought_item_model.dart';
 import 'package:ecommerce_test/models/data_item_model.dart';
 import 'package:ecommerce_test/models/user.dart';
 import 'package:flutter/cupertino.dart';
@@ -167,6 +168,7 @@ class _DetailItemState extends State<DetailItem> {
                   child: Consumer<CartListData>(
                     builder: (context, listData, _) => FlatButton(
                         onPressed: () {
+                          data.boughQuantity = "1";
                           listData.addItemListToList(data);
                           Navigator.push(
                             context,
