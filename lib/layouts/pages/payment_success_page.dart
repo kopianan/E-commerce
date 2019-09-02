@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:ecommerce_test/layouts/master_pages/home.dart';
 import 'package:ecommerce_test/layouts/master_pages/my_order.dart';
 import 'package:ecommerce_test/models/sales_transaction_model.dart';
 import 'package:ecommerce_test/models/transaction_response.dart';
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class PaymentSuccess extends StatefulWidget {
   final SalesTransactionModel data;
@@ -22,9 +24,6 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
         "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,CreateSI.vm";
     dio.options.connectTimeout = 5000;
     dio.options.receiveTimeout = 30000;
-//      FormData formData = new FormData.from({
-//        "docs": '{"sales_trans":[{"trans_no":"POS-M01\/1802\/01456","trans_type":"SO","location":"GODM","trans_dt":"24\/10\/2018","customer":"DM156635366873800051904","create_by":"m0101","remark":"","pmttype":"","pmtterm":"","details":[{"item_code":"0118001","item_id":"DM141425265601900852163","qty":"1","unit":"PCS","price":"80000.0","tax":"","discount":"0.0%"}]}]}'
-//      });
     FormData formData =
         new FormData.from({"docs": json.encode(widget.data).toString()});
 
@@ -52,16 +51,21 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
               return Text('Press button to start.');
             case ConnectionState.active:
             case ConnectionState.waiting:
-              return Center(child: CircularProgressIndicator(),);
+              return Center(
+                child: CircularProgressIndicator(),
+              );
             case ConnectionState.done:
               if (snapshot.hasError) {
-                return Text("Error");
+                return showAlert(
+                    context, Icons.error, "Error Transaction", Colors.red, -1);
               } else {
-                if(snapshot.data.error == 1){
-                  return _buildFailPayment(snapshot, context);
-                }else {
+                if (snapshot.data.error == 1) {
+                  return showAlert(context, Icons.warning,
+                      snapshot.data.message, Colors.yellow, 0);
+                } else {
                   print(snapshot.data.message);
-                  return _buildSuccessPayment(snapshot, context);
+                  return showAlert(context, Icons.check_circle,
+                      "Transaction Successful", Colors.green, 1);
                 }
               }
           }
@@ -70,54 +74,49 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
       ),
     );
   }
-
-
 }
-Widget _buildSuccessPayment(AsyncSnapshot<TransactionResponse> snapshot, BuildContext context) {
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      mainAxisSize: MainAxisSize.max,
-      children: <Widget>[
-
-        Container(
-            child: Text("Your Payment was Successful")), Container(
-            color: Colors.amber,
-            child: FlatButton(
-              onPressed: (){
-                Navigator
-                    .of(context)
-                    .pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => MyOrder()));
-              }, child: Text("Lihat Keranjang"),
-            ),
-        )
-      ],
-    );
-
-}
-Widget _buildFailPayment(AsyncSnapshot<TransactionResponse> snapshot, BuildContext context) {
-
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.center,
+AlertDialog showAlert(BuildContext context, IconData icon, String message,
+        Color color, int status) =>
+    AlertDialog(
+      title: Column(
         children: <Widget>[
-          Container(
-              child: Text("Your Payment was Not SuccessFull")),
-          Container(
-            color: Colors.amber,
-            child: FlatButton(
-              onPressed: (){
-                Navigator.pop(context);
-              }, child: Text("Back"),
-            ),
-          )
-
+          Icon(
+            icon,
+            color: color,
+            size: 80.0,
+          ),
+          Text(message)
         ],
       ),
+      content: raisedButton(context, status),
     );
 
+RaisedButton raisedButton(BuildContext context, int status) {
+  if (status == -1 || status == 0) {
+    return RaisedButton(
+      onPressed: () {
+        Navigator.pop(context);
+      },
+      color: Colors.blueAccent,
+      shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: Text(
+        "Kembali",
+        style: TextStyle(color: Colors.white),
+      ),
+    );
+  } else {
+    return RaisedButton(
+      onPressed: () {
+        Navigator.of(context).pushReplacement(new MaterialPageRoute(
+            builder: (BuildContext context) => Home()));
+      },
+      color: Colors.blueAccent,
+      shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: Text(
+        "Ke Home",
+        style: TextStyle(color: Colors.white),
+      ),
+    );
+  }
 }
-
-
-

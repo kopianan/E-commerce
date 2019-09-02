@@ -62,7 +62,9 @@ class AddDeliverMethodBottomSheet extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 FlatButton(
-                  onPressed: (){},
+                  onPressed: (){
+                    Navigator.pop(context);
+                  },
                   child: Text("SIMPAN", style: TextStyle(color: Colors.black),),
                   color: Colors.amber,
                 ),
