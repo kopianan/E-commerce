@@ -124,7 +124,7 @@ class _HomeState extends State<Home> {
                           minHeight: 14,
                         ),
                         child: Text(
-                          data.getCartLength(),
+                          data.cartListItem.length.toString(),
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 8,

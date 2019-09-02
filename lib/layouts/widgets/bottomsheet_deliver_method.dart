@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 
 class AddDeliverMethodBottomSheet extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return Consumer<ListDeliverFee>(
@@ -24,36 +25,37 @@ class AddDeliverMethodBottomSheet extends StatelessWidget {
             Row(
               children: <Widget>[
                 Radio(
-                  value: 1,
-                  groupValue: "group",
+                  value: 0,
+                  groupValue:data.selected,
+                  onChanged: (val){
+                    data.setSelectedRadion(val);
+                  },
                 ),
-                Text("JNE REG  + ${data.jne}")
+                Text("JNE  +  ${data.jneReg}")
               ],
             ),
             Row(
               children: <Widget>[
                 Radio(
                   value: 1,
-                  groupValue: "group",
+                  groupValue: data.selected,
+                  onChanged: (val){
+                    data.setSelectedRadion(val);
+                  },
                 ),
-                Text("JNE YES")
+                Text("JNE OKE +  ${data.jneOke}")
               ],
             ),
-            Row(
+          Row(
               children: <Widget>[
                 Radio(
-                  value: 1,
-                  groupValue: "group",
+                  value: 2,
+                  groupValue: data.selected,
+                  onChanged: (val){
+                    data.setSelectedRadion(val);
+                  },
                 ),
-                Text("J&T")
-              ],
-            ) ,Row(
-              children: <Widget>[
-                Radio(
-                  value: 1,
-                  groupValue: "group",
-                ),
-                Text("TIKI")
+                Text("TIKI  +  ${data.tiki}")
               ],
             ),
             Column(

@@ -44,12 +44,11 @@ class _PaymentPageState extends State<PaymentPage> {
   void initState() {
     super.initState();
     getUserData();
-    _getPaymentTypeRequest();
   }
 
   _getPaymentTypeRequest() async {
     final String _baseurl = "https://api.rajaongkir.com/starter/cost";
-    final List<String> listPengiriman = ["jne", "tiki" ];
+    final List<String> listPengiriman = ["jne", "tiki"];
 
     final String keyString = "e1eedfd1a43f04a99122dbcc2f4a0291";
     Map<String, String> headers = {"Content-type": "application/json"};
@@ -66,8 +65,6 @@ class _PaymentPageState extends State<PaymentPage> {
       print(ongkir.rajaongkir.results[0].costs[0].cost[0].value.toString() +
           " cost $it");
     });
-
-
   }
 
   @override
@@ -117,15 +114,12 @@ class _PaymentPageState extends State<PaymentPage> {
                   InkWell(
                     onTap: () {
                       data.multipleRequest();
+                      _getRandomnumber("APPS-GODM", userData.userId);
                       showModalBottomSheet(
                           context: context,
                           builder: (context) => AddDeliverMethodBottomSheet());
                     },
-                    child: Text(
-                      "Pilih",
-                      style: TextStyle(
-                          color: Colors.purple, fontStyle: FontStyle.italic),
-                    ),
+                    child: _getPengirimanStatus(data),
                   ),
                 ],
               ),
@@ -231,7 +225,8 @@ class _PaymentPageState extends State<PaymentPage> {
                       ));
                       var generatedTransNo;
                       setState(() {
-                        generatedTransNo = _getRandomnumber("APPS-GODM", "c");
+                        generatedTransNo =
+                            _getRandomnumber("APPS-GODM", userData.userId);
                       });
 
                       listDetail.add(SalesTransactionDetailModel(
@@ -272,21 +267,28 @@ class _PaymentPageState extends State<PaymentPage> {
   }
 }
 
+Text _getPengirimanStatus(ListDeliverFee data) {
+  if (data.selected == 0) {
+    return Text("JNE " + data.jneReg);
+  } else if (data.selected == 1) {
+    return Text("JNE " + data.jneOke);
+  } else if (data.selected == 2) {
+    return Text("TIKI " + data.tiki);
+  } else {
+    return Text("Pilih");
+  }
+}
+
 String _getRandomnumber(String prefix, String customerId) {
   var rnd = Random();
   var next = rnd.nextDouble() * 100;
   while (next < 100) {
     next *= 10;
   }
-  var rndCust = Random();
-  var nextCust = rndCust.nextDouble() * 100;
-  while (nextCust < 100) {
-    nextCust *= 10;
-  }
   var number = prefix +
-      nextCust.toInt().toString().padLeft(3, '0') +
+      customerId.substring(customerId.length - 4, customerId.length) +
       "/" +
-      DateFormat("yy/MM").format(DateTime.now()) +
+      DateFormat("yyMM").format(DateTime.now()) +
       "/" +
       next.toInt().toString().padLeft(3, '0');
   print(number);

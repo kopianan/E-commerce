@@ -3,39 +3,28 @@ import 'package:ecommerce_test/models/data_item_model.dart';
 import 'package:flutter/foundation.dart';
 
 class CartListData extends ChangeNotifier {
-  List<BoughItem> listItem = List<BoughItem>();
   List<DataItemModel> cartListItem = List<DataItemModel>();
 
-  void initialAllTransaction(List<BoughItem> list) {
-    listItem = list;
-    notifyListeners();
-  }
+
 
   void updateQuantity(int index, String newVal){
     cartListItem[index].boughQuantity = newVal;
     notifyListeners();
   }
 
-  void addItemToCart(BoughItem item) {
-    listItem.add(item);
-    notifyListeners();
-  }
 
   void addItemListToList(DataItemModel data) {
     cartListItem.add(data);
     notifyListeners();
   }
 
-  List<BoughItem> getListCart() {
-    print(listItem.toString());
-    return listItem;
+  String getSubTotal(){
+    cartListItem.length.toString() ;
   }
+
 
   String getItemListLength() {
     return cartListItem.length.toString();
-  }
-  String getCartLength() {
-    return listItem.length.toString();
   }
 
   void clearItemOfList(DataItemModel data) {
