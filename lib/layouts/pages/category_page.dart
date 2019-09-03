@@ -138,10 +138,6 @@ class _CategoryChildState extends State<CategoryChild> {
                         alignment: Alignment.center,
                         child: Row(
                           children: <Widget>[
-                            IconButton(
-                              icon: Icon(Icons.category),
-                              onPressed: () {},
-                            ),
                             Flexible(
                               child: Text(
                                 categories[index].description,

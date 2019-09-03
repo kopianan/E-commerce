@@ -1,9 +1,11 @@
 
 import 'package:ecommerce_test/models/data_item_model.dart';
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 
 class CartListData extends ChangeNotifier {
   List<DataItemModel> cartListItem = List<DataItemModel>();
+  final formatter = new NumberFormat("#,###");
 
   void updateQuantity(int index, String newVal) {
     cartListItem[index].boughQuantity = newVal;
@@ -22,6 +24,17 @@ class CartListData extends ChangeNotifier {
             (double.parse(obj.weight) * double.parse(obj.boughQuantity));
     });
     return (int.parse(totalWeightSum.toStringAsFixed(0)));
+  }
+
+
+
+  String getSumOfPriceProduct(){
+    var priceTotal = 0.0;
+
+    cartListItem.forEach((obj){
+      priceTotal = priceTotal + double.parse(obj.itemPrice) * double.parse(obj.boughQuantity);
+    });
+    return formatter.format(priceTotal.toInt());
   }
 
   void addItemListToList(DataItemModel data) {

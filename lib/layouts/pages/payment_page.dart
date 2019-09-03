@@ -23,6 +23,8 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
+import 'change_address.dart';
+
 class PaymentPage extends StatefulWidget {
   final DataItemModel dataItemmodel;
 
@@ -38,6 +40,7 @@ class _PaymentPageState extends State<PaymentPage> {
   User user;
   User userData = User();
   var newValProvince;
+  String dropdownValue = 'One';
 
   List<prefix0.Results> listOfResult = List<prefix0.Results>();
   List<city.Results> listOfCity = List<city.Results>();
@@ -55,6 +58,7 @@ class _PaymentPageState extends State<PaymentPage> {
   void initState() {
     super.initState();
     getUserData();
+    AddressData().getProvinceData();
   }
 
   getCityData(String val) async {
@@ -110,14 +114,13 @@ class _PaymentPageState extends State<PaymentPage> {
                       : Text(userData.address),
                 ),
                 Consumer<AddressData>(
-                  builder:(context, address, _)=> Expanded(
+                  builder: (context, address, _) => Expanded(
                     child: InkWell(
                       onTap: () {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return buildAlertDialogChangeAddress(address);
-                            });
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (ctx) => ChangeAddress()),
+                        );
                       },
                       child: Text(
                         "Ubah",
@@ -254,66 +257,7 @@ class _PaymentPageState extends State<PaymentPage> {
     );
   }
 
-  AlertDialog buildAlertDialogChangeAddress(AddressData address) {
-    address.getProvinceData();
-    return AlertDialog (
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: TextFormField(),
-          ),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: TextFormField(),
-          ),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: TextFormField(),
-          ), Container(
-              child: Column(
-                children: <Widget>[
-                  DropdownButton(
 
-                    value: address.provinceCode,
-                    hint: Text(address.provinceCode.toString()),
-                    items: address.listOfResult.map((item) {
-                      return DropdownMenuItem(
-                        child: Text(item.province),
-                        value: item.provinceId.toString(),
-                      );
-                    }).toList(),
-                    onChanged: (newVal) {
-                      address.getCityData(newVal);
-                      address.setProvinceCode(newVal);
-                    },
-                  ),
-                  DropdownButton(
-                    onChanged: (_) {},
-                    hint: Text("Pilih Kota"),
-                    items: address.listOfCity.map((item) {
-                      return  DropdownMenuItem(
-                        child:  Text(item.cityName),
-                        value: item.cityId.toString(),
-                      );
-                    }).toList(),
-                    isExpanded: true,
-                  )
-                ],
-              ),
-            ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: RaisedButton(
-              child: Text("Submitß"),
-              onPressed: () {},
-            ),
-          )
-        ],
-      ),
-    );
-  }
 
   Text buildTextPaymentMethod(int index) {
     var text = "";

@@ -8,18 +8,15 @@ import 'package:ecommerce_test/models/CityModel.dart' as city;
 class AddressData extends ChangeNotifier {
   List<province.Results> listOfResult = List<province.Results>();
   List<city.Results> listOfCity = List<city.Results>();
+  String nama;
+  String noHp;
+  String alamat;
 
-  int cityCode ;
-  int provinceCode ;
+  String cityName ="" ;
+  String provinceName="" ;
+  String provinceId ;
+  String cityId ;
 
-  void setCityCode(int code){
-    cityCode = code ;
-    notifyListeners();
-  }
-  void setProvinceCode(int code){
-    provinceCode = code ;
-    notifyListeners();
-  }
 
   void setListOfProvince(List<province.Results> list) {
     listOfResult = list;

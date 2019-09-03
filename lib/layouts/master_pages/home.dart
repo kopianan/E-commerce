@@ -99,7 +99,7 @@ class _HomeState extends State<Home> {
           ),
           appBar: AppBar(
             backgroundColor: Color.fromARGB(255, 49, 49, 49),
-            title: Text("Roomart Dashboard"),
+            title: Text("ROOMART"),
             actions: <Widget>[
               IconButton(
                   icon: const Icon(Icons.search),
@@ -162,7 +162,7 @@ class _HomeState extends State<Home> {
                   icon: Icon(Icons.home)),
               BottomNavigationBarItem(
                   title: Text(
-                    "Timeline",
+                    "Category",
                     style: TextStyle(
                         color: Colors.black, fontWeight: FontWeight.w700),
                   ),

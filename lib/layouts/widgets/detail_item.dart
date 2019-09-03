@@ -46,20 +46,20 @@ class _DetailItemState extends State<DetailItem> {
       appBar: AppBar(
         title: Text("Detail Item"),
         backgroundColor: Color.fromARGB(255, 49, 49, 49),
-        actions: <Widget>[
-          IconButton(
-              icon: const Icon(Icons.notifications),
-              tooltip: "Notifikasi",
-              onPressed: () {
-                print("test");
-              }),
-          IconButton(
-              icon: const Icon(Icons.shopping_basket),
-              tooltip: "Chart",
-              onPressed: () {
-                print("test");
-              }),
-        ],
+//        actions: <Widget>[
+//          IconButton(
+//              icon: const Icon(Icons.notifications),
+//              tooltip: "Notifikasi",
+//              onPressed: () {
+//                print("test");
+//              }),
+//          IconButton(
+//              icon: const Icon(Icons.shopping_basket),
+//              tooltip: "Chart",
+//              onPressed: () {
+//                print("test");
+//              }),
+//        ],
       ),
       body: Center(
         child: Column(
@@ -94,50 +94,28 @@ class _DetailItemState extends State<DetailItem> {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      Image.asset('assets/SALE.png'),
-                      Text(data.itemName)
+                      Flexible(
+                        child: Text(data.itemName,
+                          maxLines: 2,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18.0),),
+                      )
                     ],
                   ),
                   Row(
                     children: <Widget>[
                       Container(
-                          margin: EdgeInsets.only(right: 5),
                           child: Text(
-                            data.itmPriceFmt,
-                            style: TextStyle(
-                                color: Colors.grey,
-                                decoration: TextDecoration.lineThrough),
-                          )),
-                      Container(
-                          child: Text(
-                        data.itmPriceFmt,
+                        'Rp. ${data.itmPriceFmt}',
                         style: TextStyle(
-                            color: Colors.purple, fontWeight: FontWeight.bold),
+                            color: Colors.purple, fontWeight: FontWeight.bold, fontSize: 20.0),
                       )),
                     ],
                   )
                 ],
               ),
             ),
-            Divider(
-              color: Colors.grey,
-            ),
-            Container(
-              child: Row(
-                children: <Widget>[
-                  Image.asset('assets/5stars.png'),
-                  Text(
-                    "4.3/5",
-                    style: TextStyle(color: Colors.yellow),
-                  ),
-                  Text("|"),
-                  Text(
-                    "92 Terjual / Bulan",
-                    style: TextStyle(color: Colors.grey),
-                  )
-                ],
-              ),
-            ),
+
             Container(
                 alignment: Alignment.center,
                 padding: EdgeInsets.all(2),
@@ -146,42 +124,45 @@ class _DetailItemState extends State<DetailItem> {
                   color: Colors.grey,
                 )),
             Container(
+              margin: EdgeInsets.only(left: 10),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
                     "Rincian Produk",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
-                  Text("3 weeks ago")
                 ],
               ),
             ),
             Container(
-              margin: EdgeInsets.all(5),
+              margin: EdgeInsets.all(10),
               child: Text(data.description),
             ),
             Expanded(
-              child: Align(
                 child: Align(
                   alignment: FractionalOffset.bottomCenter,
                   child: Consumer<CartListData>(
-                    builder: (context, listData, _) => FlatButton(
-                        onPressed: () {
-                          data.boughQuantity = "1";
-                          listData.addItemListToList(data);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (ctx) => CartPage()),
-                          );
+                    builder: (context, listData, _) =>
+                        Container(
+                          width: double.infinity,
+                          color: Colors.yellow,
+                          child: FlatButton(
+
+                          onPressed: () {
+                            data.boughQuantity = "1";
+                            listData.addItemListToList(data);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (ctx) => CartPage()),
+                            );
 
 //                      var json = jsonEncode(listTransaction.map((e) => e.toJson()).toList());
 //                      print( json.encode(listTransaction));
-                        },
-                        child: Text("Beli Sekarang ")),
+                          },
+                          child: Text("Beli Sekarang ")),
+                        ),
                   ),
                 ),
-              ),
             )
           ],
         ),

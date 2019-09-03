@@ -1,9 +1,11 @@
 import 'package:ecommerce_test/data/cart_list_data.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:spinner_input/spinner_input.dart';
 
 class CartListItem extends StatelessWidget {
+  final formatter = new NumberFormat("#,###");
   @override
   Widget build(BuildContext context) {
     return Consumer<CartListData>(
@@ -42,7 +44,7 @@ class CartListItem extends StatelessWidget {
                             Text(
                               data.cartListItem[index].itemName,
                               style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
+                                  fontSize: 14, fontWeight: FontWeight.bold),
                             ),
                             const Padding(
                               padding: EdgeInsets.only(top: 8),
@@ -51,7 +53,6 @@ class CartListItem extends StatelessWidget {
                               spinnerValue:double.parse(data.cartListItem[index].boughQuantity),
                               onChange: (newValue) {
                                 data.updateQuantity(index, newValue.toString());
-//
                               },
                             )
                           ],
@@ -72,7 +73,7 @@ class CartListItem extends StatelessWidget {
                           padding: EdgeInsets.only(top: 20),
                         ),
                         Text(
-                          'Rp. ${int.parse(data.cartListItem[index].boughQuantity.replaceAll('.', "")) * int.parse(data.cartListItem[index].itmPriceFmt.replaceAll(',', "")) }',
+                          'Rp. ${formatter.format(int.parse(data.cartListItem[index].boughQuantity.replaceAll('.', "")) * int.parse(data.cartListItem[index].itmPriceFmt.replaceAll(',', "")) )}',
                           style: TextStyle(
                               fontSize: 18,
                               color: Colors.deepPurple,

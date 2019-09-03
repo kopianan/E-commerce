@@ -119,7 +119,7 @@ class _HomePageChildState extends State<HomePageChild> {
                               fontWeight: FontWeight.bold, fontSize: 20),
                         ),
                         Text(
-                          "Lihat Ketegori Lainnya",
+                          "Lihat Kategori Lainnya",
                           style: TextStyle(color: Colors.blue),
                         )
                       ],
@@ -136,7 +136,6 @@ class _HomePageChildState extends State<HomePageChild> {
                               "Fashion Pria",
                               style: TextStyle(fontSize: 18.0),
                             ),
-
                           ),
                         ),
                         Container(
@@ -205,43 +204,81 @@ class _HomePageChildState extends State<HomePageChild> {
 
   Widget _itemBuilder(context, DataItemModel entry, _) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(
-              builder: (context) => DetailItem(entry)),
+          MaterialPageRoute(builder: (context) => DetailItem(entry)),
         );
       },
       child: Card(
-
-          elevation: 4,
-          child: GridTile(
-              header: GridTileBar(
-                trailing: IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.favorite_border),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Container(
+                child: FadeInImage(
+                  fit: BoxFit.cover,
+                  image: NetworkImage(
+                      "http://datacloud.erp.web.id:8081${entry.pic}"),
+                  placeholder: AssetImage('assets/broken_image.png'),
                 ),
-                title: Text(
-                  entry.itemName,
-                  maxLines: 2,
-                ),
-                backgroundColor: Color.fromRGBO(105, 105, 105, 30),
+                height: 200.0,
+                width: MediaQuery.of(context).size.width / 2.2,
               ),
-              footer: GridTileBar(
-                leading: Text(
-                  'Rp ${entry.itmPriceFmt}',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
-                ),
-                backgroundColor: Color.fromRGBO(220, 220, 220, 10),
+              SizedBox(
+                height: 8.0,
               ),
-              child: FadeInImage(
-                image:
-                    NetworkImage("http://datacloud.erp.web.id:8081${entry.pic}"),
-                placeholder: AssetImage('assets/broken_image.png'),
-              ))),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 8.0,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(
+                      "adfasdf",
+                      style: TextStyle(fontSize: 16.0, color: Colors.grey),
+                    ),
+                    SizedBox(
+                      height: 2.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Text(
+                          "adsfasdf",
+                          style: TextStyle(fontSize: 16.0, color: Colors.black),
+                        ),
+                        SizedBox(
+                          width: 8.0,
+                        ),
+                        Text(
+                          "adfadfawdsf",
+                          style: TextStyle(
+                            fontSize: 12.0,
+                            color: Colors.grey,
+                            decoration: TextDecoration.lineThrough,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 8.0,
+                        ),
+                        Text(
+                          "",
+                          style: TextStyle(fontSize: 12.0, color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 8.0,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+      ),
     );
   }
 }

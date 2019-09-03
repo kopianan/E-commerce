@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:ecommerce_test/layouts/master_pages/my_order.dart';
 import 'package:ecommerce_test/layouts/master_pages/transaction_list.dart';
 import 'package:ecommerce_test/layouts/master_pages/profile.dart';
+import 'package:ecommerce_test/layouts/pages/cart_page.dart';
 import 'package:ecommerce_test/models/tukar_point.dart';
 import 'package:ecommerce_test/models/user.dart';
 import 'package:flutter/material.dart';
@@ -136,7 +137,7 @@ getUserData() async {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => TransactionList()));
+                        builder: (context) => CartPage()));
               },
             ),
           ),

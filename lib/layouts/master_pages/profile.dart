@@ -4,24 +4,31 @@ import 'package:ecommerce_test/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-class Profile extends StatelessWidget {
-  String userFullname;
-String userEmail;
-String userBirthDate;
-String userName;
-
-  getUserData() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  User user = User.fromJsonError(json.decode(prefs.getString("user_data")));
-  userFullname = user.fullName;
-  userEmail = user.email;
-  userBirthDate = userBirthDate;
-  userName = user.userName;
+class Profile extends StatefulWidget {
+  @override
+  _ProfileState createState() => _ProfileState();
 }
+
+class _ProfileState extends State<Profile> {
+  User user = User();
+
+  Future getUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    User user = User.fromJson(json.decode(prefs.getString("user_data")));
+    setState(() {
+      this.user = user ;
+    });
+  }
+
+  @override
+  void initState() {
+    getUserData();
+    print(user.email);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    getUserData();
     return MaterialApp(
         home: Scaffold(
       appBar: AppBar(
@@ -66,7 +73,7 @@ String userName;
                 ),
                 Container(
                   child: Text(
-                    userFullname,
+                    user.fullName,
                     style: TextStyle(color: Colors.white),
                   ),
                 )
@@ -120,9 +127,6 @@ String userName;
               ],
             ),
           ),
-          
-          
-          
           Container(
             padding: EdgeInsets.all(25),
             color: Colors.white70,
@@ -137,7 +141,7 @@ String userName;
                 ),
                 Expanded(
                   child: Text(
-                    userBirthDate,
+                    user.birthDate,
                     textAlign: TextAlign.end,
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
@@ -164,7 +168,7 @@ String userName;
                 ),
                 Expanded(
                   child: Text(
-                    userFullname,
+                    user.fullName,
                     textAlign: TextAlign.end,
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
@@ -191,7 +195,7 @@ String userName;
                 ),
                 Expanded(
                   child: Text(
-                    userEmail,
+                    user.email,
                     textAlign: TextAlign.end,
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
@@ -218,7 +222,7 @@ String userName;
                 ),
                 Expanded(
                   child: Text(
-                    userName,
+                    user.userName,
                     textAlign: TextAlign.end,
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
