@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:ecommerce_test/data/address_data.dart';
 import 'package:ecommerce_test/data/cart_list_data.dart';
 import 'package:ecommerce_test/data/list_deliver_fee.dart';
 import 'package:ecommerce_test/data/payment_method.dart';
@@ -7,9 +8,12 @@ import 'package:ecommerce_test/layouts/pages/payment_success_page.dart';
 import 'package:ecommerce_test/layouts/widgets/bottomsheet_deliver_method.dart';
 import 'package:ecommerce_test/layouts/widgets/bottomsheet_payment_method.dart';
 import 'package:ecommerce_test/layouts/widgets/cart_list_item.dart';
+import 'package:ecommerce_test/models/CityModel.dart';
+import 'package:ecommerce_test/models/CityModel.dart' as city;
 import 'package:ecommerce_test/models/bought_item_model.dart';
-import 'package:ecommerce_test/models/check_onkir_model.dart';
 import 'package:ecommerce_test/models/data_item_model.dart';
+import 'package:ecommerce_test/models/province_model.dart';
+import 'package:ecommerce_test/models/province_model.dart' as prefix0;
 import 'package:ecommerce_test/models/sales_transaction_detail_model.dart';
 import 'package:ecommerce_test/models/sales_transaction_model.dart';
 import 'package:ecommerce_test/models/user.dart';
@@ -33,6 +37,10 @@ int _groupValue = -1;
 class _PaymentPageState extends State<PaymentPage> {
   User user;
   User userData = User();
+  var newValProvince;
+
+  List<prefix0.Results> listOfResult = List<prefix0.Results>();
+  List<city.Results> listOfCity = List<city.Results>();
 
   getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -49,24 +57,29 @@ class _PaymentPageState extends State<PaymentPage> {
     getUserData();
   }
 
-  _getPaymentTypeRequest() async {
-    final String _baseurl = "https://api.rajaongkir.com/starter/cost";
-    final List<String> listPengiriman = ["jne", "tiki"];
+  getCityData(String val) async {
+    var _baseUrl =
+        "https://api.rajaongkir.com/starter/city?key=e1eedfd1a43f04a99122dbcc2f4a0291&province=$val";
 
-    final String keyString = "e1eedfd1a43f04a99122dbcc2f4a0291";
-    Map<String, String> headers = {"Content-type": "application/json"};
+    var res = await http.get(_baseUrl);
+    var resBody = json.decode(res.body);
 
-    // make POST request
-    listPengiriman.forEach((it) async {
-      String requestJne =
-          '{"key" : "e1eedfd1a43f04a99122dbcc2f4a0291","origin": "10","destination" : "20","weight" : 1000,"courier" : "${it.toString()}"}';
+    var test = CityModel.fromJson(resBody);
+    setState(() {
+      listOfCity = test.rajaongkir.results;
+    });
+  }
 
-      http.Response response =
-          await http.post(_baseurl, headers: headers, body: requestJne);
-      Map jsonResult = await jsonDecode(response.body);
-      var ongkir = CheckOngkirModel.fromJson(jsonResult);
-      print(ongkir.rajaongkir.results[0].costs[0].cost[0].value.toString() +
-          " cost $it");
+  getProvinceData() async {
+    var _baseUrl = "https://api.rajaongkir.com/starter/province";
+
+    var res = await http
+        .get(_baseUrl, headers: {"key": "e1eedfd1a43f04a99122dbcc2f4a0291"});
+    var resBody = json.decode(res.body);
+
+    var test = ProvinceModel.fromJson(resBody);
+    setState(() {
+      listOfResult = test.rajaongkir.results;
     });
   }
 
@@ -96,11 +109,22 @@ class _PaymentPageState extends State<PaymentPage> {
                       ? Text("Alamat")
                       : Text(userData.address),
                 ),
-                Expanded(
-                  child: Text(
-                    "Ubah",
-                    style: TextStyle(
-                        color: Colors.purple, fontStyle: FontStyle.italic),
+                Consumer<AddressData>(
+                  builder:(context, address, _)=> Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return buildAlertDialogChangeAddress(address);
+                            });
+                      },
+                      child: Text(
+                        "Ubah",
+                        style: TextStyle(
+                            color: Colors.purple, fontStyle: FontStyle.italic),
+                      ),
+                    ),
                   ),
                 )
               ],
@@ -212,14 +236,6 @@ class _PaymentPageState extends State<PaymentPage> {
                         onPressed: () {
                           _generatePostTransactiondata(
                               listData, listDeliver, userData, context);
-
-//                          Navigator.push(
-//                            context,
-//                            MaterialPageRoute(
-//                                builder: (ctx) => PaymentSuccess(
-//                                      data: listTransaction,
-//                                    )),
-//                          );
                         },
                         label: Text(
                           "Lanjutkan Pembayaran",
@@ -238,18 +254,79 @@ class _PaymentPageState extends State<PaymentPage> {
     );
   }
 
+  AlertDialog buildAlertDialogChangeAddress(AddressData address) {
+    address.getProvinceData();
+    return AlertDialog (
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: TextFormField(),
+          ),
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: TextFormField(),
+          ),
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: TextFormField(),
+          ), Container(
+              child: Column(
+                children: <Widget>[
+                  DropdownButton(
+
+                    value: address.provinceCode,
+                    hint: Text(address.provinceCode.toString()),
+                    items: address.listOfResult.map((item) {
+                      return DropdownMenuItem(
+                        child: Text(item.province),
+                        value: item.provinceId.toString(),
+                      );
+                    }).toList(),
+                    onChanged: (newVal) {
+                      address.getCityData(newVal);
+                      address.setProvinceCode(newVal);
+                    },
+                  ),
+                  DropdownButton(
+                    onChanged: (_) {},
+                    hint: Text("Pilih Kota"),
+                    items: address.listOfCity.map((item) {
+                      return  DropdownMenuItem(
+                        child:  Text(item.cityName),
+                        value: item.cityId.toString(),
+                      );
+                    }).toList(),
+                    isExpanded: true,
+                  )
+                ],
+              ),
+            ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: RaisedButton(
+              child: Text("Submitß"),
+              onPressed: () {},
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
   Text buildTextPaymentMethod(int index) {
     var text = "";
-    if(index == 0){
-      text =("BANK BCA");
-    }else if(index == 1){
-      text =("Transfer Bank");
-    }else if(index ==2){
-      text =("Bayar Ditempat");
-    }else if (index ==3){
-      text =("Lainnys");
-    }else {
-      text ="Pilih";
+    if (index == 0) {
+      text = ("BANK BCA");
+    } else if (index == 1) {
+      text = ("Transfer Bank");
+    } else if (index == 2) {
+      text = ("Bayar Ditempat");
+    } else if (index == 3) {
+      text = ("Lainnys");
+    } else {
+      text = "Pilih";
     }
     return Text(
       text,

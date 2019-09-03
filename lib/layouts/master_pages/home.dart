@@ -1,3 +1,4 @@
+import 'package:ecommerce_test/data/address_data.dart';
 import 'package:ecommerce_test/data/cart_list_data.dart';
 import 'package:ecommerce_test/data/list_deliver_fee.dart';
 import 'package:ecommerce_test/data/payment_method.dart';
@@ -56,6 +57,7 @@ class _HomeState extends State<Home> {
         ChangeNotifierProvider(builder: (context)=>CartListData(),),
         ChangeNotifierProvider(builder: (context)=>ListDeliverFee(),),
         ChangeNotifierProvider(builder: (context)=>PaymentMethod(),),
+        ChangeNotifierProvider(builder: (context)=>AddressData(),),
 
       ],
       child: MaterialApp(
