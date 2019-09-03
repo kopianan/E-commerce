@@ -1,11 +1,10 @@
 import 'package:ecommerce_test/data/cart_list_data.dart';
 import 'package:ecommerce_test/data/list_deliver_fee.dart';
+import 'package:ecommerce_test/data/payment_method.dart';
+import 'package:ecommerce_test/layouts/pages/cart_page.dart';
 import 'package:ecommerce_test/layouts/pages/home_page.dart';
 import 'package:ecommerce_test/layouts/pages/category_page.dart';
 import 'package:ecommerce_test/layouts/pages/me_page.dart';
-import 'package:ecommerce_test/layouts/widgets/placeholder_widget.dart';
-import 'package:ecommerce_test/models/user.dart';
-import 'package:ecommerce_test/util/shared_preference.dart' as localData;
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -56,6 +55,7 @@ class _HomeState extends State<Home> {
       providers: [
         ChangeNotifierProvider(builder: (context)=>CartListData(),),
         ChangeNotifierProvider(builder: (context)=>ListDeliverFee(),),
+        ChangeNotifierProvider(builder: (context)=>PaymentMethod(),),
 
       ],
       child: MaterialApp(
@@ -103,7 +103,7 @@ class _HomeState extends State<Home> {
                   icon: const Icon(Icons.search),
                   tooltip: "Search",
                   onPressed: () {
-                    print("test");
+
                   }),
               Consumer<CartListData>(
                 builder: (context, data, _) => IconButton(
@@ -135,7 +135,12 @@ class _HomeState extends State<Home> {
                     )
                   ]),
                   tooltip: "Charts",
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CartPage()),
+                    );
+                  },
                 ),
               )
             ],

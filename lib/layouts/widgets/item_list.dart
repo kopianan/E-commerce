@@ -97,15 +97,15 @@ class _ItemListState extends State<ItemList> {
                                       style: TextStyle(
                                           color: Colors.grey,
                                           decoration:
-                                              TextDecoration.lineThrough),
+                                          TextDecoration.lineThrough),
                                     )),
                                 Container(
                                     child: Text(
-                                  listData[index].itemPrice,
-                                  style: TextStyle(
-                                      color: Colors.purple,
-                                      fontWeight: FontWeight.bold),
-                                )),
+                                      listData[index].itemPrice,
+                                      style: TextStyle(
+                                          color: Colors.purple,
+                                          fontWeight: FontWeight.bold),
+                                    )),
                               ],
                             )
                           ],

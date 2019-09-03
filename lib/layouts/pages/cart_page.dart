@@ -34,10 +34,12 @@ class CartPage extends StatelessWidget {
                       child: new FlatButton(
                         textColor: Colors.yellow,
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => Home()),
-                          );
+//                          Navigator.push(
+//                            context,
+//                            MaterialPageRoute(builder: (context) => Home()),
+//                          );
+                        Navigator.pop(context);
+                        Navigator.pop(context);
                         },
                         child: Text(
                           "Saya Masih Ingin Belanja",

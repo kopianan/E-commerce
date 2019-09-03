@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:ecommerce_test/data/cart_list_data.dart';
 import 'package:ecommerce_test/data/list_deliver_fee.dart';
+import 'package:ecommerce_test/data/payment_method.dart';
 import 'package:ecommerce_test/layouts/pages/payment_success_page.dart';
 import 'package:ecommerce_test/layouts/widgets/bottomsheet_deliver_method.dart';
+import 'package:ecommerce_test/layouts/widgets/bottomsheet_payment_method.dart';
 import 'package:ecommerce_test/layouts/widgets/cart_list_item.dart';
 import 'package:ecommerce_test/models/bought_item_model.dart';
 import 'package:ecommerce_test/models/check_onkir_model.dart';
@@ -90,7 +92,9 @@ class _PaymentPageState extends State<PaymentPage> {
                 ),
                 Expanded(
                   flex: 8,
-                  child: Text(userData.address),
+                  child: userData.address == null
+                      ? Text("Alamat")
+                      : Text(userData.address),
                 ),
                 Expanded(
                   child: Text(
@@ -130,21 +134,26 @@ class _PaymentPageState extends State<PaymentPage> {
               ),
             ),
           ),
-          Container(
-            margin: EdgeInsets.all(15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  "Metode Pembayaran",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  "Pilih",
-                  style: TextStyle(
-                      color: Colors.purple, fontStyle: FontStyle.italic),
-                )
-              ],
+          Consumer<PaymentMethod>(
+            builder: (context, pay, _) => Container(
+              margin: EdgeInsets.all(15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "Metode Pembayaran",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (context) => AddPaymentMethodBottomSheet());
+                    },
+                    child: buildTextPaymentMethod(pay.selectedPaymentMethod),
+                  )
+                ],
+              ),
             ),
           ),
           Container(
@@ -201,7 +210,8 @@ class _PaymentPageState extends State<PaymentPage> {
                         color: Colors.yellow,
                         textColor: Colors.purple,
                         onPressed: () {
-                          _generatePostTransactiondata(listData, listDeliver, userData, context);
+                          _generatePostTransactiondata(
+                              listData, listDeliver, userData, context);
 
 //                          Navigator.push(
 //                            context,
@@ -225,6 +235,25 @@ class _PaymentPageState extends State<PaymentPage> {
           )
         ],
       ),
+    );
+  }
+
+  Text buildTextPaymentMethod(int index) {
+    var text = "";
+    if(index == 0){
+      text =("BANK BCA");
+    }else if(index == 1){
+      text =("Transfer Bank");
+    }else if(index ==2){
+      text =("Bayar Ditempat");
+    }else if (index ==3){
+      text =("Lainnys");
+    }else {
+      text ="Pilih";
+    }
+    return Text(
+      text,
+      style: TextStyle(color: Colors.purple, fontStyle: FontStyle.italic),
     );
   }
 
@@ -262,8 +291,8 @@ class _PaymentPageState extends State<PaymentPage> {
   }
 }
 
-void _generatePostTransactiondata(
-    CartListData listData, ListDeliverFee listDeliver, User userData, BuildContext context) {
+void _generatePostTransactiondata(CartListData listData,
+    ListDeliverFee listDeliver, User userData, BuildContext context) {
   List<SalesTransactionDetailModel> listDetail =
       List<SalesTransactionDetailModel>();
   List<BoughItem> listBoughtItem = List<BoughItem>();
@@ -271,7 +300,7 @@ void _generatePostTransactiondata(
 
   print(new DateFormat("dd/MM/yyyy").format(DateTime.now()));
 
-  listData.cartListItem.forEach((data){
+  listData.cartListItem.forEach((data) {
     listBoughtItem.add(BoughItem(
       itemId: data.itemId,
       itemCode: data.itemCode,
@@ -287,16 +316,15 @@ void _generatePostTransactiondata(
   listBoughtItem.add(BoughItem(
     itemId: "DM156698902369200428418",
     itemCode: _getPengiriman(listDeliver.selected),
-    price: listDeliver.getSubTotalOngkir(listData.getAllItemWeight()).toString(),
+    price:
+        listDeliver.getSubTotalOngkir(listData.getAllItemWeight()).toString(),
     qty: "1",
     discount: "",
     tax: "1",
     unit: "0",
   ));
 
-
   var generatedTransNo = _getRandomnumber("APPS-GODM", userData.userId);
-
 
   listDetail.add(SalesTransactionDetailModel(
       transNo: generatedTransNo,
@@ -311,25 +339,25 @@ void _generatePostTransactiondata(
       details: listBoughtItem));
   listTransaction.salesTrans = listDetail;
 
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (ctx) => PaymentSuccess(
-                                      data: listTransaction,
-                                    )),
-                          );
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+        builder: (ctx) => PaymentSuccess(
+              data: listTransaction,
+            )),
+  );
   print(json.encode(listTransaction.toJson()).toString());
-
 }
 
-String _getPengiriman(int selected){
-  if(selected == 0){
+String _getPengiriman(int selected) {
+  if (selected == 0) {
     return "JNE REG";
-  }else if(selected == 1){
+  } else if (selected == 1) {
     return "JNE OKE";
-  }else if(selected ==2){
+  } else if (selected == 2) {
     return "TIKI REG";
-  }else return "ONGKIR";
+  } else
+    return "ONGKIR";
 }
 
 Text _getPengirimanStatus(ListDeliverFee data) {
