@@ -1,7 +1,7 @@
 class CheckOngkirRequest {
   String key;
-  String origin;
-  String destination;
+  int origin;
+  int destination;
   int weight;
   String courier;
 

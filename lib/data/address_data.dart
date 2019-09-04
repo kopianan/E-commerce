@@ -17,6 +17,18 @@ class AddressData extends ChangeNotifier {
   String provinceId ;
   String cityId ;
 
+  void setCity(String cityId , String cityName){
+    this.cityId = cityId;
+    this.cityName = cityName;
+    notifyListeners();
+  }
+
+  void setProvince(String prov, String provName){
+    provinceId = prov;
+    provinceName = provName ;
+    notifyListeners();
+  }
+
 
   void setListOfProvince(List<province.Results> list) {
     listOfResult = list;

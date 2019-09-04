@@ -73,7 +73,7 @@ class CartListItem extends StatelessWidget {
                           padding: EdgeInsets.only(top: 20),
                         ),
                         Text(
-                          'Rp. ${formatter.format(int.parse(data.cartListItem[index].boughQuantity.replaceAll('.', "")) * int.parse(data.cartListItem[index].itmPriceFmt.replaceAll(',', "")) )}',
+                          'Rp. ${formatter.format(int.parse(double.parse(data.cartListItem[index].boughQuantity).toStringAsFixed(0))* int.parse(data.cartListItem[index].itmPriceFmt.replaceAll(',', "")) )}',
                           style: TextStyle(
                               fontSize: 18,
                               color: Colors.deepPurple,

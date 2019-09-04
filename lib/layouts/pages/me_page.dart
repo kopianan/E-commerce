@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:ecommerce_test/data/api_service.dart';
 import 'package:ecommerce_test/layouts/master_pages/my_order.dart';
 import 'package:ecommerce_test/layouts/master_pages/transaction_list.dart';
 import 'package:ecommerce_test/layouts/master_pages/profile.dart';
 import 'package:ecommerce_test/layouts/pages/cart_page.dart';
+import 'package:ecommerce_test/models/login_model.dart';
 import 'package:ecommerce_test/models/tukar_point.dart';
 import 'package:ecommerce_test/models/user.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +19,7 @@ class PageMe extends StatefulWidget {
 
 class _PageMeState extends State<PageMe> {
 String userFullname;
-User localUser  ;
+LoginModel localUser  ;
 
 @override
 void initState() {
@@ -27,9 +29,10 @@ void initState() {
 
 getUserData() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  User user =  User.fromJson(json.decode(prefs.getString("user_data")));
+  LoginModel user =  LoginModel.fromJson(json.decode(prefs.getString("user_data")));
   localUser = user ;
 
+  ApiService.getArBalance(localUser.userId);
   print(prefs.getString("user_data"));
 }
 
@@ -68,7 +71,7 @@ getUserData() async {
             child: Row(
               children: <Widget>[
                 Container(
-                  width: MediaQuery.of(context).size.width / 2,
+                  width: MediaQuery.of(context).size.width / 3,
                   color: Colors.yellow,
                   padding: const EdgeInsets.all(10),
                   child: Column(
@@ -86,8 +89,31 @@ getUserData() async {
                   ),
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width / 2,
+                  width: MediaQuery.of(context).size.width / 3,
                   color: Colors.deepPurple,
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Point",
+                            style: TextStyle(color: Colors.white),
+                          )),
+                      Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "4500",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          )),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width / 3,
+                  color: Colors.black54,
                   padding: const EdgeInsets.all(10),
                   child: Column(
                     children: <Widget>[

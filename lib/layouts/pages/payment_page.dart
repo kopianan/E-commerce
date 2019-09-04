@@ -12,11 +12,11 @@ import 'package:ecommerce_test/models/CityModel.dart';
 import 'package:ecommerce_test/models/CityModel.dart' as city;
 import 'package:ecommerce_test/models/bought_item_model.dart';
 import 'package:ecommerce_test/models/data_item_model.dart';
+import 'package:ecommerce_test/models/login_model.dart';
 import 'package:ecommerce_test/models/province_model.dart';
 import 'package:ecommerce_test/models/province_model.dart' as prefix0;
 import 'package:ecommerce_test/models/sales_transaction_detail_model.dart';
 import 'package:ecommerce_test/models/sales_transaction_model.dart';
-import 'package:ecommerce_test/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -37,17 +37,19 @@ class PaymentPage extends StatefulWidget {
 int _groupValue = -1;
 
 class _PaymentPageState extends State<PaymentPage> {
-  User user;
-  User userData = User();
+  LoginModel user;
+  LoginModel userData = LoginModel();
   var newValProvince;
   String dropdownValue = 'One';
 
   List<prefix0.Results> listOfResult = List<prefix0.Results>();
   List<city.Results> listOfCity = List<city.Results>();
+  final formatter = new NumberFormat("#,###");
 
   getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    User user = User.fromJson(json.decode(prefs.getString("user_data")));
+    LoginModel user =
+        LoginModel.fromJson(json.decode(prefs.getString("user_data")));
 
     setState(() {
       userData = user;
@@ -98,65 +100,75 @@ class _PaymentPageState extends State<PaymentPage> {
       body: Column(
         children: <Widget>[
           Expanded(child: CartListItem()),
-          Container(
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 2,
-                  child: Icon(
-                    Icons.map,
+          Consumer<ListDeliverFee>(
+            builder: (context, listDeliver, _) => Container(
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 2,
+                    child: Icon(
+                      Icons.map,
+                    ),
                   ),
-                ),
-                Expanded(
-                  flex: 8,
-                  child: userData.address == null
-                      ? Text("Alamat")
-                      : Text(userData.address),
-                ),
-                Consumer<AddressData>(
-                  builder: (context, address, _) => Expanded(
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (ctx) => ChangeAddress()),
-                        );
-                      },
-                      child: Text(
-                        "Ubah",
-                        style: TextStyle(
-                            color: Colors.purple, fontStyle: FontStyle.italic),
+                  Expanded(
+                    flex: 8,
+                    child: userData.address == null
+                        ? Text("Alamat")
+                        : Text(
+                            '${userData.address}\n${userData.province}\n${userData.city}'),
+                  ),
+                  Consumer<AddressData>(
+                    builder: (context, address, _) => Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (ctx) => ChangeAddress()),
+                          );
+                        },
+                        child: Text(
+                          "Ubah",
+                          style: TextStyle(
+                              color: Colors.purple,
+                              fontStyle: FontStyle.italic),
+                        ),
                       ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
-          Consumer<CartListData>(
-            builder: (context, listData, _) => Consumer<ListDeliverFee>(
-              builder: (context, data, _) => Container(
-                margin: EdgeInsets.all(15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "Pengiriman",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        data.multipleRequest(listData.getAllItemWeight());
-                        _getRandomnumber("APPS-GODM", userData.userId);
-                        showModalBottomSheet(
-                            context: context,
-                            builder: (context) =>
-                                AddDeliverMethodBottomSheet());
-                      },
-                      child: _getPengirimanStatus(data),
-                    ),
-                  ],
+          Consumer<AddressData>(
+            builder: (context, addressData, _) => Consumer<CartListData>(
+              builder: (context, listData, _) => Consumer<ListDeliverFee>(
+                builder: (context, data, _) => Container(
+                  margin: EdgeInsets.all(15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        "Pengiriman",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          addressData.getProvinceData();
+                          data.getAllProvinceAndCity();
+                          data.multipleRequest(listData.getAllItemWeight(),
+                              data.getProvinceIdFromList(userData.province));
+                          _getRandomnumber("APPS-GODM", userData.userId);
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (context) =>
+                                  AddDeliverMethodBottomSheet());
+                        },
+                        child: buildChoosePengiriman(data),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -203,16 +215,20 @@ class _PaymentPageState extends State<PaymentPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text("Subtotal untuk Produk"),
-                        Text(listData.getSubTotal().toString())
+                        Text("Rp. " +
+                            formatter.format(int.parse(
+                                double.parse(listData.getSubTotal())
+                                    .toStringAsFixed(0))))
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text("Pengiriman"),
-                        Text(listDeliver
-                            .getSubTotalOngkir(listData.getAllItemWeight())
-                            .toStringAsFixed(0))
+                        Text("Rp. " +
+                            formatter.format(int.parse(
+                                listDeliver.sumTotalOngkosKirim(
+                                    listData.getAllItemWeight())))),
                       ],
                     ),
                     Container(
@@ -221,11 +237,15 @@ class _PaymentPageState extends State<PaymentPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
-                            "Total diskon pengiriman",
+                            "Total Bayar",
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold),
                           ),
-                          buildTotal(listData, listDeliver),
+                          Text("Rp." +
+                              listData.getTotalBayar(
+                                  listDeliver.sumTotalOngkosKirim(
+                                      listData.getAllItemWeight()),
+                                  listData.getSubTotal())),
                         ],
                       ),
                     ),
@@ -257,63 +277,44 @@ class _PaymentPageState extends State<PaymentPage> {
     );
   }
 
-
-
-  Text buildTextPaymentMethod(int index) {
-    var text = "";
-    if (index == 0) {
-      text = ("BANK BCA");
-    } else if (index == 1) {
-      text = ("Transfer Bank");
-    } else if (index == 2) {
-      text = ("Bayar Ditempat");
-    } else if (index == 3) {
-      text = ("Lainnys");
+  Text buildChoosePengiriman(ListDeliverFee data) {
+    if (data.selectedOngkir.name == null) {
+      return Text("Pilih");
     } else {
-      text = "Pilih";
+      return Text(
+        data.selectedOngkir.name.toString() +
+            "\n" +
+            formatter.format(int.parse(data.selectedOngkir.price)).toString() +
+            " ( " + data.selectedOngkir.etd.toString() +
+            " hari)",
+        maxLines: 3,
+        textAlign: TextAlign.right,
+      );
     }
-    return Text(
-      text,
-      style: TextStyle(color: Colors.purple, fontStyle: FontStyle.italic),
-    );
-  }
-
-  Text buildTotal(CartListData listData, ListDeliverFee listDeliver) {
-    double subTotal;
-    double subTotalOngkir;
-
-    if (double.parse(listData.getSubTotal()) == null ||
-        double.parse(listData.getSubTotal()) == 0.0) {
-      subTotal = 0.0;
-    } else {
-      subTotal = double.parse(listData.getSubTotal());
-    }
-
-    if (double.parse(listDeliver
-                .getSubTotalOngkir(listData.getAllItemWeight())
-                .toString()) ==
-            null ||
-        double.parse(listDeliver
-                .getSubTotalOngkir(listData.getAllItemWeight())
-                .toString()) ==
-            0.0) {
-      subTotalOngkir = 0.0;
-    } else {
-      subTotalOngkir = double.parse(listDeliver
-          .getSubTotalOngkir(listData.getAllItemWeight())
-          .toString());
-    }
-
-    return Text(
-      '${(subTotal + subTotalOngkir).toString()}',
-      style: TextStyle(
-          fontSize: 16, fontWeight: FontWeight.bold, color: Colors.purple),
-    );
   }
 }
 
+Text buildTextPaymentMethod(int index) {
+  var text = "";
+  if (index == 0) {
+    text = ("BANK BCA");
+  } else if (index == 1) {
+    text = ("Transfer Bank");
+  } else if (index == 2) {
+    text = ("Bayar Ditempat");
+  } else if (index == 3) {
+    text = ("Lainnys");
+  } else {
+    text = "Pilih";
+  }
+  return Text(
+    text,
+    style: TextStyle(color: Colors.purple, fontStyle: FontStyle.italic),
+  );
+}
+
 void _generatePostTransactiondata(CartListData listData,
-    ListDeliverFee listDeliver, User userData, BuildContext context) {
+    ListDeliverFee listDeliver, LoginModel userData, BuildContext context) {
   List<SalesTransactionDetailModel> listDetail =
       List<SalesTransactionDetailModel>();
   List<BoughItem> listBoughtItem = List<BoughItem>();
@@ -336,9 +337,9 @@ void _generatePostTransactiondata(CartListData listData,
 
   listBoughtItem.add(BoughItem(
     itemId: "DM156698902369200428418",
-    itemCode: _getPengiriman(listDeliver.selected),
-    price:
-        listDeliver.getSubTotalOngkir(listData.getAllItemWeight()).toString(),
+    itemCode:
+        (listDeliver.selectedOngkir.name + listDeliver.selectedOngkir.service),
+    price: listDeliver.sumTotalOngkosKirim(listData.getAllItemWeight()),
     qty: "1",
     discount: "",
     tax: "1",
@@ -368,29 +369,6 @@ void _generatePostTransactiondata(CartListData listData,
             )),
   );
   print(json.encode(listTransaction.toJson()).toString());
-}
-
-String _getPengiriman(int selected) {
-  if (selected == 0) {
-    return "JNE REG";
-  } else if (selected == 1) {
-    return "JNE OKE";
-  } else if (selected == 2) {
-    return "TIKI REG";
-  } else
-    return "ONGKIR";
-}
-
-Text _getPengirimanStatus(ListDeliverFee data) {
-  if (data.selected == 0) {
-    return Text("JNE " + data.jneReg);
-  } else if (data.selected == 1) {
-    return Text("JNE " + data.jneOke);
-  } else if (data.selected == 2) {
-    return Text("TIKI " + data.tiki);
-  } else {
-    return Text("Pilih");
-  }
 }
 
 String _getRandomnumber(String prefix, String customerId) {

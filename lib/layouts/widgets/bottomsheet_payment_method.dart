@@ -29,44 +29,10 @@ class AddPaymentMethodBottomSheet extends StatelessWidget {
                     payment.setSelectedRadion(val);
                   },
                 ),
-                Text("BANK BCA (Dicek Otomatis)")
+                Text("Deposit (currentSaldo)")
               ],
             ),
-            Row(
-              children: <Widget>[
-                Radio(
-                  value: 1,
-                  groupValue: payment.selectedPaymentMethod,
-                  onChanged: (val){
-                    payment.setSelectedRadion(val);
-                  },
-                ),
-                Text("Transfer Bank")
-              ],
-            ),
-            Row(
-              children: <Widget>[
-                Radio(
-                  value: 2,
-                  groupValue: payment.selectedPaymentMethod,
-                  onChanged: (val){
-                    payment.setSelectedRadion(val);
-                  },
-                ),
-                Text("Bayar Di Tempat")
-              ],
-            ) ,Row(
-              children: <Widget>[
-                Radio(
-                  value: 3,
-                  groupValue: payment.selectedPaymentMethod,
-                  onChanged: (val){
-                    payment.setSelectedRadion(val);
-                  },
-                ),
-                Text("Lainnya")
-              ],
-            ),
+
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[

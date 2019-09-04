@@ -188,11 +188,11 @@ class _HomePageChildState extends State<HomePageChild> {
             ]),
           ),
           SliverPadding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(10.0),
             sliver: PagewiseSliverGrid.count(
                 pageSize: 6,
                 crossAxisCount: 2,
-                childAspectRatio: 9 / 14,
+                childAspectRatio: 9 / 16,
                 itemBuilder: this._itemBuilder,
                 pageFuture: (pageIndex) => BackendService.getDataItem(
                     pageIndex * PAGE_SIZE, PAGE_SIZE)),
@@ -211,6 +211,7 @@ class _HomePageChildState extends State<HomePageChild> {
         );
       },
       child: Card(
+        elevation: 4,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
@@ -221,7 +222,7 @@ class _HomePageChildState extends State<HomePageChild> {
                       "http://datacloud.erp.web.id:8081${entry.pic}"),
                   placeholder: AssetImage('assets/broken_image.png'),
                 ),
-                height: 200.0,
+                height: 220.0,
                 width: MediaQuery.of(context).size.width / 2.2,
               ),
               SizedBox(
@@ -236,8 +237,8 @@ class _HomePageChildState extends State<HomePageChild> {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     Text(
-                      "adfasdf",
-                      style: TextStyle(fontSize: 16.0, color: Colors.grey),
+                     entry.itemName,
+                      style: TextStyle(fontSize: 16.0, color: Colors.black),
                     ),
                     SizedBox(
                       height: 2.0,
@@ -247,20 +248,20 @@ class _HomePageChildState extends State<HomePageChild> {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Text(
-                          "adsfasdf",
-                          style: TextStyle(fontSize: 16.0, color: Colors.black),
+                          'Rp. ${entry.itmPriceFmt}',
+                          style: TextStyle(fontSize: 15.0, color: Colors.deepPurple, fontWeight: FontWeight.bold),
                         ),
                         SizedBox(
                           width: 8.0,
                         ),
-                        Text(
-                          "adfadfawdsf",
-                          style: TextStyle(
-                            fontSize: 12.0,
-                            color: Colors.grey,
-                            decoration: TextDecoration.lineThrough,
-                          ),
-                        ),
+//                        Text(
+//                          "adfadfawdsf",
+//                          style: TextStyle(
+//                            fontSize: 12.0,
+//                            color: Colors.grey,
+//                            decoration: TextDecoration.lineThrough,
+//                          ),
+//                        ),
                         SizedBox(
                           width: 8.0,
                         ),

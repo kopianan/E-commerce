@@ -22,41 +22,25 @@ class AddDeliverMethodBottomSheet extends StatelessWidget {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,)
                   ,
                 )),
-            Row(
-              children: <Widget>[
-                Radio(
-                  value: 0,
-                  groupValue:data.selected,
-                  onChanged: (val){
-                    data.setSelectedRadion(val);
-                  },
-                ),
-                Text("JNE  +  ${data.jneReg}")
-              ],
-            ),
-            Row(
-              children: <Widget>[
-                Radio(
-                  value: 1,
-                  groupValue: data.selected,
-                  onChanged: (val){
-                    data.setSelectedRadion(val);
-                  },
-                ),
-                Text("JNE OKE +  ${data.jneOke}")
-              ],
-            ),
-          Row(
-              children: <Widget>[
-                Radio(
-                  value: 2,
-                  groupValue: data.selected,
-                  onChanged: (val){
-                    data.setSelectedRadion(val);
-                  },
-                ),
-                Text("TIKI  +  ${data.tiki}")
-              ],
+            Expanded(
+              child: ListView.builder(
+                  itemCount: data.listOngkir.length,
+                  itemBuilder: (BuildContext context, int index){
+                    return Row(
+                      children: <Widget>[
+                        Radio(
+                          value: index,
+                          groupValue:data.selected,
+                          onChanged: (val){
+                            data.setSelectedOngkir(index);
+                            data.setSelectedRadion(val);
+                          },
+                        ),
+                        Text('${data.listOngkir[index].name} ${data.listOngkir[index].service} ${data.listOngkir[index].price} ${data.listOngkir[index].etd} hari')
+                      ],
+                    );
+
+              }),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,

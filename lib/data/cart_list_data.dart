@@ -26,6 +26,14 @@ class CartListData extends ChangeNotifier {
     return (int.parse(totalWeightSum.toStringAsFixed(0)));
   }
 
+  String getTotalBayar(String subttotal, String pengiriman){
+    var total = int.parse(double.parse(subttotal).toStringAsFixed(0) )+ int.parse(double.parse(pengiriman).toStringAsFixed(0) );
+    if(total == null ){
+      return "0";
+    }else
+    return formatter.format(total).toString();
+
+  }
 
 
   String getSumOfPriceProduct(){

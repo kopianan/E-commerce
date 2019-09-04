@@ -19,24 +19,24 @@ class PaymentPaymentBloc
   Stream<PaymentPaymentState> mapEventToState(
     PaymentPaymentEvent event,
   ) async* {
-    if (event is GetDeliverFee) {
-      yield GetPriceFeeLoading();
-
-      CheckOngkirRequest check = CheckOngkirRequest(
-          courier: "jne",
-          destination: "10",
-          origin: "20",
-          weight: 1000,
-          key: "e1eedfd1a43f04a99122dbcc2f4a0291");
-
-      final checkOngkirModel =
-          await _getPriceAsync(_baseurl, body: check.toJson());
-
-      print(checkOngkirModel.toJson().toString());
+//    if (event is GetDeliverFee) {
+//      yield GetPriceFeeLoading();
+//
+//      CheckOngkirRequest check = CheckOngkirRequest(
+//          courier: "jne",
+//          destination: "10",
+//          origin: "20",
+//          weight: 1000,
+//          key: "e1eedfd1a43f04a99122dbcc2f4a0291");
+//
+//      final checkOngkirModel =
+//          await _getPriceAsync(_baseurl, body: check.toJson());
+//
+//      print(checkOngkirModel.toJson().toString());
 
     }
   }
-}
+
 
 Future<CheckOngkirModel> _getPriceAsync(String url, {Map body}) async {
   return http.post(url, body: body).then((http.Response response) {
