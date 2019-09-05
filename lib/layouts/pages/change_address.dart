@@ -76,104 +76,103 @@ class _ChangeAddressState extends State<ChangeAddress> {
     return Consumer<AddressData>(
       builder: (context, address, _) =>
           Scaffold(
-            appBar: AppBar(
-              title: Text("Change Address"),
-            ),
-            body: Container(
-              margin: EdgeInsets.all(15),
-              padding: EdgeInsets.all(10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  TextField(
-                    onChanged: (String nama) {
-                      address.nama = nama;
-                    },
-                    decoration: const InputDecoration(
-                      labelText: 'Nama Penerima',
-                    ),
-                  ),
-                  TextField(
-                    onChanged: (String text) {
-                      address.noHp = text;
-                    },
-                    decoration: const InputDecoration(
-                      labelText: 'Nomor Handphone',
-                    ),
-                  ),
-                  TextField(
-                    onChanged: (String text) {
-                      address.alamat = text;
-                    },
-                    decoration: const InputDecoration(
-                      labelText: 'AlamatLengkap',
-                    ),
-                  ),
-                  Container(
-                      child: DropdownButton(
-                        isExpanded: false,
-                          hint: Text("Pilih Provinsi"),
-                          value: provinceName,
-                          items: listOfProvince.map((item) {
-                            return new DropdownMenuItem(
-                              child: new Text(item.province),
-                              value: item.province.toString(),
-                            );
-                          }).toList(),
-                          onChanged: (newVal) {
-                            cityName = null ;
-                            listOfCity.clear();
-                            provinceName = newVal;
-                            listOfProvince.forEach((dta) {
-                              if (dta.province.toString() == provinceName) {
-                                setState(() {
-                                  mprovinceid = dta.provinceId;
-                                  address.setProvince(dta.provinceId, dta.province);
-                                  getCityData(address.provinceId);
-                                });
-                              }
-                            });
-                          })),
-                  Container(
-                      child:DropdownButton(
-                          hint: Text("Pilih Kota"),
-                          value: cityName,
-                          items: listOfCity.map((item) {
-                            return new DropdownMenuItem(
-                              child: new Text(item.cityName.toString()),
-                              value: item.cityName.toString(),
-                            );
-                          }).toList(),
-                          onChanged: (newVal) {
-                            cityName = newVal;
-                            listOfCity.forEach((dta) {
-                              if (dta.cityName.toString() == cityName) {
-                                setState(() {
-                                  mcityid = dta.cityId ;
-                                  address.setCity(dta.cityId, dta.cityName);
-                                });
-                              }
-                            });
-                          })),
-
-                  Container(
-                    width: double.infinity,
-                    color: Colors.blueAccent,
-                    child: FlatButton(
-                      onPressed: () {
-                        getUserData();
-                        ApiService.changeAddress(
-                            user.email, address.provinceName,address.cityName, address.alamat);
-
-                        Navigator.pop(context);
-                        Navigator.pop(context);
+            body: SingleChildScrollView(
+              child: Container(
+                margin: EdgeInsets.all(15),
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    TextField(
+                      onChanged: (String nama) {
+                        address.nama = nama;
                       },
-                      child: Text("Simpan", style: TextStyle(color: Colors.white),),
+                      decoration: const InputDecoration(
+                        labelText: 'Nama Penerima',
+                      ),
                     ),
-                  )
-                ],
+                    TextField(
+                      onChanged: (String text) {
+                        address.noHp = text;
+                      },
+                      decoration: const InputDecoration(
+                        labelText: 'Nomor Handphone',
+                      ),
+                    ),
+                    TextField(
+                      onChanged: (String text) {
+                        address.alamat = text;
+                      },
+                      decoration: const InputDecoration(
+                        labelText: 'AlamatLengkap',
+                      ),
+                    ),
+                    Container(
+                        child: DropdownButton(
+                          isExpanded: false,
+                            hint: Text("Pilih Provinsi"),
+                            value: provinceName,
+                            items: listOfProvince.map((item) {
+                              return new DropdownMenuItem(
+                                child: new Text(item.province),
+                                value: item.province.toString(),
+                              );
+                            }).toList(),
+                            onChanged: (newVal) {
+                              cityName = null ;
+                              listOfCity.clear();
+                              provinceName = newVal;
+                              listOfProvince.forEach((dta) {
+                                if (dta.province.toString() == provinceName) {
+                                  setState(() {
+                                    mprovinceid = dta.provinceId;
+                                    address.setProvince(dta.provinceId, dta.province);
+                                    getCityData(address.provinceId);
+                                  });
+                                }
+                              });
+                            })),
+                    Container(
+                        child:DropdownButton(
+                            hint: Text("Pilih Kota"),
+                            value: cityName,
+                            items: listOfCity.map((item) {
+                              return new DropdownMenuItem(
+                                child: new Text(item.cityName.toString()),
+                                value: item.cityName.toString(),
+                              );
+                            }).toList(),
+                            onChanged: (newVal) {
+                              cityName = newVal;
+                              listOfCity.forEach((dta) {
+                                if (dta.cityName.toString() == cityName) {
+                                  setState(() {
+                                    mcityid = dta.cityId ;
+                                    address.setCity(dta.cityId, dta.cityName);
+                                  });
+                                }
+                              });
+                            })),
+
+                    Container(
+                      width: double.infinity,
+                      color: Colors.blueAccent,
+                      child: FlatButton(
+                        onPressed: () {
+                          getUserData();
+                          ApiService.changeAddress(
+                              user.email, address.provinceName,address.cityName, address.alamat);
+
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        },
+                        child: Text("Simpan", style: TextStyle(color: Colors.white),),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),

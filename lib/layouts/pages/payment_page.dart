@@ -150,8 +150,7 @@ class _PaymentPageState extends State<PaymentPage> {
                     children: <Widget>[
                       Text(
                         "Pengiriman",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                       InkWell(
                         onTap: () {
@@ -218,7 +217,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         Text("Rp. " +
                             formatter.format(int.parse(
                                 double.parse(listData.getSubTotal())
-                                    .toStringAsFixed(0))))
+                                    .toStringAsFixed(0))), style: subTextStyle(),)
                       ],
                     ),
                     Row(
@@ -228,7 +227,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         Text("Rp. " +
                             formatter.format(int.parse(
                                 listDeliver.sumTotalOngkosKirim(
-                                    listData.getAllItemWeight())))),
+                                    listData.getAllItemWeight()))), style: subTextStyle(),),
                       ],
                     ),
                     Container(
@@ -245,7 +244,7 @@ class _PaymentPageState extends State<PaymentPage> {
                               listData.getTotalBayar(
                                   listDeliver.sumTotalOngkosKirim(
                                       listData.getAllItemWeight()),
-                                  listData.getSubTotal())),
+                                  listData.getSubTotal()), style: totalTextStyle(), ),
                         ],
                       ),
                     ),
@@ -279,7 +278,7 @@ class _PaymentPageState extends State<PaymentPage> {
 
   Text buildChoosePengiriman(ListDeliverFee data) {
     if (data.selectedOngkir.name == null) {
-      return Text("Pilih");
+      return Text("Pilih", style: subTextStyle(),);
     } else {
       return Text(
         data.selectedOngkir.name.toString() +
@@ -289,15 +288,23 @@ class _PaymentPageState extends State<PaymentPage> {
             " hari)",
         maxLines: 3,
         textAlign: TextAlign.right,
+        style: subTextStyle(),
       );
     }
   }
 }
 
+TextStyle totalTextStyle(){
+  return TextStyle(color: Colors.purple, fontSize: 18, fontWeight: FontWeight.bold);
+}
+TextStyle subTextStyle(){
+  return TextStyle(color: Colors.purple, fontSize: 16);
+}
+
 Text buildTextPaymentMethod(int index) {
   var text = "";
   if (index == 0) {
-    text = ("BANK BCA");
+    text = ("DEPOSIT");
   } else if (index == 1) {
     text = ("Transfer Bank");
   } else if (index == 2) {
@@ -309,8 +316,7 @@ Text buildTextPaymentMethod(int index) {
   }
   return Text(
     text,
-    style: TextStyle(color: Colors.purple, fontStyle: FontStyle.italic),
-  );
+    style:subTextStyle());
 }
 
 void _generatePostTransactiondata(CartListData listData,
@@ -387,11 +393,4 @@ String _getRandomnumber(String prefix, String customerId) {
   return number;
 }
 
-Widget _myRadioButton({String title, int value, Function onChanged}) {
-  return RadioListTile(
-    value: value,
-    groupValue: _groupValue,
-    onChanged: onChanged,
-    title: Text(title),
-  );
-}
+

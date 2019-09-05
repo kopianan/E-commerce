@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:ecommerce_test/layouts/pages/change_password.dart';
 import 'package:ecommerce_test/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,7 +17,7 @@ class _ProfileState extends State<Profile> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     User user = User.fromJson(json.decode(prefs.getString("user_data")));
     setState(() {
-      this.user = user ;
+      this.user = user;
     });
   }
 
@@ -248,11 +249,23 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
                 Expanded(
-                  child: Text(
-                    "Ubah Kata Sandi",
-                    textAlign: TextAlign.end,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.yellow),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ChangePassword()),
+                      );
+                    },
+                    child: Container(
+                      child: Text(
+                        "Ubah Kata Sandi",
+                        textAlign: TextAlign.end,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.amber,
+                            fontSize: 16),
+                      ),
+                    ),
                   ),
                 )
               ],

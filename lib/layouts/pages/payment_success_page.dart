@@ -39,10 +39,7 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 49, 49, 49),
-        title: Text("Keranjang Belanja"),
-      ),
+
       body: FutureBuilder<TransactionResponse>(
         future: _dioTransaction(),
         builder: (context, snapshot) {
@@ -110,6 +107,9 @@ RaisedButton raisedButton(BuildContext context, int status) {
       onPressed: () {
         Navigator.of(context).pushReplacement(new MaterialPageRoute(
             builder: (BuildContext context) => Home()));
+        Navigator.of(context).push(new MaterialPageRoute(
+            builder: (BuildContext context) => MyOrder()));
+
       },
       color: Colors.blueAccent,
       shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(10)),

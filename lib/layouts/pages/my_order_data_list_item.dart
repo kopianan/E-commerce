@@ -1,9 +1,10 @@
 import 'package:ecommerce_test/models/AllTransactionListModel.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class DataList extends StatelessWidget {
   final AllTransactionListModel data;
-
+  final formatter = NumberFormat("#,###");
   DataList(this.data);
 
   @override
@@ -14,50 +15,48 @@ class DataList extends StatelessWidget {
           borderRadius: BorderRadius.circular(10.0),
         ),
         child: Container(
+          padding: EdgeInsets.all(15),
           margin: EdgeInsets.all(5.0),
           child: IntrinsicHeight(
-            child: Row(children: <Widget>[
-              Image.network(
-                "https://miro.medium.com/max/800/1*gH1iKXJH8T12LIqhboZWEA.png",
-                height: 120.0,
-                width: 120.0,
-              ),
-              Container(
-                // color: Colors.indigo,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        Text(
-                          data.customerName.toString(),
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Text(data.transactionStatus.toString())
-                      ],
+            child: Container(
+              // color: Colors.indigo,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Flexible(
+                    child: Text(
+                      data.salesOrderNo.toString(),
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: true,
+                      maxLines: 2,
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20) ,
                     ),
-                    Flexible(
-                      child: Text(
-                        "Order No. " + data.salesOrderNo.toString(),
-                        overflow: TextOverflow.ellipsis,
-                        softWrap: true,
-                        maxLines: 2,
+                  ),
+                  SizedBox(height: 5,),
+                  Text(
+                    data.customerName.toString(),
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  SizedBox(height: 5,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      Text(
+                        'Qty : ${double.parse(data.totalQty.toString()).toStringAsFixed(0)}',
+//                        'Qty : ${double.parse(int.parse(data.totalQty.toString()).toStringAsFixed(0)}',
+                        style: TextStyle(fontSize: 16),
                       ),
-                    ),
-                    Flexible(
-                      child: Text(
-                        data.customerId,
-                        softWrap: true,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
+                      Text(
+                        'Rp. ${formatter.format(int.parse(double.parse(data.totalAmount.toString()).toStringAsFixed(0)))}',
+                        style: TextStyle(fontSize: 18, color: Colors.purple, fontWeight: FontWeight.bold),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+                ],
               ),
-            ]),
+            ),
           ),
         ));
   }

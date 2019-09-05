@@ -1,13 +1,9 @@
 import 'dart:convert';
-
-import 'package:ecommerce_test/data/api_service.dart';
 import 'package:ecommerce_test/layouts/master_pages/my_order.dart';
-import 'package:ecommerce_test/layouts/master_pages/transaction_list.dart';
 import 'package:ecommerce_test/layouts/master_pages/profile.dart';
 import 'package:ecommerce_test/layouts/pages/cart_page.dart';
 import 'package:ecommerce_test/models/login_model.dart';
 import 'package:ecommerce_test/models/tukar_point.dart';
-import 'package:ecommerce_test/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,6 +16,7 @@ class PageMe extends StatefulWidget {
 class _PageMeState extends State<PageMe> {
 String userFullname;
 LoginModel localUser  ;
+String Ar;
 
 @override
 void initState() {
@@ -31,9 +28,7 @@ getUserData() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   LoginModel user =  LoginModel.fromJson(json.decode(prefs.getString("user_data")));
   localUser = user ;
-
-  ApiService.getArBalance(localUser.userId);
-  print(prefs.getString("user_data"));
+  print(prefs.getString("user_ar"));
 }
 
 

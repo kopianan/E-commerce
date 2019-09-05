@@ -39,20 +39,22 @@ class ApiService {
     print(responseJson);
   }
 
+
+
   static getArBalance(String custId) async {
 
     http.Response response;
     String _baseUrl =
-        'http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,AR.vm?cmd=2&custid=$custId';
+        'http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,AR.vm?cmd=2&custid=DM152204830857645176904';
 
     response = await http.get(_baseUrl);
-    print(response.body);
 
     List responseJson = await json.decode(response.body);
     final data = responseJson
         .map((md) => new BalanceModel.fromJson(md))
         .toList();
-
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("user_ar",double.parse(data[0].arBalance).toStringAsFixed(0).toString());
   }
 
   static Future<TransactionResponse> getDataTransaction() async {

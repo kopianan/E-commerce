@@ -109,7 +109,10 @@ class LoginPageChild extends StatelessWidget {
                 margin: EdgeInsets.only(top: 20),
                 child: TextField(
                   controller: passwordController,
+                  obscureText: true,
                   decoration: InputDecoration(
+                    suffixIcon:  Icon(Icons.lock,),
+
                       fillColor: Colors.white,
                       filled: true,
                       labelText: "Password ",
