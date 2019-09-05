@@ -27,56 +27,62 @@ class _SubCategoryState extends State<SubCategory> {
         title: Text(widget.subCategoryName),
         backgroundColor: Colors.black,
       ),
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: GridView.builder(
-                itemCount: categories.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 7 / 2,
-                ),
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    child: InkWell(
-                      onTap: () {
-                        // categoryBloc.dispatch(GetAllCategoryByParentID(
-                        //     categories[index].kategoriId,
-                        //     categories[index].description));
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                child: GridView.builder(
+                  itemCount: categories.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 7 / 2,
+                  ),
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      child: InkWell(
+                        onTap: () {
+                          // categoryBloc.dispatch(GetAllCategoryByParentID(
+                          //     categories[index].kategoriId,
+                          //     categories[index].description));
 
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => ItemList(
-                        //         categories[index].kategoriId,
-                        //         categories[index].description),
-                        //   ),
-                        // );
-                      },
-                      child: Card(
-                        elevation: 1,
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Row(
-                            children: <Widget>[
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => ItemList(
+                          //         categories[index].kategoriId,
+                          //         categories[index].description),
+                          //   ),
+                          // );
+                        },
+                        child: Card(
+                          elevation: 1,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: Row(
+                                children: <Widget>[
 
-                              Flexible(
-                                child: Text(
-                                  categories[index].description,
-                                  textAlign: TextAlign.center,
-                                ),
+                                  Flexible(
+                                    child: Text(
+                                      categories[index].description,
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                },
-              ),
-            )
-          ],
+                    );
+                  },
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

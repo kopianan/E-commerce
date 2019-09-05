@@ -111,12 +111,14 @@ class _CategoryChildState extends State<CategoryChild> {
   Widget buildLayout(BuildContext context) {
     final categoryBloc = BlocProvider.of<CategoryBloc>(context);
     return Container(
+      margin: EdgeInsets.all(8.0),
       child: Column(
         children: <Widget>[
           BannerSlider(
             listData: banners,
           ),
           Expanded(
+
             child: GridView.builder(
               itemCount: categories.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -130,21 +132,24 @@ class _CategoryChildState extends State<CategoryChild> {
                       categoryBloc.dispatch(GetAllCategoryByParentID(
                           categories[index].kategoriId, categories[index].description
                           ));
-                  
+
                     },
                     child: Card(
                       elevation: 1,
-                      child: Container(
-                        alignment: Alignment.center,
-                        child: Row(
-                          children: <Widget>[
-                            Flexible(
-                              child: Text(
-                                categories[index].description,
-                                textAlign: TextAlign.center,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Row(
+                            children: <Widget>[
+                              Flexible(
+                                child: Text(
+                                  categories[index].description,
+                                  textAlign: TextAlign.left,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
