@@ -1,15 +1,24 @@
 
+import 'package:ecommerce_test/models/AllTransactionListModel.dart';
 import 'package:ecommerce_test/models/data_item_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
 class CartListData extends ChangeNotifier {
   List<DataItemModel> cartListItem = List<DataItemModel>();
+  AllTransactionListModel selectedTransactionDetail = AllTransactionListModel();
+
+
   final formatter = new NumberFormat("#,###");
 
   void updateQuantity(int index, String newVal) {
     cartListItem[index].boughQuantity = newVal;
 
+    notifyListeners();
+  }
+
+  void setSelectedTransactionDetail(AllTransactionListModel data ){
+    selectedTransactionDetail = data ;
     notifyListeners();
   }
 

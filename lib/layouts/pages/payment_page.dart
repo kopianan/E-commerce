@@ -38,30 +38,32 @@ int _groupValue = -1;
 
 class _PaymentPageState extends State<PaymentPage> {
   LoginModel user;
-  LoginModel userData = LoginModel();
   var newValProvince;
   String dropdownValue = 'One';
+  AddressData addData = AddressData() ;
 
   List<prefix0.Results> listOfResult = List<prefix0.Results>();
   List<city.Results> listOfCity = List<city.Results>();
   final formatter = new NumberFormat("#,###");
 
-  getUserData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    LoginModel user =
-        LoginModel.fromJson(json.decode(prefs.getString("user_data")));
-
-    setState(() {
-      userData = user;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    getUserData();
     AddressData().getProvinceData();
+    getUserData();
+
   }
+
+  Future getUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    LoginModel user = LoginModel.fromJson(json.decode(prefs.getString("user_data")));
+    setState(() {
+      this.user = user;
+      AddressData().userData = user ;
+    });
+  }
+
+
 
   getCityData(String val) async {
     var _baseUrl =
@@ -100,43 +102,43 @@ class _PaymentPageState extends State<PaymentPage> {
       body: Column(
         children: <Widget>[
           Expanded(child: CartListItem()),
-          Consumer<ListDeliverFee>(
-            builder: (context, listDeliver, _) => Container(
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 2,
-                    child: Icon(
-                      Icons.map,
-                    ),
-                  ),
-                  Expanded(
-                    flex: 8,
-                    child: userData.address == null
-                        ? Text("Alamat")
-                        : Text(
-                            '${userData.address}\n${userData.province}\n${userData.city}'),
-                  ),
-                  Consumer<AddressData>(
-                    builder: (context, address, _) => Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (ctx) => ChangeAddress()),
-                          );
-                        },
-                        child: Text(
-                          "Ubah",
-                          style: TextStyle(
-                              color: Colors.purple,
-                              fontStyle: FontStyle.italic),
-                        ),
+          Consumer<AddressData>(
+            builder: (context, addressData, _) => Consumer<ListDeliverFee>(
+              builder: (context, listDeliver, _) => Container(
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 2,
+                      child: Icon(
+                        Icons.map,
                       ),
                     ),
-                  )
-                ],
+                    Expanded(
+                      flex: 8,
+                      child: addressData.userData == null
+                          ? Text("Alamat")
+                          : Text(
+                              '${addressData.userData.address}\n${addressData.userData.province}\n${addressData.userData.city}'),
+                    ),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (ctx) => ChangeAddress()),
+                            );
+                          },
+                          child: Text(
+                            "Ubah",
+                            style: TextStyle(
+                                color: Colors.purple,
+                                fontStyle: FontStyle.italic),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -150,15 +152,19 @@ class _PaymentPageState extends State<PaymentPage> {
                     children: <Widget>[
                       Text(
                         "Pengiriman",
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                       InkWell(
                         onTap: () {
                           addressData.getProvinceData();
                           data.getAllProvinceAndCity();
-                          data.multipleRequest(listData.getAllItemWeight(),
-                              data.getProvinceIdFromList(userData.province));
-                          _getRandomnumber("APPS-GODM", userData.userId);
+                          data.multipleRequest(
+                              listData.getAllItemWeight(),
+                              data.getProvinceIdFromList(
+                                  addressData.userData.province));
+                          _getRandomnumber(
+                              "APPS-GODM", addressData.userData.userId);
                           showModalBottomSheet(
                               context: context,
                               builder: (context) =>
@@ -214,20 +220,26 @@ class _PaymentPageState extends State<PaymentPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text("Subtotal untuk Produk"),
-                        Text("Rp. " +
-                            formatter.format(int.parse(
-                                double.parse(listData.getSubTotal())
-                                    .toStringAsFixed(0))), style: subTextStyle(),)
+                        Text(
+                          "Rp. " +
+                              formatter.format(int.parse(
+                                  double.parse(listData.getSubTotal())
+                                      .toStringAsFixed(0))),
+                          style: subTextStyle(),
+                        )
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text("Pengiriman"),
-                        Text("Rp. " +
-                            formatter.format(int.parse(
-                                listDeliver.sumTotalOngkosKirim(
-                                    listData.getAllItemWeight()))), style: subTextStyle(),),
+                        Text(
+                          "Rp. " +
+                              formatter.format(int.parse(
+                                  listDeliver.sumTotalOngkosKirim(
+                                      listData.getAllItemWeight()))),
+                          style: subTextStyle(),
+                        ),
                       ],
                     ),
                     Container(
@@ -240,29 +252,34 @@ class _PaymentPageState extends State<PaymentPage> {
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold),
                           ),
-                          Text("Rp." +
-                              listData.getTotalBayar(
-                                  listDeliver.sumTotalOngkosKirim(
-                                      listData.getAllItemWeight()),
-                                  listData.getSubTotal()), style: totalTextStyle(), ),
+                          Text(
+                            "Rp." +
+                                listData.getTotalBayar(
+                                    listDeliver.sumTotalOngkosKirim(
+                                        listData.getAllItemWeight()),
+                                    listData.getSubTotal()),
+                            style: totalTextStyle(),
+                          ),
                         ],
                       ),
                     ),
-                    Container(
-                      margin: EdgeInsets.only(top: 20),
-                      width: double.infinity,
-                      child: FlatButton.icon(
-                        icon: Icon(Icons.shopping_basket),
-                        color: Colors.yellow,
-                        textColor: Colors.purple,
-                        onPressed: () {
-                          _generatePostTransactiondata(
-                              listData, listDeliver, userData, context);
-                        },
-                        label: Text(
-                          "Lanjutkan Pembayaran",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                    Consumer<AddressData>(
+                      builder: (context, address, _) => Container(
+                        margin: EdgeInsets.only(top: 20),
+                        width: double.infinity,
+                        child: FlatButton.icon(
+                          icon: Icon(Icons.shopping_basket),
+                          color: Colors.yellow,
+                          textColor: Colors.purple,
+                          onPressed: () {
+                            _generatePostTransactiondata(listData, listDeliver,
+                                address.userData, context);
+                          },
+                          label: Text(
+                            "Lanjutkan Pembayaran",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
                     ),
@@ -278,13 +295,17 @@ class _PaymentPageState extends State<PaymentPage> {
 
   Text buildChoosePengiriman(ListDeliverFee data) {
     if (data.selectedOngkir.name == null) {
-      return Text("Pilih", style: subTextStyle(),);
+      return Text(
+        "Pilih",
+        style: subTextStyle(),
+      );
     } else {
       return Text(
         data.selectedOngkir.name.toString() +
             "\n" +
             formatter.format(int.parse(data.selectedOngkir.price)).toString() +
-            " ( " + data.selectedOngkir.etd.toString() +
+            " ( " +
+            data.selectedOngkir.etd.toString() +
             " hari)",
         maxLines: 3,
         textAlign: TextAlign.right,
@@ -294,10 +315,12 @@ class _PaymentPageState extends State<PaymentPage> {
   }
 }
 
-TextStyle totalTextStyle(){
-  return TextStyle(color: Colors.purple, fontSize: 18, fontWeight: FontWeight.bold);
+TextStyle totalTextStyle() {
+  return TextStyle(
+      color: Colors.purple, fontSize: 18, fontWeight: FontWeight.bold);
 }
-TextStyle subTextStyle(){
+
+TextStyle subTextStyle() {
   return TextStyle(color: Colors.purple, fontSize: 16);
 }
 
@@ -314,9 +337,7 @@ Text buildTextPaymentMethod(int index) {
   } else {
     text = "Pilih";
   }
-  return Text(
-    text,
-    style:subTextStyle());
+  return Text(text, style: subTextStyle());
 }
 
 void _generatePostTransactiondata(CartListData listData,
@@ -392,5 +413,3 @@ String _getRandomnumber(String prefix, String customerId) {
   print(number);
   return number;
 }
-
-

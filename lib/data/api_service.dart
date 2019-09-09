@@ -1,5 +1,6 @@
 import 'package:ecommerce_test/models/AllTransactionListModel.dart';
 import 'package:ecommerce_test/models/balance_model.dart';
+import 'package:ecommerce_test/models/detail_transaction_model.dart';
 import 'package:ecommerce_test/models/login_model.dart';
 import 'package:ecommerce_test/models/transaction_history_model.dart';
 import 'package:ecommerce_test/models/transaction_response.dart';
@@ -22,7 +23,7 @@ class ApiService {
 //    }
   }
 
-  static changeAddress(
+  static Future<String> changeAddress(
       String email, String province, String city, String address) async {
     http.Response response;
     String _baseUrl =
@@ -36,7 +37,26 @@ class ApiService {
     final data = LoginModel.fromJson(responseJson);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("user_data", response.body);
-    print(responseJson);
+
+    return response.body ;
+  }
+
+
+ static Future<List<DetailTransactionModel>> getDetailTransaction() async {
+    http.Response response;
+    String _baseUrl =
+        "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,SPGApps.vm?cmd=4&txtype=SO_DETAIL&txno=DM141481151763163039543";
+
+    response = await http.get(
+        '$_baseUrl');
+
+    var  responseJson = await json.decode(response.body);
+
+    final List<DetailTransactionModel> data = responseJson
+        .map((md) => DetailTransactionModel.fromJson(md))
+        .toList();
+
+    return data;
   }
 
 

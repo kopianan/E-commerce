@@ -1,3 +1,4 @@
+import 'package:ecommerce_test/data/address_data.dart';
 import 'package:ecommerce_test/data/cart_list_data.dart';
 import 'package:ecommerce_test/layouts/pages/payment_page.dart';
 import 'package:ecommerce_test/layouts/widgets/cart_list_item.dart';
@@ -67,23 +68,26 @@ class CartPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Container(
-                      color: Colors.yellow,
-                      width: MediaQuery.of(context).size.width / 2,
-                      child: new FlatButton(
-                        textColor: Colors.pink,
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PaymentPage(
-                                    dataItemmodel: dataList.cartListItem[0])),
-                          );
-                        },
-                        child: Text(
-                          "Lanjutkan Pembayaran",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                    Consumer<AddressData>(
+                      builder:(context, addressData, _)=> Container(
+                        color: Colors.yellow,
+                        width: MediaQuery.of(context).size.width / 2,
+                        child: new FlatButton(
+                          textColor: Colors.pink,
+                          onPressed: () {
+                            addressData.getUserDataInPrference();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PaymentPage(
+                                      dataItemmodel: dataList.cartListItem[0])),
+                            );
+                          },
+                          child: Text(
+                            "Lanjutkan Pembayaran",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
                     ),

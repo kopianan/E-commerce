@@ -140,17 +140,17 @@ class _ChangeAddressState extends State<ChangeAddress> {
                             value: cityName,
                             items: listOfCity.map((item) {
                               return new DropdownMenuItem(
-                                child: new Text(item.cityName.toString()),
-                                value: item.cityName.toString(),
+                                child: new Text(item.type.toString()  + " " + item.cityName.toString()),
+                                value: item.type.toString()  + " " +item.cityName.toString(),
                               );
                             }).toList(),
                             onChanged: (newVal) {
                               cityName = newVal;
                               listOfCity.forEach((dta) {
-                                if (dta.cityName.toString() == cityName) {
+                                if (dta.type.toString()  + " " + dta.cityName.toString() == cityName) {
                                   setState(() {
                                     mcityid = dta.cityId ;
-                                    address.setCity(dta.cityId, dta.cityName);
+                                    address.setCity(dta.cityId, dta.type.toString()  + " " + dta.cityName.toString());
                                   });
                                 }
                               });
@@ -162,10 +162,7 @@ class _ChangeAddressState extends State<ChangeAddress> {
                       child: FlatButton(
                         onPressed: () {
                           getUserData();
-                          ApiService.changeAddress(
-                              user.email, address.provinceName,address.cityName, address.alamat);
-
-                          Navigator.pop(context);
+                          address.getChangedAddress( user.email, address.provinceName,address.cityName, address.alamat);
                           Navigator.pop(context);
                         },
                         child: Text("Simpan", style: TextStyle(color: Colors.white),),

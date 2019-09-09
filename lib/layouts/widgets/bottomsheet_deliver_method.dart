@@ -1,5 +1,6 @@
 
 import 'package:ecommerce_test/data/list_deliver_fee.dart';
+import 'package:ecommerce_test/util/function.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -36,7 +37,7 @@ class AddDeliverMethodBottomSheet extends StatelessWidget {
                             data.setSelectedRadion(val);
                           },
                         ),
-                        Text('${data.listOngkir[index].name} ${data.listOngkir[index].service} ${data.listOngkir[index].price} ${data.listOngkir[index].etd} hari')
+                        Text('${data.listOngkir[index].name} ${data.listOngkir[index].service} ${Fun().formatStringCurrency(data.listOngkir[index].price)} ${data.listOngkir[index].etd} hari')
                       ],
                     );
 
