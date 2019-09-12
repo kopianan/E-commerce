@@ -59,6 +59,26 @@ class ApiService {
     return data;
   }
 
+  static Future<LoginModel> registerNewUser(String email , String password , String fullName, String dateOfBirthday) async {
+    var date = dateOfBirthday;
+    String day;
+    String month;
+    String year;
+    http.Response response;
+    String _baseUrl =
+        "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,User.vm?method=register&email=$email&password=$password&firstname=$fullName&lastname=$fullName&dobday=$day&dobmonth=$month&dobyear=$year&tocust=true&ctype=DM151627192557861134072";
+
+    response = await http.get(
+        '$_baseUrl');
+
+    var responseJson = await json.decode(response.body);
+
+    LoginModel user = LoginModel.fromJson(responseJson);
+
+    return user;
+  }
+
+
 
 
   static getArBalance(String custId) async {

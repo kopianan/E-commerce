@@ -1,5 +1,6 @@
 import 'package:ecommerce_test/bloc/bloc.dart';
 import 'package:ecommerce_test/bloc/login/user_bloc.dart';
+import 'package:ecommerce_test/bloc/login/user_event.dart';
 import 'package:ecommerce_test/bloc/login/user_state.dart';
 import 'package:ecommerce_test/layouts/master_pages/home.dart';
 import 'package:ecommerce_test/layouts/master_pages/register.dart';
@@ -20,8 +21,15 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
-      home: BlocProvider(
-        builder: (context) => UserBloc(),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider<UserBloc>(
+            builder: (BuildContext context) => UserBloc(),
+          ),
+          BlocProvider<UserBloc>(
+            builder: (BuildContext context) => UserBloc(),
+          ),
+        ],
         child: LoginPageChild(),
       ),
     );
@@ -29,12 +37,14 @@ class _LoginState extends State<Login> {
 }
 
 class LoginPageChild extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
+    final userBloc = BlocProvider.of<UserBloc>(context);
+
     return Scaffold(
-      body: BlocListener(
-        bloc: BlocProvider.of<UserBloc>(context),
-        listener: (BuildContext context, UserState state) async {
+      body: BlocListener<UserBloc, UserState>(
+        listener: ( context,  state) async {
           if (state is UserEmailLoginSuccess) {
             
             final prefs = await SharedPreferences.getInstance();
@@ -55,9 +65,8 @@ class LoginPageChild extends StatelessWidget {
                 duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
           }
         },
-        child: BlocBuilder(
-            bloc: BlocProvider.of<UserBloc>(context),
-            builder: (BuildContext context, UserState state) {
+        child: BlocBuilder<UserBloc, UserState>(
+            builder: (context, state) {
               if (state is InitialUserState) {
                 return buildInitial(context);
               } else if (state is UserLoading) {

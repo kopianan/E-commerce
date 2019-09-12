@@ -14,6 +14,10 @@ class SharedPreference{
     String userJson = user.toJson().toString();
     await prefs.setString(USER_DATA_PREFERENCE, userJson);
   }
+  void clearUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(USER_DATA_PREFERENCE, "");
+  }
 
   Future<LoginModel> getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

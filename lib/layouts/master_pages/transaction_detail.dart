@@ -2,21 +2,25 @@ import 'dart:convert';
 import 'package:ecommerce_test/data/cart_list_data.dart';
 import 'package:ecommerce_test/models/AllTransactionListModel.dart';
 import 'package:ecommerce_test/models/detail_transaction_model.dart';
+import 'package:ecommerce_test/models/login_model.dart';
 import 'package:ecommerce_test/util/function.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TransactionDetail extends StatefulWidget {
   final AllTransactionListModel listData ;
+
   TransactionDetail(this.listData);
   @override
   _TransactionDetailState createState() => _TransactionDetailState();
 }
 
 class _TransactionDetailState extends State<TransactionDetail> {
-
+  LoginModel dataUser = LoginModel() ;
+  DetailTransactionModel dataOngkir  = DetailTransactionModel() ;
   Future<List<DetailTransactionModel>> getDetailTransaction() async {
     http.Response response;
     response = await http.get(
@@ -31,6 +35,22 @@ class _TransactionDetailState extends State<TransactionDetail> {
 
     return data.cast();
   }
+
+
+  Future getUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    LoginModel user = LoginModel.fromJson(json.decode(prefs.getString("user_data")));
+    setState(() {
+      this.dataUser = user;
+    });
+  }
+
+  @override
+  void initState() {
+    getUserData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<CartListData>(
@@ -45,19 +65,23 @@ class _TransactionDetailState extends State<TransactionDetail> {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
               case ConnectionState.waiting:
-                return CircularProgressIndicator();
+                return Center(child: CircularProgressIndicator());
               case ConnectionState.active:
-                return CircularProgressIndicator();
+                return Center(child: CircularProgressIndicator());
               case ConnectionState.done:
                 if (snapshot.hasData) {
                   selected.setSelectedTransactionDetail(widget.listData);
+                    dataOngkir = snapshot.data.first;
+
+
+
                   return buildCustomScrollView(snapshot.data, selected.selectedTransactionDetail);
                 }else {
                   Navigator.pop(context);
                 }
 
             }
-            return CircularProgressIndicator();
+            return Center(child: CircularProgressIndicator());
           }
         ),
       ),
@@ -74,11 +98,11 @@ class _TransactionDetailState extends State<TransactionDetail> {
                 SizedBox(
                   height: 20,
                 ),
-                buildStatusPemesanan(),
+                buildStatusPemesanan(transDetail),
                 SizedBox(
                   height: 20,
                 ),
-                buildNomorPesanan(),
+                buildNomorPesanan(transDetail),
                 SizedBox(
                   height: 20,
                 ),
@@ -88,9 +112,11 @@ class _TransactionDetailState extends State<TransactionDetail> {
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
-                return buildItemList(data, index);
+                //data yang masuk tidak termasuk ongkos kirim
+                return buildItemList(data, index+1);
+
               },
-              childCount: data.length,
+              childCount: data.length-1,
             ),
           ),
           SliverList(
@@ -101,7 +127,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text("Total Pembayaran"),
-                    Text("Nama Penerima"),
+                    Text(transDetail.totalAmount),
                   ],
                 ),
                 Row(
@@ -140,23 +166,23 @@ class _TransactionDetailState extends State<TransactionDetail> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text("Sub total untuk produk"),
-                      Text("${transDetail.totalAmount}"),
+                      Text("${int.parse(double.parse(transDetail.totalAmount).toStringAsFixed(0)) -int.parse(double.parse(dataOngkir.subTotal).toStringAsFixed(0))}"),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text("Nama Penerima"),
-                      Text("Nama Penerima"),
+                      Text("Ongkos Kirim"),
+                      Text("${dataOngkir.subTotal}"),
                     ],
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text("Nama Penerima"),
-                      Text("Nama Penerima"),
-                    ],
-                  ),
+//                  Row(
+//                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                    children: <Widget>[
+//                      Text("Nama Penerima"),
+//                      Text("Nama Penerima"),
+//                    ],
+//                  ),
                 ],
               ),
             ),
@@ -166,7 +192,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
     );
   }
 
-  Padding buildNomorPesanan() {
+  Padding buildNomorPesanan(AllTransactionListModel transDetail) {
     return Padding(
       padding: const EdgeInsets.only(top: 10, right: 10, left: 10),
       child: Container(
@@ -176,7 +202,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
           children: <Widget>[
             Text("Nomor Pesanan"),
             Text(
-              "NOMORPESANAN",
+              transDetail.salesOrderNo,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ],
@@ -185,7 +211,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
     );
   }
 
-  Padding buildStatusPemesanan() {
+  Padding buildStatusPemesanan(AllTransactionListModel transDetail) {
     return Padding(
       padding: const EdgeInsets.only(top: 10, right: 10, left: 10),
       child: Container(
@@ -209,8 +235,8 @@ class _TransactionDetailState extends State<TransactionDetail> {
                   SizedBox(
                     height: 10,
                   ),
-                  Text("Nama Penerima"),
-                  Text("Nomor Handphone"),
+                  Text("${dataUser.fullName}"),
+                  Text("${dataUser.phone}"),
                 ],
               ),
             ),
@@ -241,8 +267,8 @@ class _TransactionDetailState extends State<TransactionDetail> {
                     height: 10,
                   ),
                   Text(transDetail.customerName),
-                  Text("Nomor Handphone"),
-                  Text("Alamat Lengkap"),
+                  Text(dataUser.phone.toString()),
+                  Text('${dataUser.address}, ${dataUser.city}, ${dataUser.province}'),
                 ],
               ),
             ),
@@ -255,6 +281,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
 }
 
 Widget buildItemList(List<DetailTransactionModel> data, int index) {
+
   return InkWell(
     onTap: () {},
     child: Card(

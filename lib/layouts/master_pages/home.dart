@@ -6,6 +6,7 @@ import 'package:ecommerce_test/layouts/pages/cart_page.dart';
 import 'package:ecommerce_test/layouts/pages/home_page.dart';
 import 'package:ecommerce_test/layouts/pages/category_page.dart';
 import 'package:ecommerce_test/layouts/pages/me_page.dart';
+import 'package:ecommerce_test/util/shared_preference.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -87,8 +88,13 @@ class _HomeState extends State<Home> {
                 ListTile(
                   title: Text('Keluar'),
                   trailing: Icon(Icons.arrow_forward),
-                  onTap: () {
-                    Navigator.push(
+                  onTap: () async{
+
+                    final prefs = await SharedPreferences.getInstance();
+
+                    SharedPreference localData = SharedPreference() ;
+                    localData.clearUserData();
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context) => Login()),
                     );

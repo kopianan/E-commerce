@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:ecommerce_test/data/api_service.dart';
+import 'package:ecommerce_test/layouts/pages/my_order_cancel.dart';
 import 'package:ecommerce_test/layouts/pages/my_order_new_transaction.dart';
 import 'package:ecommerce_test/layouts/pages/my_order_on_progress.dart';
+import 'package:ecommerce_test/layouts/pages/my_order_sent.dart';
 import 'package:ecommerce_test/models/AllTransactionListModel.dart';
 import 'package:ecommerce_test/models/user.dart';
 import 'package:flutter/foundation.dart';
@@ -20,11 +22,14 @@ class _MyOrderState extends State<MyOrder> {
   var dataList = List<AllTransactionListModel>();
   var filteredDataListNew = List<AllTransactionListModel>();
   var filteredDataListConfirmed = List<AllTransactionListModel>();
+  var filteredDataListSent = List<AllTransactionListModel>();
+  var filteredDataListCancel = List<AllTransactionListModel>();
 
   setDataToList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     User user = User.fromJson(json.decode(prefs.getString("user_data")));
-    final allListDataTransaction = ApiService.getAllTransactionModel(user.userId);
+    final allListDataTransaction =
+        ApiService.getAllTransactionModel(user.userId);
 
     allListDataTransaction.then((onValue) {
 //  dataList = onValue.where((i)=> i.transactionType == 2).toList();
@@ -32,9 +37,14 @@ class _MyOrderState extends State<MyOrder> {
         dataList = onValue;
 
         // ignore: unrelated_type_equality_checks
-        filteredDataListNew = dataList.where((data) => data.transactionStatus=="1").toList();
-        filteredDataListConfirmed = dataList.where((data) => data.transactionStatus=="2").toList();
-
+        filteredDataListNew =
+            dataList.where((data) => data.transactionStatus == "4").toList();
+        filteredDataListConfirmed =
+            dataList.where((data) => data.transactionStatus == "1").toList();
+        filteredDataListSent =
+            dataList.where((data) => data.transactionStatus == "2").toList();
+        filteredDataListCancel =
+            dataList.where((data) => data.transactionStatus == "5").toList();
       });
     });
   }
@@ -73,28 +83,43 @@ class _MyOrderState extends State<MyOrder> {
                               color: Colors.white)))
                 ],
               )),
-          body: MainContent(filteredDataListNew, filteredDataListConfirmed)),
+//          body: MainContent(dataListNew : filteredDataListNew, filteredDataListConfirmed)),
+          body: MainContent(
+            dataListNew: filteredDataListNew,
+            dataListDikirim: filteredDataListSent,
+            dataListBatal: filteredDataListCancel,
+            dataListConfirm: filteredDataListConfirmed,
+          )),
     );
   }
 }
 
 class MainContent extends StatelessWidget {
-  final dataList;
-  final dataList2;
+  final dataListNew;
+  final dataListConfirm;
+  final dataListDikirim;
+  final dataListBatal;
 
-  MainContent(this.dataList, this.dataList2);
+  MainContent(
+      {this.dataListNew,
+      this.dataListConfirm,
+      this.dataListDikirim,
+      this.dataListBatal});
 
   @override
   Widget build(BuildContext context) {
     return TabBarView(
       children: <Widget>[
         MyOrderNewTransaction(
-          list: dataList,
+          list: dataListNew,
         ),
-        MyOrderOnProgress(datalist: dataList2),
+        MyOrderOnProgress(datalist: dataListConfirm),
+        MyOrderSent(datalist: dataListDikirim),
+
         Icon(Icons.directions_bike),
-        Icon(Icons.directions_bike),
-        Icon(Icons.directions_bike),
+        MyOrderCancel(
+          datalist: dataListBatal,
+        ),
       ],
     );
   }
