@@ -15,7 +15,6 @@ export 'package:ecommerce_test/bloc/payment/payment_payment_state.dart';
 export 'package:ecommerce_test/bloc/transaction/transaction_bloc.dart';
 export 'package:ecommerce_test/bloc/transaction/transaction_event.dart';
 export 'package:ecommerce_test/bloc/transaction/transaction_state.dart';
-
 export 'register/register_bloc.dart';
 export 'register/register_event.dart';
 export 'register/register_state.dart';

@@ -1,4 +1,6 @@
+import 'package:ecommerce_test/bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import './home.dart';
 
@@ -18,13 +20,40 @@ class _RegisterState extends State<Register> {
   String confirmPassword = "";
 
   String dob = "";
-
+  final _btnBloc = new RegisterBloc();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 238, 238, 238),
-      body: buildRegisterContent(context),
-    );
+        backgroundColor: Color.fromARGB(255, 238, 238, 238),
+        body:
+            BlocListener<RegisterBloc, RegisterState>(
+              bloc: _btnBloc,
+              listener: (context, state) async{
+                  if(state is RegisterSuccess){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Home()),
+                    );
+
+                }
+              },
+              child: BlocBuilder<RegisterBloc, RegisterState>(
+                bloc: _btnBloc,
+                  builder: (context, state) {
+                  if( state is InitialRegisterState){
+                    return buildRegisterContent(context);
+                  }
+                  else if (state is RegisterSuccess){
+                    return Center(child: Text("Success"),) ;
+                  }else if (state is RegisterError){
+                    return Center(child: Text("Error"),) ;
+                  }else if (state is RegisterLoading){
+                    return Center(child: CircularProgressIndicator(),);
+                  }
+                  return buildRegisterContent(context);
+
+        }),
+            ));
   }
 
   Container buildRegisterContent(BuildContext context) {
@@ -96,10 +125,16 @@ class _RegisterState extends State<Register> {
                     flex: 1,
                     child: RaisedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Home()),
-                        );
+                        _btnBloc.dispatch(RegisterWithEmail(
+                          email,
+                          password,
+                          fullName,
+                          dob
+                        ));
+//                        Navigator.push(
+//                          context,
+//                          MaterialPageRoute(builder: (context) => Home()),
+//                        );
                       },
                       color: Color.fromARGB(255, 130, 39, 74),
                       shape: RoundedRectangleBorder(

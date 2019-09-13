@@ -24,10 +24,10 @@ class _LoginState extends State<Login> {
       home: MultiBlocProvider(
         providers: [
           BlocProvider<UserBloc>(
-            builder: (BuildContext context) => UserBloc(),
+            builder: ( context) => UserBloc(),
           ),
-          BlocProvider<UserBloc>(
-            builder: (BuildContext context) => UserBloc(),
+          BlocProvider<RegisterBloc>(
+            builder: ( context) => RegisterBloc(),
           ),
         ],
         child: LoginPageChild(),
@@ -40,7 +40,6 @@ class LoginPageChild extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userBloc = BlocProvider.of<UserBloc>(context);
 
     return Scaffold(
       body: BlocListener<UserBloc, UserState>(

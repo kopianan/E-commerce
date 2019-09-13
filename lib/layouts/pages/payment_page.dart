@@ -162,7 +162,7 @@ class _PaymentPageState extends State<PaymentPage> {
                           data.multipleRequest(
                               listData.getAllItemWeight(),
                               data.getProvinceIdFromList(
-                                  addressData.userData.province));
+                                  addressData.userData.city));
                           _getRandomnumber(
                               "APPS-GODM", addressData.userData.userId);
                           showModalBottomSheet(
@@ -236,8 +236,8 @@ class _PaymentPageState extends State<PaymentPage> {
                         Text(
                           "Rp. " +
                               formatter.format(int.parse(
-                                  listDeliver.sumTotalOngkosKirim(
-                                      listData.getAllItemWeight()))),
+                                listDeliver.selectedOngkir.price.toString()
+                              )),
                           style: subTextStyle(),
                         ),
                       ],
@@ -255,8 +255,7 @@ class _PaymentPageState extends State<PaymentPage> {
                           Text(
                             "Rp." +
                                 listData.getTotalBayar(
-                                    listDeliver.sumTotalOngkosKirim(
-                                        listData.getAllItemWeight()),
+                                    listDeliver.selectedOngkir.price,
                                     listData.getSubTotal()),
                             style: totalTextStyle(),
                           ),
@@ -366,7 +365,7 @@ void _generatePostTransactiondata(CartListData listData,
     itemId: "DM156698902369200428418",
     itemCode:
         (listDeliver.selectedOngkir.name + listDeliver.selectedOngkir.service),
-    price: listDeliver.sumTotalOngkosKirim(listData.getAllItemWeight()),
+    price: listDeliver.selectedOngkir.price,
     qty: "1",
     discount: "",
     tax: "1",

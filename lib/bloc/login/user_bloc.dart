@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:ecommerce_test/bloc/login/user_event.dart';
 import 'package:ecommerce_test/bloc/login/user_state.dart';
 import 'package:ecommerce_test/models/login_model.dart';
-import 'package:ecommerce_test/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 

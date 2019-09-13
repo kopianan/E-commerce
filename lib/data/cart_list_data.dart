@@ -32,7 +32,7 @@ class CartListData extends ChangeNotifier {
         totalWeightSum = totalWeightSum +
             (double.parse(obj.weight) * double.parse(obj.boughQuantity));
     });
-    return (int.parse(totalWeightSum.toStringAsFixed(0)));
+    return(int.parse(totalWeightSum.toStringAsFixed(0)) *1000);
   }
 
   String getTotalBayar(String subttotal, String pengiriman){

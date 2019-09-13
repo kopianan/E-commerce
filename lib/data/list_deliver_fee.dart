@@ -90,8 +90,8 @@ class ListDeliverFee extends ChangeNotifier {
     var provId;
     print(procitymodel.length);
     procitymodel.map((obj) {
-      if (obj.province == provinceName) {
-        provId = obj.provinceId;
+      if (obj.type + " " + obj.cityName == provinceName) {
+        provId = obj.cityId;
       }
     }).toList();
     return int.parse(provId);

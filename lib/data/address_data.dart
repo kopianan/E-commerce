@@ -7,7 +7,6 @@ import 'package:ecommerce_test/models/province_model.dart' as province;
 import 'package:ecommerce_test/models/CityModel.dart' as city;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'api_service.dart';
 
 class AddressData extends ChangeNotifier {
   List<province.Results> listOfResult = List<province.Results>();
