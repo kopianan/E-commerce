@@ -26,7 +26,7 @@ class CartListItem extends StatelessWidget {
                           children: <Widget>[
                             Container(
                               child: Image.network(
-                                'http://dev.erp.web.id:8080${data.cartListItem[index].pic}',
+                                'http://datacloud.erp.web.id:8081${data.cartListItem[index].pic}',
                                 fit: BoxFit.cover,
                                 width: 100,
                                 height: 100,

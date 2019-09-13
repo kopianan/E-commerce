@@ -222,9 +222,9 @@ class _PaymentPageState extends State<PaymentPage> {
                         Text("Subtotal untuk Produk"),
                         Text(
                           "Rp. " +
-                              formatter.format(int.parse(
+                              int.parse(
                                   double.parse(listData.getSubTotal())
-                                      .toStringAsFixed(0))),
+                                      .toStringAsFixed(0)).toString(),
                           style: subTextStyle(),
                         )
                       ],
@@ -233,11 +233,12 @@ class _PaymentPageState extends State<PaymentPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text("Pengiriman"),
+                        (listDeliver.selectedOngkir.price == "" || listDeliver.selectedOngkir.price == null )? Text("Rp. 0") :
                         Text(
                           "Rp. " +
-                              formatter.format(int.parse(
+                              int.parse(
                                 listDeliver.selectedOngkir.price.toString()
-                              )),
+                              ).toString(),
                           style: subTextStyle(),
                         ),
                       ],

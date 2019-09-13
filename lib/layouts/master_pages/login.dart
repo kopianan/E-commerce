@@ -53,7 +53,7 @@ class LoginPageChild extends StatelessWidget {
             SharedPreference localData = SharedPreference() ;
             localData.saveUserData(state.user);
 
-            Navigator.push(
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => Home()),
             );

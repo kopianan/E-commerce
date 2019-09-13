@@ -123,19 +123,25 @@ class _TransactionDetailState extends State<TransactionDetail> {
             delegate: SliverChildListDelegate(
               [
                 buildInformasiPembayaran(transDetail),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text("Total Pembayaran"),
-                    Text(transDetail.totalAmount),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.only(right: 10, left: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text("Total Pembayaran", style: TextStyle(fontSize: 16)),
+                      Text('Rp. ${Fun().formatStringCurrency(transDetail.totalAmount)}', style: TextStyle(fontSize: 16)),
+                    ],
+                  ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text("Metode Pembayaran"),
-                    Text("Bank BCA (dicek otomatis)"),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.only(right: 10, left: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text("Metode Pembayaran", style: TextStyle(fontSize: 16)),
+                      Text("Bank BCA (dicek otomatis)", style: TextStyle(fontSize: 16),),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -165,24 +171,17 @@ class _TransactionDetailState extends State<TransactionDetail> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text("Sub total untuk produk"),
-                      Text("${int.parse(double.parse(transDetail.totalAmount).toStringAsFixed(0)) -int.parse(double.parse(dataOngkir.subTotal).toStringAsFixed(0))}"),
+                      Text("Sub total untuk produk", style: TextStyle(fontSize: 16)),
+                      Text("Rp. ${Fun().formatStringCurrency((int.parse(double.parse(transDetail.totalAmount).toStringAsFixed(0)) -int.parse(double.parse(dataOngkir.subTotal).toStringAsFixed(0))).toString())}",  style: TextStyle(fontSize: 16)),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text("Ongkos Kirim"),
-                      Text("${dataOngkir.subTotal}"),
+                      Text("Ongkos Kirim",  style: TextStyle(fontSize: 16)),
+                      Text("Rp. ${Fun().formatStringCurrency(dataOngkir.subTotal)}",  style: TextStyle(fontSize: 16)),
                     ],
                   ),
-//                  Row(
-//                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                    children: <Widget>[
-//                      Text("Nama Penerima"),
-//                      Text("Nama Penerima"),
-//                    ],
-//                  ),
                 ],
               ),
             ),
@@ -200,10 +199,10 @@ class _TransactionDetailState extends State<TransactionDetail> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text("Nomor Pesanan"),
+            Text("Nomor Pesanan",  style: TextStyle(fontSize: 16)),
             Text(
               transDetail.salesOrderNo,
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
           ],
         ),
@@ -272,7 +271,6 @@ class _TransactionDetailState extends State<TransactionDetail> {
                 ],
               ),
             ),
-            Text("Ubah"),
           ],
         ),
       ),

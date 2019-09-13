@@ -36,12 +36,16 @@ class CartListData extends ChangeNotifier {
   }
 
   String getTotalBayar(String subttotal, String pengiriman){
-    var total = int.parse(double.parse(subttotal).toStringAsFixed(0) )+ int.parse(double.parse(pengiriman).toStringAsFixed(0) );
-    if(total == null ){
+    if( subttotal == null || subttotal == "" || pengiriman == null || pengiriman == ""){
       return "0";
-    }else
-    return formatter.format(total).toString();
-
+    }else {
+      var total = int.parse(double.parse(subttotal).toStringAsFixed(0)) +
+          int.parse(double.parse(pengiriman).toStringAsFixed(0));
+      if (total == null) {
+        return "0";
+      } else
+        return formatter.format(total).toString();
+    }
   }
 
 

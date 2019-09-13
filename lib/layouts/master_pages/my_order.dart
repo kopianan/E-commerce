@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:ecommerce_test/data/api_service.dart';
 import 'package:ecommerce_test/layouts/pages/my_order_cancel.dart';
+import 'package:ecommerce_test/layouts/pages/my_order_finished.dart';
 import 'package:ecommerce_test/layouts/pages/my_order_new_transaction.dart';
 import 'package:ecommerce_test/layouts/pages/my_order_on_progress.dart';
 import 'package:ecommerce_test/layouts/pages/my_order_sent.dart';
@@ -24,6 +25,7 @@ class _MyOrderState extends State<MyOrder> {
   var filteredDataListConfirmed = List<AllTransactionListModel>();
   var filteredDataListSent = List<AllTransactionListModel>();
   var filteredDataListCancel = List<AllTransactionListModel>();
+  var filteredDataListFinished = List<AllTransactionListModel>();
 
   setDataToList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -38,13 +40,13 @@ class _MyOrderState extends State<MyOrder> {
 
         // ignore: unrelated_type_equality_checks
         filteredDataListNew =
-            dataList.where((data) => data.transactionStatus == "4").toList();
-        filteredDataListConfirmed =
             dataList.where((data) => data.transactionStatus == "1").toList();
         filteredDataListSent =
             dataList.where((data) => data.transactionStatus == "2").toList();
         filteredDataListCancel =
             dataList.where((data) => data.transactionStatus == "5").toList();
+        filteredDataListFinished =
+            dataList.where((data) => data.transactionStatus == "3").toList();
       });
     });
   }
@@ -58,18 +60,16 @@ class _MyOrderState extends State<MyOrder> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 5,
+      length: 4,
       child: Scaffold(
           appBar: AppBar(
               backgroundColor: Color.fromARGB(255, 49, 49, 49),
               bottom: TabBar(
-                isScrollable: true,
                 tabs: <Widget>[
-                  Text("Pesanan Baru"),
-                  Text("Dikonfirmasi"),
-                  Text("Dikirim"),
-                  Text("Selesai"),
-                  Text("Batal"),
+                  Center(child: Text("Pesanan Baru", textAlign: TextAlign.center,)),
+                  Container(child: Text("Dikirim")),
+                  Container(child: Text("Selesai")),
+                  Container(child: Text("Batal")),
                 ],
               ),
               title: Row(
@@ -88,7 +88,7 @@ class _MyOrderState extends State<MyOrder> {
             dataListNew: filteredDataListNew,
             dataListDikirim: filteredDataListSent,
             dataListBatal: filteredDataListCancel,
-            dataListConfirm: filteredDataListConfirmed,
+            dataListFinish: filteredDataListFinished,
           )),
     );
   }
@@ -96,15 +96,15 @@ class _MyOrderState extends State<MyOrder> {
 
 class MainContent extends StatelessWidget {
   final dataListNew;
-  final dataListConfirm;
   final dataListDikirim;
   final dataListBatal;
+  final dataListFinish;
 
   MainContent(
       {this.dataListNew,
-      this.dataListConfirm,
       this.dataListDikirim,
-      this.dataListBatal});
+      this.dataListBatal,
+      this.dataListFinish});
 
   @override
   Widget build(BuildContext context) {
@@ -113,10 +113,8 @@ class MainContent extends StatelessWidget {
         MyOrderNewTransaction(
           list: dataListNew,
         ),
-        MyOrderOnProgress(datalist: dataListConfirm),
         MyOrderSent(datalist: dataListDikirim),
-
-        Icon(Icons.directions_bike),
+        MyOrderFinished(datalist: dataListFinish,),
         MyOrderCancel(
           datalist: dataListBatal,
         ),

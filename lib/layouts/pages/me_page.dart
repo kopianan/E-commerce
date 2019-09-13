@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:ecommerce_test/data/api_service.dart';
 import 'package:ecommerce_test/layouts/master_pages/my_order.dart';
 import 'package:ecommerce_test/layouts/master_pages/profile.dart';
 import 'package:ecommerce_test/layouts/pages/cart_page.dart';
@@ -14,23 +15,28 @@ class PageMe extends StatefulWidget {
 }
 
 class _PageMeState extends State<PageMe> {
-String userFullname;
-LoginModel localUser  ;
-String Ar;
+  String userFullname;
+  LoginModel localUser;
 
-@override
-void initState() {
-  super.initState();
+  String Ar;
+
+  @override
+  void initState() {
+    super.initState();
     getUserData();
   }
 
-getUserData() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  LoginModel user =  LoginModel.fromJson(json.decode(prefs.getString("user_data")));
-  localUser = user ;
-  print(prefs.getString("user_ar"));
-}
+  getUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    LoginModel user =
+        LoginModel.fromJson(json.decode(prefs.getString("user_data")));
+    localUser = user;
 
+    ApiService.getArBalance(localUser.userId);
+    setState(() {
+      Ar = prefs.getString("user_ar");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +61,7 @@ getUserData() async {
                 ),
                 Container(
                   child: Text(
-                    userFullname == null ? '-' : userFullname,
+                    (localUser== null )? '-' : localUser.fullName,
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
@@ -76,10 +82,12 @@ getUserData() async {
                           child: Text("TOTAL SALDO")),
                       Container(
                           alignment: Alignment.center,
-                          child: Text(
-                            "Rp 125.000,-",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          )),
+                          child: (Ar == "null" || Ar == null)
+                              ? Container(child:CircularProgressIndicator() ,height: 15,width: 15,)
+                              : Text(
+                                  'Rp. $Ar',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                )),
                     ],
                   ),
                 ),
@@ -155,28 +163,24 @@ getUserData() async {
               padding: const EdgeInsets.all(20),
               child: Container(child: Text("Daftar Transaksi")),
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => CartPage()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => CartPage()));
               },
             ),
           ),
-        Container(
-              width: double.infinity,
-              child: RaisedButton(
-                color: Colors.white,
-                splashColor: Colors.yellow,
-                padding: const EdgeInsets.all(20),
-                child: Container(child: Text("Belanjaan Saya")),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => MyOrder()));
-                },
-              ),
+          Container(
+            width: double.infinity,
+            child: RaisedButton(
+              color: Colors.white,
+              splashColor: Colors.yellow,
+              padding: const EdgeInsets.all(20),
+              child: Container(child: Text("Belanjaan Saya")),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MyOrder()));
+              },
             ),
+          ),
           Container(
             width: double.infinity,
             child: RaisedButton(
@@ -185,11 +189,8 @@ getUserData() async {
               padding: const EdgeInsets.all(20),
               child: Container(child: Text("Tukar Poin")),
               onPressed: () {
-
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => TukarPoint()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => TukarPoint()));
               },
             ),
           )
