@@ -32,6 +32,7 @@ class LoginModel {
   bool _isNew;
   bool _modified;
   int error = 0 ;
+  String message  ;
   LoginModel(
       {String userId,
       String parentId,
@@ -65,7 +66,8 @@ class LoginModel {
       bool alreadyInSave,
       bool isNew,
       bool modified,
-      int error}) {
+      int error,
+      String message}) {
     this._userId = userId;
     this._parentId = parentId;
     this._userName = userName;
@@ -99,6 +101,7 @@ class LoginModel {
     this._isNew = isNew;
     this._modified = modified;
     this.error = error;
+    this.message = message;
   }
 
   String get userId => _userId;
@@ -200,6 +203,7 @@ class LoginModel {
     _isNew = json['isNew'];
     _modified = json['modified'];
     error = json['error'];
+    message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
@@ -237,6 +241,7 @@ class LoginModel {
     data['isNew'] = this._isNew;
     data['modified'] = this._modified;
     data['error'] = this.error;
+    data['message'] = this.message;
     return data;
   }
 }

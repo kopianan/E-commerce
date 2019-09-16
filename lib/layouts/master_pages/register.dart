@@ -46,7 +46,7 @@ class _RegisterState extends State<Register> {
                   else if (state is RegisterSuccess){
                     return Center(child: Text("Success"),) ;
                   }else if (state is RegisterError){
-                    return Center(child: Text("Error"),) ;
+                    return Center(child: Text(state.message),) ;
                   }else if (state is RegisterLoading){
                     return Center(child: CircularProgressIndicator(),);
                   }
@@ -124,7 +124,7 @@ class _RegisterState extends State<Register> {
                   Expanded(
                     flex: 1,
                     child: RaisedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         _btnBloc.dispatch(RegisterWithEmail(
                           email,
                           password,
