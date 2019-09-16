@@ -10,31 +10,55 @@ abstract class CategoryState extends Equatable {
 
 class InitialCategoryState extends CategoryState {}
 
-class CategoryLoading extends CategoryState{}
+class CategoryLoading extends CategoryState {}
 
-class GetBannerSuccess extends CategoryState{
+class GetBannerSuccess extends CategoryState {
   final List<DataBannerModel> bannerList;
+
   GetBannerSuccess(this.bannerList) : super([bannerList]);
 }
 
-class GetAllCategorySuccess extends CategoryState{
+class GetAllCategorySuccess extends CategoryState {
   final List<CategoryModel> categories;
+
   GetAllCategorySuccess(this.categories) : super([categories]);
 }
 
-class GetAllCategoryByParentIDSuccess extends CategoryState{
-final List<CategoryModel> categories;
-final String subCategoryName;
-  GetAllCategoryByParentIDSuccess(this.categories,this.subCategoryName) : super([categories,subCategoryName]);
+class GetAllCategoryByParentIDSuccess extends CategoryState {
+  final List<CategoryModel> categories;
+  final String subCategoryName;
+
+  GetAllCategoryByParentIDSuccess(this.categories, this.subCategoryName)
+      : super([categories, subCategoryName]);
 }
 
-class GetAllCategoryByParentIDFailed extends CategoryState{
- final String categoryId;
- final String description;
- GetAllCategoryByParentIDFailed(this.categoryId,this.description) : super([categoryId,description]);
+class GetAllCategoryByParentIDFailed extends CategoryState {
+  final String categoryId;
+  final String description;
+
+  GetAllCategoryByParentIDFailed(this.categoryId, this.description)
+      : super([categoryId, description]);
 }
 
-class CategoryFailed extends CategoryState{
+class CategoryFailed extends CategoryState {
   final String errorMessage;
-  CategoryFailed(this.errorMessage):super([errorMessage]);
+
+  CategoryFailed(this.errorMessage) : super([errorMessage]);
+}
+
+class GetAllCategoryByParentIdSuccess extends CategoryState {
+  final List<CategoryModel> categories;
+  final CategoryModel prevCategoryModel;
+
+  GetAllCategoryByParentIdSuccess({this.categories, this.prevCategoryModel})
+      : super([categories, prevCategoryModel]);
+}
+
+class GetAllCategoryByParentIdEnd extends CategoryState {
+  final categoryId;
+
+  final categoryDesc;
+
+  GetAllCategoryByParentIdEnd(this.categoryId, this.categoryDesc)
+      : super([categoryDesc, categoryId]);
 }

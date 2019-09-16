@@ -59,7 +59,6 @@ class _HomeState extends State<Home> {
         ChangeNotifierProvider(builder: (context)=>ListDeliverFee(),),
         ChangeNotifierProvider(builder: (context)=>PaymentMethod(),),
         ChangeNotifierProvider(builder: (context)=>AddressData(),),
-
       ],
       child: MaterialApp(
         home: Scaffold(

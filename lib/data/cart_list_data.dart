@@ -1,5 +1,6 @@
 
 import 'package:ecommerce_test/models/AllTransactionListModel.dart';
+import 'package:ecommerce_test/models/category_model.dart';
 import 'package:ecommerce_test/models/data_item_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
@@ -7,9 +8,24 @@ import 'package:intl/intl.dart';
 class CartListData extends ChangeNotifier {
   List<DataItemModel> cartListItem = List<DataItemModel>();
   AllTransactionListModel selectedTransactionDetail = AllTransactionListModel();
+  List<List<CategoryModel>> listOfLIstCategory = List<List<CategoryModel>>() ;
+
 
 
   final formatter = new NumberFormat("#,###");
+
+
+  //Category LIST LIST
+  void addCategoryList(List<CategoryModel> list){
+    listOfLIstCategory.add(list);
+    print(list.length.toString() + "Panjang dari notify");
+    notifyListeners();
+  }
+
+  List<List<CategoryModel>> getCategoryList(){
+    return listOfLIstCategory;
+
+  }
 
   void updateQuantity(int index, String newVal) {
     cartListItem[index].boughQuantity = newVal;

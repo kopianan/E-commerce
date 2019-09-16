@@ -30,7 +30,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       if (categories != null) {
         yield GetAllCategorySuccess(categories);
       } else {
-        yield CategoryFailed("Get categories failed.");
+        yield GetAllCategoryByParentIdEnd(event.prevCategory.kategoriId, event.prevCategory.description);
       }
     }
 
@@ -42,6 +42,18 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       } else {
         yield GetAllCategoryByParentIDFailed(event.parentID,event.description);
       }
+    }
+
+    if(event is GetCategoryByParentId){
+      yield CategoryLoading();
+      final ctegories = await _getCateogryByParentId(event.parentId);
+      if(ctegories != null  ) {
+        yield GetAllCategoryByParentIdSuccess(
+            categories: ctegories, prevCategoryModel: event.prevCategory);
+      }else{
+        yield GetAllCategoryByParentIdEnd(event.prevCategory.kategoriId, event.prevCategory.description);
+      }
+
     }
   }
 
@@ -63,6 +75,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     }
   }
 
+
   Future<List<CategoryModel>> _getCategory() async {
     http.Response response;
     response = await http.get(
@@ -79,6 +92,30 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       final filteredData = data.where((f) => f.parentId == "").toList();
 
       return filteredData.cast();
+    } else {
+      return null;
+    }
+  }
+
+  Future<List<CategoryModel>> _getCateogryByParentId(String parentId) async {
+    http.Response response;
+    response = await http.get(
+        "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,KategoriData.vm?parent_id=$parentId");
+
+    if (response.statusCode == 200) {
+      // If the call to the server was successful, parse the JSON
+
+      List responseJson = await json.decode(response.body);
+
+      final data =
+          responseJson.map((md) => new CategoryModel.fromJson(md)).toList();
+
+      if(data.length == 0){
+        return null ;
+      }else {
+        return data.cast();
+      }
+
     } else {
       return null;
     }

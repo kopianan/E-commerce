@@ -29,6 +29,9 @@ class _LoginState extends State<Login> {
           BlocProvider<RegisterBloc>(
             builder: ( context) => RegisterBloc(),
           ),
+          BlocProvider<CategoryBloc>(
+            builder: (context)=> CategoryBloc(),
+          )
         ],
         child: LoginPageChild(),
       ),

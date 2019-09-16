@@ -1,3 +1,4 @@
+import 'package:ecommerce_test/models/category_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -11,11 +12,23 @@ class GetBanners extends CategoryEvent{
 }
 
 class GetAllCategory extends CategoryEvent{
-  GetAllCategory();
+  final String parentId ;
+  final CategoryModel prevCategory;
+
+  GetAllCategory({this.parentId, this.prevCategory}):super([parentId, prevCategory]);
 }
 
 class GetAllCategoryByParentID extends CategoryEvent{
   final String parentID;
   final String description;
   GetAllCategoryByParentID(this.parentID, this.description);
+}
+
+class GetCategoryByParentId extends CategoryEvent{
+  final String parentId ;
+  final CategoryModel prevCategory;
+
+  GetCategoryByParentId({this.parentId, this.prevCategory}):super([parentId, prevCategory]);
+
+
 }

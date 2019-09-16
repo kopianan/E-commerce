@@ -193,7 +193,7 @@ class _HomePageChildState extends State<HomePageChild> {
                 pageSize: 6,
                 crossAxisCount: 2,
                 childAspectRatio: 9 / 16,
-                itemBuilder: this._itemBuilder,
+                itemBuilder: _itemBuilder,
                 pageFuture: (pageIndex) => BackendService.getDataItem(
                     pageIndex * PAGE_SIZE, PAGE_SIZE)),
           )
