@@ -21,39 +21,42 @@ class _RegisterState extends State<Register> {
 
   String dob = "";
   final _btnBloc = new RegisterBloc();
+  final TextEditingController _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 238, 238, 238),
-        body:
-            BlocListener<RegisterBloc, RegisterState>(
+        body: BlocListener<RegisterBloc, RegisterState>(
+          bloc: _btnBloc,
+          listener: (context, state) async {
+            if (state is RegisterSuccess) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Home()),
+              );
+            }
+          },
+          child: BlocBuilder<RegisterBloc, RegisterState>(
               bloc: _btnBloc,
-              listener: (context, state) async{
-                  if(state is RegisterSuccess){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Home()),
-                    );
-
-                }
-              },
-              child: BlocBuilder<RegisterBloc, RegisterState>(
-                bloc: _btnBloc,
-                  builder: (context, state) {
-                  if( state is InitialRegisterState){
-                    return buildRegisterContent(context);
-                  }
-                  else if (state is RegisterSuccess){
-                    return Center(child: Text("Success"),) ;
-                  }else if (state is RegisterError){
-                    return Center(child: Text(state.message),) ;
-                  }else if (state is RegisterLoading){
-                    return Center(child: CircularProgressIndicator(),);
-                  }
+              builder: (context, state) {
+                if (state is InitialRegisterState) {
                   return buildRegisterContent(context);
-
-        }),
-            ));
+                } else if (state is RegisterSuccess) {
+                  return Center(
+                    child: Text("Success"),
+                  );
+                } else if (state is RegisterError) {
+                  return Center(
+                    child: Text(state.message),
+                  );
+                } else if (state is RegisterLoading) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                return buildRegisterContent(context);
+              }),
+        ));
   }
 
   Container buildRegisterContent(BuildContext context) {
@@ -69,22 +72,37 @@ class _RegisterState extends State<Register> {
               margin: EdgeInsets.only(top: 10),
               child: TextField(decoration: textFieldDecoration("Fullname")),
             ),
-            Container(
-              margin: EdgeInsets.only(top: 10),
-              child: TextField(
-                  onChanged: (val) {
-                    setState(() {});
-                  },
-                  onTap: () {
-                    DatePicker.showDatePicker(context,
-                        showTitleActions: true,
-                        maxTime: DateTime(2019, 6, 7), onChanged: (date) {
-                      print('change $date');
-                    }, onConfirm: (date) {
-                      print('confirm $date');
-                    }, currentTime: DateTime.now(), locale: LocaleType.id);
-                  },
-                  decoration: textFieldDecoration("Date of birth")),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  flex: 1,
+                  child: TextField(
+                    controller: _controller,
+                      decoration: textFieldDecoration("Date of birth")),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: RaisedButton(
+                    onPressed: () {
+
+                      DatePicker.showDatePicker(context,
+                          showTitleActions: true,
+                          maxTime: DateTime(2019, 6, 7), onChanged: (date) {
+                        print('change $date');
+                      }, onConfirm: (date) {
+                            _controller.text = date.toString();
+                      }, currentTime: DateTime.now(), locale: LocaleType.id);
+                    },
+                    color: Color.fromARGB(255, 130, 39, 74),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Text(
+                      "Date",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ],
             ),
             Container(
               margin: EdgeInsets.only(top: 10),
@@ -125,12 +143,8 @@ class _RegisterState extends State<Register> {
                     flex: 1,
                     child: RaisedButton(
                       onPressed: () async {
-                        _btnBloc.dispatch(RegisterWithEmail(
-                          email,
-                          password,
-                          fullName,
-                          dob
-                        ));
+                        _btnBloc.dispatch(
+                            RegisterWithEmail(email, password, fullName, dob));
 //                        Navigator.push(
 //                          context,
 //                          MaterialPageRoute(builder: (context) => Home()),
