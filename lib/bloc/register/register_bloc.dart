@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
+import 'package:intl/intl.dart' as intl;
 import 'package:ecommerce_test/bloc/register/register_event.dart';
 import 'package:ecommerce_test/models/login_model.dart';
 import 'package:http/http.dart' as http;
@@ -20,11 +21,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
           event.fullName, event.birthDate, event.email, event.password);
       if (userData.error == 1) {
         yield RegisterError(userData.message);
-      } else if (userData.userId == null) {
-        yield RegisterSuccess(userData);
-      } else if (userData.userId != null) {
-        yield RegisterSuccess(userData);
-      } else {
+      }else {
         yield RegisterSuccess(userData);
       }
     }
@@ -53,10 +50,12 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
   Future<LoginModel> _registerAsync(
       String fullname, String doB, String email, String password) async {
+    final dateOfBirth = intl.DateFormat("dd-MM-yyyy").parse(doB);
+
     http.Response response;
     print("Register CUYY");
     response = await http.get(
-        "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,User.vm?method=register&email=andy@gmail.com&password=123&firstname=andy&lastname=lianto&dobday=7&dobmonth=11&dobyear=1992&phone=08129452309&address=jl.%20jeruk%20manis%207%20no%2010&tocust=true&ctype=DM151627192557861134072");
+        "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,User.vm?method=register&email=$email&password=$password&firstname=$fullname&lastname=$fullname&dobday=${intl.DateFormat("dd").format(dateOfBirth)}&dobmonth=${intl.DateFormat("MM").format(dateOfBirth)}&dobyear=${intl.DateFormat("yyyy").format(dateOfBirth)}&phone=0&address=isialamat&tocust=true&ctype=DM151627192557861134072");
 
     if (response.statusCode == 200) {
       String jsong = jsonEncode(response.body)

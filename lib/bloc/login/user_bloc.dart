@@ -19,7 +19,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       yield UserLoading();
       final user = await _loginAsync(event.email, event.password);
       if (user.error == 1 || user == null ) {
-         yield UserEmailLoginFailed("Login Gagal");
+         yield UserEmailLoginFailed(user.message);
       } else {
         yield UserEmailLoginSuccess(user);
       }

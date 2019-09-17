@@ -63,7 +63,7 @@ class LoginPageChild extends StatelessWidget {
           }
 
           if (state is UserEmailLoginFailed) {
-            Toast.show("Login gagal!", context,
+            Toast.show(state.errorMessage, context,
                 duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
           }
         },

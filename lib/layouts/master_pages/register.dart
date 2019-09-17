@@ -2,6 +2,7 @@ import 'package:ecommerce_test/bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:intl/intl.dart';
 import './home.dart';
 
 class Register extends StatefulWidget {
@@ -90,7 +91,8 @@ class _RegisterState extends State<Register> {
                           maxTime: DateTime(2019, 6, 7), onChanged: (date) {
                         print('change $date');
                       }, onConfirm: (date) {
-                            _controller.text = date.toString();
+
+                            _controller.text = DateFormat("dd-MM-yyyy").format(date).toString();
                       }, currentTime: DateTime.now(), locale: LocaleType.id);
                     },
                     color: Color.fromARGB(255, 130, 39, 74),
@@ -144,7 +146,7 @@ class _RegisterState extends State<Register> {
                     child: RaisedButton(
                       onPressed: () async {
                         _btnBloc.dispatch(
-                            RegisterWithEmail(email, password, fullName, dob));
+                            RegisterWithEmail(email, password, fullName, _controller.text));
 //                        Navigator.push(
 //                          context,
 //                          MaterialPageRoute(builder: (context) => Home()),
