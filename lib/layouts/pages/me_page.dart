@@ -19,6 +19,7 @@ class _PageMeState extends State<PageMe> {
   LoginModel localUser;
 
   String Ar;
+  String pointUser ;
 
   @override
   void initState() {
@@ -33,8 +34,12 @@ class _PageMeState extends State<PageMe> {
     localUser = user;
 
     ApiService.getArBalance(localUser.userId);
+    ApiService.getPoint(localUser.userId);
+
     setState(() {
       Ar = prefs.getString("user_ar");
+      pointUser = prefs.getString("user_point");
+      print(pointUser + "POINT");
     });
   }
 
@@ -105,11 +110,11 @@ class _PageMeState extends State<PageMe> {
                           )),
                       Container(
                           alignment: Alignment.center,
-                          child: Text(
-                            "4500",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
+                          child: (pointUser == "null" || pointUser == null)
+                              ? Container(child:CircularProgressIndicator() ,height: 15,width: 15,)
+                              : Text(
+                            '$pointUser',
+                            style: TextStyle(fontWeight: FontWeight.bold),
                           )),
                     ],
                   ),

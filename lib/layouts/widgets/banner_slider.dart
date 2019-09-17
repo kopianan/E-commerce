@@ -17,7 +17,7 @@ class BannerSlider extends StatelessWidget {
       autoPlay: true,
       autoPlayInterval: Duration(seconds: 5),
       items: [
-        FadeInImage(image: NetworkImage('http://datacloud.erp.web.id:8081/${listData[0].picture}'), placeholder: AssetImage('assets/SALE.png')),
+        FadeInImage(image: NetworkImage('http://datacloud.erp.web.id:8081/${listData[0].picture}'), placeholder: AssetImage('assets/SALE.png'), fit: BoxFit.fill,),
         // Image.network('http://datacloud.erp.web.id:8081/${listData[0].picture}'),
         Image.asset('assets/banner3.png')
       ].map((i) {

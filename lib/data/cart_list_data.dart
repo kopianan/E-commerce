@@ -9,7 +9,7 @@ class CartListData extends ChangeNotifier {
   List<DataItemModel> cartListItem = List<DataItemModel>();
   AllTransactionListModel selectedTransactionDetail = AllTransactionListModel();
   List<List<CategoryModel>> listOfLIstCategory = List<List<CategoryModel>>() ;
-
+  List<CategoryModel> historyCategoryModel  =List<CategoryModel>() ;
 
 
   final formatter = new NumberFormat("#,###");
@@ -18,14 +18,40 @@ class CartListData extends ChangeNotifier {
   //Category LIST LIST
   void addCategoryList(List<CategoryModel> list){
     listOfLIstCategory.add(list);
-    print(list.length.toString() + "Panjang dari notify");
+    notifyListeners();
+  }
+  List<List<CategoryModel>> getCategoryList(){
+    return listOfLIstCategory;
+  }
+
+  void clearCategoryListLastIndex(){
+    listOfLIstCategory.removeLast();
+    notifyListeners();
+  }
+  void clearCategoryListRange(int start, int end){
+    listOfLIstCategory.removeRange(start, end);
     notifyListeners();
   }
 
-  List<List<CategoryModel>> getCategoryList(){
-    return listOfLIstCategory;
+
+  void addHistoryCategoryModel(CategoryModel history){
+    historyCategoryModel.add( history);
+    notifyListeners();
+  }
+  List<CategoryModel> getHistoryCategoryModel(){
+    return historyCategoryModel;
 
   }
+
+  void clearHistoryCategoryModelLastIndex(){
+    historyCategoryModel.removeLast();
+    notifyListeners();
+  }
+  void clearHistoryCategoryModelRange(int start, int end){
+    historyCategoryModel.removeRange(start, end);
+    notifyListeners();
+  }
+
 
   void updateQuantity(int index, String newVal) {
     cartListItem[index].boughQuantity = newVal;

@@ -2,7 +2,6 @@ import 'package:ecommerce_test/bloc/category/category_bloc.dart';
 import 'package:ecommerce_test/bloc/category/category_event.dart';
 import 'package:ecommerce_test/bloc/category/category_state.dart';
 import 'package:ecommerce_test/data/cart_list_data.dart';
-import 'package:ecommerce_test/layouts/master_pages/subcategory.dart';
 import 'package:ecommerce_test/layouts/master_pages/subcategory_copy.dart';
 import 'package:ecommerce_test/layouts/widgets/item_list.dart';
 import 'package:ecommerce_test/models/data_banner_model.dart';
@@ -49,6 +48,8 @@ class _CategoryChildState extends State<CategoryChild> {
           child: BlocListener(
               bloc: _btnBloc,
               listener: (BuildContext context, CategoryState state) async {
+                listData.historyCategoryModel.clear() ;
+                listData.listOfLIstCategory.clear();
                 if (state is GetAllCategorySuccess) {
                   categories = state.categories;
                 }
@@ -78,6 +79,7 @@ class _CategoryChildState extends State<CategoryChild> {
 
                 if (state is GetAllCategoryByParentIdSuccess) {
                   listData.addCategoryList(state.categories);
+                  listData.addHistoryCategoryModel(state.prevCategoryModel);
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -142,15 +144,18 @@ class _CategoryChildState extends State<CategoryChild> {
                           prevCategory: categories[index]));
                     },
                     child: Card(
-                      elevation: 1,
+                      elevation: 4,
                       child: Container(
+                        padding: EdgeInsets.fromLTRB(15, 10, 10, 10),
                         alignment: Alignment.center,
                         child: Row(
                           children: <Widget>[
                             Flexible(
-                              child: Text(
+                              child: (categories[index].description ==null)?Text(""):
+                              Text(
                                 categories[index].description,
                                 textAlign: TextAlign.center,
+                                style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                             ),
                           ],

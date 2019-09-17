@@ -2,6 +2,7 @@ import 'package:ecommerce_test/models/AllTransactionListModel.dart';
 import 'package:ecommerce_test/models/balance_model.dart';
 import 'package:ecommerce_test/models/detail_transaction_model.dart';
 import 'package:ecommerce_test/models/login_model.dart';
+import 'package:ecommerce_test/models/point.dart';
 import 'package:ecommerce_test/models/transaction_history_model.dart';
 import 'package:ecommerce_test/models/transaction_response.dart';
 import 'package:ecommerce_test/util/shared_preference.dart';
@@ -79,7 +80,18 @@ class ApiService {
   }
 
 
+  static getPoint(String custId) async {
 
+    http.Response response;
+    String _baseUrl =
+        'http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,PointReward.vm?id=$custId&cmd=getpoint';
+
+    response = await http.get(_baseUrl);
+    final responseJson = await json.decode(response.body);
+    final data =  Point.fromJson(responseJson);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("user_point",data.totalPoint.toString());
+  }
 
   static getArBalance(String custId) async {
 
