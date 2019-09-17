@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:ecommerce_test/bloc/bloc.dart';
 import 'package:ecommerce_test/data/address_data.dart';
 import 'package:ecommerce_test/data/cart_list_data.dart';
 import 'package:ecommerce_test/data/list_deliver_fee.dart';
@@ -90,6 +91,7 @@ class _PaymentPageState extends State<PaymentPage> {
       listOfResult = test.rajaongkir.results;
     });
   }
+  final deliverBloc = DeliverBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -159,11 +161,11 @@ class _PaymentPageState extends State<PaymentPage> {
                         onTap: () {
                           addressData.getProvinceData();
                           data.getAllProvinceAndCity();
-                          data.multipleRequest(
-                              listData.getAllItemWeight(),
-                              data.getProvinceIdFromList(
-                                  addressData.userData.city));
-                          _getRandomnumber(
+//                          data.multipleRequest(
+//                              listData.getAllItemWeight(),
+//                              data.getProvinceIdFromList(
+//                                  addressData.userData.city));
+                      _getRandomnumber(
                               "APPS-GODM", addressData.userData.userId);
                           showModalBottomSheet(
                               context: context,

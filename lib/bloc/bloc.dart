@@ -18,3 +18,7 @@ export 'package:ecommerce_test/bloc/transaction/transaction_state.dart';
 export 'register/register_bloc.dart';
 export 'register/register_event.dart';
 export 'register/register_state.dart';
+
+export 'deliver/deliver_bloc.dart';
+export 'deliver/deliver_event.dart';
+export 'deliver/deliver_state.dart';

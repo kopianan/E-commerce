@@ -76,31 +76,36 @@ class _RegisterState extends State<Register> {
             Row(
               children: <Widget>[
                 Expanded(
-                  flex: 1,
-                  child: TextField(
-                    controller: _controller,
-                      decoration: textFieldDecoration("Date of birth")),
+                  flex: 7,
+                  child: Container(
+                    margin: EdgeInsets.only(top: 10),
+                    child: TextField(
+                      controller: _controller,
+                        decoration: textFieldDecoration("Date of birth")),
+                  ),
                 ),
                 Expanded(
-                  flex: 1,
-                  child: RaisedButton(
-                    onPressed: () {
+                  flex:3,
+                  child: Container(
+                    margin: EdgeInsets.only(left: 15),
+                    child: RaisedButton(
+                      onPressed: () {
+                        DatePicker.showDatePicker(context,
+                            showTitleActions: true,
+                            maxTime: DateTime(2019, 6, 7), onChanged: (date) {
+                          print('change $date');
+                        }, onConfirm: (date) {
 
-                      DatePicker.showDatePicker(context,
-                          showTitleActions: true,
-                          maxTime: DateTime(2019, 6, 7), onChanged: (date) {
-                        print('change $date');
-                      }, onConfirm: (date) {
-
-                            _controller.text = DateFormat("dd-MM-yyyy").format(date).toString();
-                      }, currentTime: DateTime.now(), locale: LocaleType.id);
-                    },
-                    color: Color.fromARGB(255, 130, 39, 74),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5)),
-                    child: Text(
-                      "Date",
-                      style: TextStyle(color: Colors.white),
+                              _controller.text = DateFormat("dd-MM-yyyy").format(date).toString();
+                        }, currentTime: DateTime.now(), locale: LocaleType.id);
+                      },
+                      color: Color.fromARGB(255, 130, 39, 74),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5)),
+                      child: Text(
+                        "Date",
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
                 ),

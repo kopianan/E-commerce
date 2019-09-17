@@ -24,6 +24,11 @@ class ListDeliverFee extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setListOngkirDataList(List<ListOfOngkirModel> list){
+    listOngkir = list ;
+    notifyListeners();
+  }
+
   void addListOngkir(ListOfOngkirModel data) {
     listOngkir.add(data);
     notifyListeners();
@@ -86,7 +91,6 @@ class ListDeliverFee extends ChangeNotifier {
   }
 
   int getProvinceIdFromList(String provinceName) {
-
     var provId;
     print(procitymodel.length);
     procitymodel.map((obj) {
