@@ -4,14 +4,11 @@ import 'package:ecommerce_test/data/api_service.dart';
 import 'package:ecommerce_test/layouts/pages/my_order_cancel.dart';
 import 'package:ecommerce_test/layouts/pages/my_order_finished.dart';
 import 'package:ecommerce_test/layouts/pages/my_order_new_transaction.dart';
-import 'package:ecommerce_test/layouts/pages/my_order_on_progress.dart';
 import 'package:ecommerce_test/layouts/pages/my_order_sent.dart';
 import 'package:ecommerce_test/models/AllTransactionListModel.dart';
 import 'package:ecommerce_test/models/user.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyOrder extends StatefulWidget {

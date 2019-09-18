@@ -44,13 +44,6 @@ Future<TransactionResponse> _makeTransaction(String jsonDocs) async {
     response.stream.transform(utf8.decoder).listen((value) {
       final decoded = TransactionResponse.fromJson(jsonDecode(value));
       return decoded;
-//
-//      if (mapResponse["error"].toString() == "1") {
-//
-//      } else if (mapResponse["error"].toString() == "0") {
-//
-//      }
-//      print(mapResponse["message"].toString());
     });
   } else {
     return null;

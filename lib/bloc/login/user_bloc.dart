@@ -43,8 +43,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         return user;
       }
     } else {
-      // If that call was not successful, throw an error.
-      print("status code nya bukan 200 cuyy");
       return null;
     }
   }

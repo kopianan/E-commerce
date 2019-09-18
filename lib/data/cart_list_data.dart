@@ -105,7 +105,8 @@ class CartListData extends ChangeNotifier {
 
     cartListItem.forEach((f) {
       if(f.itemId == data.itemId){
-        data.boughQuantity = (int.parse(f.boughQuantity) + 1).toString();
+        var qtyCheck = double.parse(f.boughQuantity.toString()).toStringAsFixed(0);
+        data.boughQuantity = (int.parse(qtyCheck) + 1).toString();
         isDuplicate = true;
       }
     });

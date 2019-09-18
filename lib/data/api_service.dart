@@ -15,7 +15,6 @@ class ApiService {
   static Future getDataItem() {
     return http.get(
         'http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,AR.vm?cmd=1&custid=DM152204830857645176904');
-
   }
 
   static Future<String> changeAddress(
@@ -33,28 +32,26 @@ class ApiService {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("user_data", response.body);
 
-    return response.body ;
+    return response.body;
   }
 
-
- static Future<List<DetailTransactionModel>> getDetailTransaction() async {
+  static Future<List<DetailTransactionModel>> getDetailTransaction() async {
     http.Response response;
     String _baseUrl =
         "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,SPGApps.vm?cmd=4&txtype=SO_DETAIL&txno=DM141481151763163039543";
 
-    response = await http.get(
-        '$_baseUrl');
+    response = await http.get('$_baseUrl');
 
-    var  responseJson = await json.decode(response.body);
+    var responseJson = await json.decode(response.body);
 
-    final List<DetailTransactionModel> data = responseJson
-        .map((md) => DetailTransactionModel.fromJson(md))
-        .toList();
+    final List<DetailTransactionModel> data =
+        responseJson.map((md) => DetailTransactionModel.fromJson(md)).toList();
 
     return data;
   }
 
-  static Future<LoginModel> registerNewUser(String email , String password , String fullName, String dateOfBirthday) async {
+  static Future<LoginModel> registerNewUser(String email, String password,
+      String fullName, String dateOfBirthday) async {
     var date = dateOfBirthday;
     String day;
     String month;
@@ -63,8 +60,7 @@ class ApiService {
     String _baseUrl =
         "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,User.vm?method=register&email=$email&password=$password&firstname=$fullName&lastname=$fullName&dobday=$day&dobmonth=$month&dobyear=$year&tocust=true&ctype=DM151627192557861134072";
 
-    response = await http.get(
-        '$_baseUrl');
+    response = await http.get('$_baseUrl');
 
     var responseJson = await json.decode(response.body);
 
@@ -73,22 +69,19 @@ class ApiService {
     return user;
   }
 
-
   static getPoint(String custId) async {
-
     http.Response response;
     String _baseUrl =
         'http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,PointReward.vm?id=$custId&cmd=getpoint';
 
     response = await http.get(_baseUrl);
     final responseJson = await json.decode(response.body);
-    final data =  Point.fromJson(responseJson);
+    final data = Point.fromJson(responseJson);
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("user_point",data.totalPoint.toString());
+    prefs.setString("user_point", data.totalPoint.toString());
   }
 
   static getArBalance(String custId) async {
-
     http.Response response;
     String _baseUrl =
         'http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,AR.vm?cmd=2&custid=$custId';
@@ -96,11 +89,19 @@ class ApiService {
     response = await http.get(_baseUrl);
 
     List responseJson = await json.decode(response.body);
-    final data = responseJson
-        .map((md) => new BalanceModel.fromJson(md))
-        .toList();
+    final data =
+        responseJson.map((md) => new BalanceModel.fromJson(md)).toList();
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("user_ar",double.parse(data[0].arBalance).toStringAsFixed(0).toString());
+    String dataArString = data[0].arBalance;
+    String Ar = "";
+
+    if (dataArString.contains("-")) {
+      Ar = dataArString.substring(1, dataArString.length);
+    } else {
+      Ar = "-" + dataArString;
+    }
+    prefs.setString("user_ar", double.parse(Ar).toStringAsFixed(0).toString());
   }
 
   static Future<TransactionResponse> getDataTransaction() async {
@@ -140,7 +141,6 @@ class ApiService {
 
   static Future<List<AllTransactionListModel>> getAllTransactionModel(
       String userId) async {
-    print(userId);
     http.Response response;
     response = await http.get(
         "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,SPGApps.vm?cmd=4&custcode=$userId");

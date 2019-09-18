@@ -31,7 +31,6 @@ class _TransactionDetailState extends State<TransactionDetail> {
 
     List responseJson = await json.decode(response.body);
 
-    print(response.body);
     final data = responseJson
         .map((md) => new DetailTransactionModel.fromJson(md))
         .toList();

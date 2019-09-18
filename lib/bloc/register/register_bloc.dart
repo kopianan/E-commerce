@@ -27,33 +27,11 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     }
   }
 
-//
-//  Future<ErrorTest> _registerAsync(
-//      String fullname, String doB, String email, String password) async {
-//    http.Response response;
-//    print("Register CUYY");
-//    response = await http.get(
-//        "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,User.vm?method=register&email=alfred@gmail.com&password=123&firstname=anan&lastname=anan&dobday=12&dobmonth=12&dobyear=2001&tocust=true&ctype=DM151627192557861134072");
-//
-//    if (response.statusCode == 200) {
-//      if (response.body.toString().split(",")[0].contains("1")) {
-//        return ErrorTest(error: 1, message: "Error");
-//      } else {
-//        return ErrorTest(error: 0, message: "Error");
-//      }
-//    } else {
-//      // If that call was not successful, throw an error.
-//      print("status code nya bukan 200 cuyy");
-//      return null;
-//    }
-//  }
-
   Future<LoginModel> _registerAsync(
       String fullname, String doB, String email, String password) async {
     final dateOfBirth = intl.DateFormat("dd-MM-yyyy").parse(doB);
 
     http.Response response;
-    print("Register CUYY");
     response = await http.get(
         "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,User.vm?method=register&email=$email&password=$password&firstname=$fullname&lastname=$fullname&dobday=${intl.DateFormat("dd").format(dateOfBirth)}&dobmonth=${intl.DateFormat("MM").format(dateOfBirth)}&dobyear=${intl.DateFormat("yyyy").format(dateOfBirth)}&phone=0&address=isialamat&tocust=true&ctype=DM151627192557861134072");
 
@@ -67,8 +45,6 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       LoginModel modelError = LoginModel.fromJson(json.decode(jsonType));
       return modelError;
     } else {
-      // If that call was not successful, throw an error.
-      print("status code nya bukan 200 cuyy");
       return null;
     }
   }

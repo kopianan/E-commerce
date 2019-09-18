@@ -57,7 +57,7 @@ class _AddDeliverMethodBottomSheetState
                     state.listProvinceAndCity.rajaongkir.results);
                 int cityId =
                     listDeliver.getCityIdByTypeAndCityName(addressData.getUserDataCityName());
-                _btnBloc.dispatch(GetAllPriceOfDeliver(listData.getAllItemWeight(), 10, cityId));
+                _btnBloc.dispatch(GetAllPriceOfDeliver(listData.getAllItemWeight(), 151, cityId));
               }
             },
             child: BlocBuilder<DeliverBloc, DeliverState>(

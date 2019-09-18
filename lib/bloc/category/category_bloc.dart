@@ -61,10 +61,6 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     http.Response response;
     response = await http.get(
         "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,SPGBanner.vm");
-
-    print(response.statusCode);
-    print(response.body);
-
     if (response.statusCode == 200) {
       List responseJson = await json.decode(response.body);
       final data =

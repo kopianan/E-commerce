@@ -95,7 +95,6 @@ class ListDeliverFee extends ChangeNotifier {
   ///Get City ID By City Name.
    int getCityIdByTypeAndCityName(String cityName)  {
     String cityId = "";
-    print(cityName + " PROVINCE NAME");
     procitymodel.map((obj)  {
       if ( obj.type + " " + obj.cityName== cityName) {
         cityId = obj.cityId;

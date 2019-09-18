@@ -76,13 +76,13 @@ class _DetailItemState extends State<DetailItem> {
                   animationCurve: Curves.fastOutSlowIn,
                   animationDuration: Duration(milliseconds: 1000),
                   dotSize: 6.0,
-                  dotIncreasedColor: Color(0xFFFF335C),
+                  dotIncreasedColor: Colors.amber,
                   dotBgColor: Colors.transparent,
                   dotPosition: DotPosition.bottomCenter,
                   dotVerticalPadding: 0.0,
                   showIndicator: true,
                   images: [
-                    Image.network('http://datacloud.erp.web.id:8081${data.pic}')
+                    Image.network('http://datacloud.erp.web.id:8081${data.pic}', fit: BoxFit.cover,)
                     // FadeInImage(image: NetworkImage('http://datacloud.erp.web.id:8081${data.pic}'), placeholder: AssetImage('assets/SALE.png'))
                   ],
                 ),

@@ -93,7 +93,6 @@ class _RegisterState extends State<Register> {
                         DatePicker.showDatePicker(context,
                             showTitleActions: true,
                             maxTime: DateTime(2019, 6, 7), onChanged: (date) {
-                          print('change $date');
                         }, onConfirm: (date) {
 
                               _controller.text = DateFormat("dd-MM-yyyy").format(date).toString();

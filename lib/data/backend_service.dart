@@ -7,8 +7,6 @@ class BackendService {
     http.Response response;
     response = await http.get(
         'http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,SPGApps.vm?cmd=2&loccode=GODM&limit=$limit&offset=$offset');
-    print(response.statusCode);
-    print(response.body);
 
     if (response.statusCode == 200) {
       List responseJson = await json.decode(response.body);

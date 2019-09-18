@@ -42,7 +42,6 @@ class DeliverBloc extends Bloc<DeliverEvent, DeliverState> {
       int weight, int origins, int destination) async {
     List<CheckOngkirModel> finalResponse = List<CheckOngkirModel>();
     List<ListOfOngkirModel> listOngkir = List<ListOfOngkirModel>();
-    origins = 10;
 
     Map<String, String> headers = {"Content-type": "application/json"};
     final List<String> listPengiriman = ["jne", "tiki"];

@@ -26,7 +26,6 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    _getUserData();
     super.initState();
   }
 
@@ -36,19 +35,6 @@ class _HomeState extends State<Home> {
     setState(() {
       _currentIndex = index;
     });
-  }
-
-  void _getUserData() async {
-    // localData.SharedPreference userData = SharedPreference();
-    // User user = await userData.getUserData();
-
-    final prefs = await SharedPreferences.getInstance();
-    String userData = "";
-    userData = prefs.getString("user_data_preference");
-    // print("USER LOCAL DATA : "+ userData);
-
-    // userData = prefs.getString('userFullname');
-    // print("USER DATA : "+user.toString());
   }
 
   @override

@@ -54,8 +54,6 @@ class LoginPageChild extends StatelessWidget {
             
             final prefs = await SharedPreferences.getInstance();
             prefs.setString('userFullname', state.user.fullName);
-            print(prefs.getString('userFullname'));
-
             SharedPreference localData = SharedPreference() ;
             localData.saveUserData(state.user);
 

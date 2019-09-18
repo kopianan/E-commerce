@@ -129,8 +129,6 @@ class _ChangePasswordState extends State<ChangePassword> {
                   ),
                   color: Colors.amber,
                   onPressed: () {
-                    print(confirmPassword);
-                    print(newPassword);
                     if (confirmPassword == newPassword) {
                       showDialog(
                           context: context,
@@ -174,8 +172,6 @@ class ShowDialog extends StatelessWidget {
         return user;
       }
     } else {
-      // If that call was not successful, throw an error.
-      print("status code nya bukan 200 cuyy");
       return null;
     }
   }

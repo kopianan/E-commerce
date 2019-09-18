@@ -56,9 +56,6 @@ class AddressData extends ChangeNotifier {
     notifyListeners();
   }
 
-  LoginModel getUserDataFromPreference() {
-    return userData;
-  }
 
 
   getChangedAddress(
@@ -73,7 +70,6 @@ class AddressData extends ChangeNotifier {
     var responseJson = await json.decode(response.body);
 
     final data = LoginModel.fromJson(responseJson);
-    print(response.body);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("user_data", response.body);
     setUserData(data);
@@ -88,27 +84,5 @@ class AddressData extends ChangeNotifier {
     notifyListeners();
   }
 
-  getCityData(String val) async {
-    var _baseUrl =
-        "https://api.rajaongkir.com/starter/city?key=e1eedfd1a43f04a99122dbcc2f4a0291&province=$val";
 
-    var res = await http.get(_baseUrl);
-    var resBody = json.decode(res.body);
-
-    var test = city.CityModel.fromJson(resBody);
-    setListOfCity(test.rajaongkir.results);
-  }
-
-  getProvinceData() async {
-    var _baseUrl = "https://api.rajaongkir.com/starter/province";
-
-    var res = await http
-        .get(_baseUrl, headers: {"key": "e1eedfd1a43f04a99122dbcc2f4a0291"});
-    var resBody = json.decode(res.body);
-
-    var test = province.ProvinceModel.fromJson(resBody);
-    print(resBody.toString() );
-    print("ISI DATA LOL");
-    setListOfProvince(test.rajaongkir.results);
-  }
 }

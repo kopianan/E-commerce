@@ -26,9 +26,6 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
     dio.options.receiveTimeout = 30000;
     FormData formData =
         new FormData.from({"docs": json.encode(widget.data).toString()});
-
-    print(json.encode(widget.data).toString());
-
     var response = await dio.post(
         "http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,CreateSI.vm",
         data: formData);
@@ -60,7 +57,6 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
                   return showAlert(context, Icons.warning,
                       snapshot.data.message, Colors.yellow, 0);
                 } else {
-                  print(snapshot.data.message);
                   return showAlert(context, Icons.check_circle,
                       "Transaction Successful", Colors.green, 1);
                 }

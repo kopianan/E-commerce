@@ -35,7 +35,7 @@ class _ItemListState extends State<ItemList> {
       List responseJson = await json.decode(response.body);
       final data =
           responseJson.map((m) => new DataItemModel.fromJson(m)).toList();
-      print(data.first.description);
+
       return data;
     }else
       {

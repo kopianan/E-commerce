@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:ecommerce_test/data/address_data.dart';
-import 'package:ecommerce_test/data/api_service.dart';
 import 'package:ecommerce_test/models/CityModel.dart' as prefix0;
 import 'package:ecommerce_test/models/province_model.dart';
 import 'package:ecommerce_test/models/user.dart';
@@ -128,7 +127,8 @@ class _ChangeAddressState extends State<ChangeAddress> {
                                 if (dta.province.toString() == provinceName) {
                                   setState(() {
                                     mprovinceid = dta.provinceId;
-                                    address.setProvince(dta.provinceId, dta.province);
+                                    address.setProvince(
+                                        dta.provinceId, dta.province);
                                     getCityData(address.provinceId);
                                   });
                                 }

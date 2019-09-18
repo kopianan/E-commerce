@@ -9,12 +9,10 @@ import 'package:ecommerce_test/layouts/pages/payment_success_page.dart';
 import 'package:ecommerce_test/layouts/widgets/bottomsheet_deliver_method.dart';
 import 'package:ecommerce_test/layouts/widgets/bottomsheet_payment_method.dart';
 import 'package:ecommerce_test/layouts/widgets/cart_list_item.dart';
-import 'package:ecommerce_test/models/CityModel.dart';
 import 'package:ecommerce_test/models/CityModel.dart' as city;
 import 'package:ecommerce_test/models/bought_item_model.dart';
 import 'package:ecommerce_test/models/data_item_model.dart';
 import 'package:ecommerce_test/models/login_model.dart';
-import 'package:ecommerce_test/models/province_model.dart';
 import 'package:ecommerce_test/models/province_model.dart' as prefix0;
 import 'package:ecommerce_test/models/sales_transaction_detail_model.dart';
 import 'package:ecommerce_test/models/sales_transaction_model.dart';
@@ -22,7 +20,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 
 import 'change_address.dart';
 
@@ -35,14 +32,9 @@ class PaymentPage extends StatefulWidget {
   _PaymentPageState createState() => _PaymentPageState();
 }
 
-int _groupValue = -1;
 
 class _PaymentPageState extends State<PaymentPage> {
   LoginModel user;
-  var newValProvince;
-  String dropdownValue = 'One';
-  AddressData addData = AddressData() ;
-
   List<prefix0.Results> listOfResult = List<prefix0.Results>();
   List<city.Results> listOfCity = List<city.Results>();
   final formatter = new NumberFormat("#,###");
@@ -50,46 +42,17 @@ class _PaymentPageState extends State<PaymentPage> {
   @override
   void initState() {
     super.initState();
-    AddressData().getProvinceData();
-
-    getUserData();
+    _getUserData().then((val) {
+      setState(() {
+        user = val;
+      });
+    });
   }
-
-  Future getUserData() async {
+  Future<LoginModel> _getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    LoginModel user = LoginModel.fromJson(json.decode(prefs.getString("user_data")));
-    setState(() {
-      this.user = user;
-      AddressData().userData = user ;
-    });
-  }
-
-
-
-  getCityData(String val) async {
-    var _baseUrl =
-        "https://api.rajaongkir.com/starter/city?key=e1eedfd1a43f04a99122dbcc2f4a0291&province=$val";
-
-    var res = await http.get(_baseUrl);
-    var resBody = json.decode(res.body);
-
-    var test = CityModel.fromJson(resBody);
-    setState(() {
-      listOfCity = test.rajaongkir.results;
-    });
-  }
-
-  getProvinceData() async {
-    var _baseUrl = "https://api.rajaongkir.com/starter/province";
-
-    var res = await http
-        .get(_baseUrl, headers: {"key": "e1eedfd1a43f04a99122dbcc2f4a0291"});
-    var resBody = json.decode(res.body);
-
-    var test = ProvinceModel.fromJson(resBody);
-    setState(() {
-      listOfResult = test.rajaongkir.results;
-    });
+    LoginModel user =
+    LoginModel.fromJson(json.decode(prefs.getString("user_data")));
+    return user;
   }
 
   final deliverBloc = DeliverBloc();
@@ -355,7 +318,6 @@ void _generatePostTransactiondata(CartListData listData,
       unit: data.unitCode,
     ));
   });
-//  {"item_code":"ONGKIR","item_id":"DM156698902369200428418","qty":"1","unit":"PCS","price":"disesuaikan","tax":"","discount":"0.0%"}]}]}
 
   listBoughtItem.add(BoughItem(
     itemId: "DM156698902369200428418",

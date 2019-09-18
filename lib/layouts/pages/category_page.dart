@@ -69,7 +69,6 @@ class _CategoryChildState extends State<CategoryChild> {
                 }
 
                 if (state is GetAllCategoryByParentIdEnd) {
-                  print(state.categoryId.toString());
                   Navigator.push(
                       context,
                       MaterialPageRoute(

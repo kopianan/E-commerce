@@ -24,7 +24,6 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     getUserData();
-    print(user.email);
     super.initState();
   }
 

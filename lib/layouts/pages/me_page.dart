@@ -39,7 +39,6 @@ class _PageMeState extends State<PageMe> {
     setState(() {
       Ar = prefs.getString("user_ar");
       pointUser = prefs.getString("user_point");
-      print(pointUser + "POINT");
     });
   }
 
