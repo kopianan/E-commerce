@@ -30,6 +30,10 @@ class AddressData extends ChangeNotifier {
     notifyListeners();
   }
 
+  String getUserDataCityName(){
+    return userData.city;
+  }
+
   void setCity(String cityId, String cityName) {
     this.cityId = cityId;
     this.cityName = cityName;
@@ -69,10 +73,12 @@ class AddressData extends ChangeNotifier {
     var responseJson = await json.decode(response.body);
 
     final data = LoginModel.fromJson(responseJson);
+    print(response.body);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("user_data", response.body);
     setUserData(data);
   }
+
 
   void getUserDataInPrference() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

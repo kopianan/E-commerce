@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:ecommerce_test/bloc/bloc.dart';
+import 'package:ecommerce_test/data/address_data.dart';
 import 'package:ecommerce_test/data/cart_list_data.dart';
 import 'package:ecommerce_test/data/list_deliver_fee.dart';
 import 'package:ecommerce_test/models/login_model.dart';
@@ -19,49 +20,62 @@ class AddDeliverMethodBottomSheet extends StatefulWidget {
 class _AddDeliverMethodBottomSheetState
     extends State<AddDeliverMethodBottomSheet> {
   final _btnBloc = new DeliverBloc();
-  final listData = CartListData();
-  final data = ListDeliverFee();
+  LoginModel userData = LoginModel();
 
   @override
   void initState() {
-    _getUserData().then((userData){
-    print(userData.province) ;
-    print(ListDeliverFee().getProvinceIdFromList(userData.province));
+    _getUserData().then((val) {
+      setState(() {
+        userData = val;
+      });
     });
-    _btnBloc.dispatch(GetAllPriceOfDeliver(2000, 10, 10));
+    _btnBloc.dispatch(GetAllProvinceAndCity());
     super.initState();
   }
 
   Future<LoginModel> _getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    LoginModel user = LoginModel.fromJson(json.decode(prefs.getString("user_data")));
-    return user ;
+    LoginModel user =
+        LoginModel.fromJson(json.decode(prefs.getString("user_data")));
+    return user;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ListDeliverFee>(
-      builder: (context, data, _) => BlocListener<DeliverBloc, DeliverState>(
-        bloc: _btnBloc,
-        listener: (context, state) async {
-          if (state is GetAllDeliverPriceSuccess) {
-            data.setListOngkirDataList(state.listOfOngkir);
-            print(data.listOngkir.length.toString() + " JUmlah");
-          }
-        },
-        child: BlocBuilder<DeliverBloc, DeliverState>(
-          bloc: _btnBloc,
-          builder: (context, state) {
-            if (state is GetAllDeliverPriceSuccess) {
-              return BuildInitalState();
-            } else if (state is GetAllDeliverPriceLoading) {
-              return Center(child: CircularProgressIndicator());
-            } else if (state is GetAllDeliverPriceFailed) {
-              return BuildInitalState();
-            } else {
-              return Center(child: CircularProgressIndicator());
-            }
-          },
+    return Consumer<AddressData>(
+      builder:(context, addressData, _)=> Consumer<CartListData>(
+        builder: (context, listData, _) => Consumer<ListDeliverFee>(
+          builder: (context, listDeliver, _) =>
+              BlocListener<DeliverBloc, DeliverState>(
+            bloc: _btnBloc,
+            listener: (context, state) async {
+              if (state is GetAllDeliverPriceSuccess) {
+                listDeliver.setListOngkirDataList(state.listOfOngkir);
+              }
+              if (state is GetAllProvinceAndCitySuccess) {
+                listDeliver.setProCityModel(
+                    state.listProvinceAndCity.rajaongkir.results);
+                int cityId =
+                    listDeliver.getCityIdByTypeAndCityName(addressData.getUserDataCityName());
+                _btnBloc.dispatch(GetAllPriceOfDeliver(listData.getAllItemWeight(), 10, cityId));
+              }
+            },
+            child: BlocBuilder<DeliverBloc, DeliverState>(
+              bloc: _btnBloc,
+              builder: (context, state) {
+                if (state is GetAllProvinceAndCityLoading) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                if (state is GetAllDeliverPriceSuccess) {
+                  return BuildInitalState();
+                }
+                if (state is GetAllDeliverPriceLoading) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                return Center(child: CircularProgressIndicator());
+              },
+            ),
+          ),
         ),
       ),
     );

@@ -16,12 +16,6 @@ class ApiService {
     return http.get(
         'http://datacloud.erp.web.id:8081/padadev18/weblayer/template/api,AR.vm?cmd=1&custid=DM152204830857645176904');
 
-//    if (response.statusCode == 200) {
-//      List responseJson = await json.decode(response.body);
-//      final data =
-//      responseJson.map((m) => new TransactionHistoryModel.fromJson(m)).toList();
-//      return responseJson ;
-//    }
   }
 
   static Future<String> changeAddress(

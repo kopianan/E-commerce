@@ -9,22 +9,35 @@ import 'package:http/http.dart' as http;
 
 class ListDeliverFee extends ChangeNotifier {
   List<CheckOngkirModel> listOfOngkir = List<CheckOngkirModel>();
+  ///the data is filled after user click choose ongkos kirim
   List<prefix0.Results> procitymodel = List<prefix0.Results>();
 
   int selected = 10;
   int totalWeight = 0;
-
+  ///List data ongkir yang berisi harga, jenis pengiriman dan jumlah hari [ListOfOngkirModel]
   List<ListOfOngkirModel> listOngkir = List<ListOfOngkirModel>();
   ListOfOngkirModel selectedOngkir = ListOfOngkirModel();
 
   ListDeliverFee() {}
 
+  void clearSelectedOngkir(){
+    listOngkir.clear();
+    selected = -1 ;
+    selectedOngkir=null ;
+    notifyListeners();
+  }
   void setSelectedOngkir(int index) {
     selectedOngkir = listOngkir[index];
     notifyListeners();
   }
 
+  ///function untuk set list ongkir yang telah. data list di dapat dari origins, destination dan weight yg telah di inputkan
   void setListOngkirDataList(List<ListOfOngkirModel> list){
+
+    list.forEach((it){
+      var modifyName =it.name.split("(").last.toString();
+      it.name =modifyName.substring(0, modifyName.length-1);
+    });
     listOngkir = list ;
     notifyListeners();
   }
@@ -56,6 +69,7 @@ class ListDeliverFee extends ChangeNotifier {
 
   void clearListOfOngkir() {
     listOfOngkir.clear();
+    listOngkir.clear();
     notifyListeners();
   }
 
@@ -78,63 +92,18 @@ class ListDeliverFee extends ChangeNotifier {
   var harga = "";
 
 
-  void getAllProvinceAndCity() async {
-    http.Response response;
-    response = await http.get(
-        'https://api.rajaongkir.com/starter/city?key=e1eedfd1a43f04a99122dbcc2f4a0291');
-
-    var responseJson = await json.decode(response.body);
-
-    final data = CityModel.fromJson(responseJson);
-    setProCityModel(data.rajaongkir.results);
-
-  }
-
-  getProvinceIdFromList(String provinceName) async {
-    String provId;
-    procitymodel.map((obj) {
-      if (obj.type + " " + obj.cityName == provinceName) {
-        provId = obj.cityId;
-      }else{
-        provId = "20" ;
+  ///Get City ID By City Name.
+   int getCityIdByTypeAndCityName(String cityName)  {
+    String cityId = "";
+    print(cityName + " PROVINCE NAME");
+    procitymodel.map((obj)  {
+      if ( obj.type + " " + obj.cityName== cityName) {
+        cityId = obj.cityId;
       }
     }).toList();
-    print(provId);
-    return provId;
+    return int.parse(cityId);
 
   }
 
-  void multipleRequest(int weight, int destination) async {
-    List<CheckOngkirModel> finalResponse = List<CheckOngkirModel>();
-    Map<String, String> headers = {"Content-type": "application/json"};
-    final List<String> listPengiriman = ["jne", "tiki"];
-    final String _baseurl = "https://api.rajaongkir.com/starter/cost";
-    List<http.Response> list = await Future.wait(listPengiriman.map((courier) =>
-        http.post(_baseurl,
-            body:
-                '{"key" : "e1eedfd1a43f04a99122dbcc2f4a0291","origin": 10,"destination" :$destination,"weight" :$weight,"courier"  : "$courier"}',
-            headers: headers)));
-    clearListOfOngkir();
 
-    list.map((response) {
-      finalResponse.add(CheckOngkirModel.fromJson(jsonDecode(response.body)));
-      addItemToListOngkir(CheckOngkirModel.fromJson(jsonDecode(response.body)));
-    }).toList();
-    clearListOngkir();
-    finalResponse.map((obj) {
-      obj.rajaongkir.results.map((cost) {
-        this.name = cost.name;
-        cost.costs.map((costs) {
-          this.service = costs.service;
-          costs.cost.map((c) {
-            listOngkir.add(ListOfOngkirModel(
-                price: c.value.toString(),
-                etd: c.etd,
-                name: this.name,
-                service: this.service));
-          }).toList();
-        }).toList();
-      }).toList();
-    }).toList();
-  }
 }

@@ -8,7 +8,13 @@ class GetAllPriceOfDeliver extends DeliverEvent {
   final int destination  ;
   final int origin;
 
+
   GetAllPriceOfDeliver(this.weight, this.destination, this.origin);
+
+
+}
+
+class GetAllProvinceAndCity extends DeliverEvent{
 
 
 }

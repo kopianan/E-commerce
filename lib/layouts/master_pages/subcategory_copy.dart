@@ -124,7 +124,6 @@ class _SubCategoryCopyState extends State<SubCategoryCopy> {
                                                   .getCategoryList()
                                                   .last[index]
                                                   .description,
-                                              textAlign: TextAlign.center,
                                               style: TextStyle(fontWeight: FontWeight.bold),
                                             ),
                                           ),

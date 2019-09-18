@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
+import 'package:ecommerce_test/models/CityModel.dart';
 import 'package:ecommerce_test/models/check_onkir_model.dart';
 import 'package:ecommerce_test/models/list_of_ongkir_model.dart';
 import 'deliver_event.dart';
@@ -25,8 +26,18 @@ class DeliverBloc extends Bloc<DeliverEvent, DeliverState> {
         yield GetAllDeliverPriceSuccess(listOngkir);
       }
     }
-  }
 
+    if(event is GetAllProvinceAndCity){
+      yield GetAllProvinceAndCityLoading();
+      final listProvinceAndCity = await _getAllProvinceAndCity() ;
+      if(listProvinceAndCity == null || listProvinceAndCity.rajaongkir.results.length == 0){
+        yield GetAllProvinceAndCityFailed("Empty");
+      }else{
+        yield GetAllProvinceAndCitySuccess(listProvinceAndCity);
+      }
+    }
+  }
+  ///get all list ongkir (JNE DAN TIKI) by input weight, originsID and destinationID
   Future<List<ListOfOngkirModel>> _getAllListOngkir(
       int weight, int origins, int destination) async {
     List<CheckOngkirModel> finalResponse = List<CheckOngkirModel>();
@@ -60,4 +71,16 @@ class DeliverBloc extends Bloc<DeliverEvent, DeliverState> {
 
     return listOngkir;
   }
+}
+
+
+Future<CityModel> _getAllProvinceAndCity() async {
+  http.Response response;
+  response = await http.get(
+      'https://api.rajaongkir.com/starter/city?key=e1eedfd1a43f04a99122dbcc2f4a0291');
+
+  var responseJson = await json.decode(response.body);
+
+  final data = CityModel.fromJson(responseJson);
+  return data ;
 }

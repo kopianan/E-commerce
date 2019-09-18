@@ -50,7 +50,6 @@ class _PaymentPageState extends State<PaymentPage> {
   @override
   void initState() {
     super.initState();
-    ListDeliverFee().getAllProvinceAndCity();
     AddressData().getProvinceData();
 
     getUserData();
@@ -92,11 +91,11 @@ class _PaymentPageState extends State<PaymentPage> {
       listOfResult = test.rajaongkir.results;
     });
   }
+
   final deliverBloc = DeliverBloc();
 
   @override
   Widget build(BuildContext context) {
-    DataItemModel data = widget.dataItemmodel;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 49, 49, 49),
@@ -123,23 +122,23 @@ class _PaymentPageState extends State<PaymentPage> {
                           : Text(
                               '${addressData.userData.address}\n${addressData.userData.province}\n${addressData.userData.city}'),
                     ),
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (ctx) => ChangeAddress()),
-                            );
-                          },
-                          child: Text(
-                            "Ubah",
-                            style: TextStyle(
-                                color: Colors.purple,
-                                fontStyle: FontStyle.italic),
-                          ),
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (ctx) => ChangeAddress()),
+                          );
+                        },
+                        child: Text(
+                          "Ubah",
+                          style: TextStyle(
+                              color: Colors.purple,
+                              fontStyle: FontStyle.italic),
                         ),
                       ),
+                    ),
                   ],
                 ),
               ),
@@ -160,20 +159,32 @@ class _PaymentPageState extends State<PaymentPage> {
                       ),
                       InkWell(
                         onTap: () {
-
-
-//                          data.multipleRequest(
-//                              listData.getAllItemWeight(),
-//                              data.getProvinceIdFromList(
-//                                  addressData.userData.city));
-                      _getRandomnumber(
+                          _getRandomnumber(
                               "APPS-GODM", addressData.userData.userId);
                           showModalBottomSheet(
                               context: context,
                               builder: (context) =>
                                   AddDeliverMethodBottomSheet());
                         },
-                        child: buildChoosePengiriman(data),
+                        child: (data.selectedOngkir == null )
+                            ? Text(
+                                "Pilih",
+                                style: subTextStyle(),
+                              )
+                            : Text(
+                                data.selectedOngkir.name.toString() +
+                                    "\n" +
+                                    formatter
+                                        .format(int.parse(
+                                            data.selectedOngkir.price))
+                                        .toString() +
+                                    " ( " +
+                                    data.selectedOngkir.etd.toString() +
+                                    " hari)",
+                                maxLines: 3,
+                                textAlign: TextAlign.right,
+                                style: subTextStyle(),
+                              ),
                       ),
                     ],
                   ),
@@ -225,9 +236,9 @@ class _PaymentPageState extends State<PaymentPage> {
                         Text("Subtotal untuk Produk"),
                         Text(
                           "Rp. " +
-                              int.parse(
-                                  double.parse(listData.getSubTotal())
-                                      .toStringAsFixed(0)).toString(),
+                              int.parse(double.parse(listData.getSubTotal())
+                                      .toStringAsFixed(0))
+                                  .toString(),
                           style: subTextStyle(),
                         )
                       ],
@@ -236,14 +247,15 @@ class _PaymentPageState extends State<PaymentPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text("Pengiriman"),
-                        (listDeliver.selectedOngkir.price == "" || listDeliver.selectedOngkir.price == null )? Text("Rp. 0") :
-                        Text(
-                          "Rp. " +
-                              int.parse(
-                                listDeliver.selectedOngkir.price.toString()
-                              ).toString(),
-                          style: subTextStyle(),
-                        ),
+                        (listDeliver.selectedOngkir == null)
+                            ? Text("Rp. 0",style: subTextStyle(),)
+                            : Text(
+                                "Rp. " +
+                                    int.parse(listDeliver.selectedOngkir.price
+                                            .toString())
+                                        .toString(),
+                                style: subTextStyle(),
+                              ),
                       ],
                     ),
                     Container(
@@ -256,9 +268,11 @@ class _PaymentPageState extends State<PaymentPage> {
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold),
                           ),
+                          (listDeliver.selectedOngkir == null)?Text("Rp. 0", style: totalTextStyle(),):
                           Text(
                             "Rp." +
                                 listData.getTotalBayar(
+
                                     listDeliver.selectedOngkir.price,
                                     listData.getSubTotal()),
                             style: totalTextStyle(),
@@ -295,29 +309,7 @@ class _PaymentPageState extends State<PaymentPage> {
       ),
     );
   }
-
-  Text buildChoosePengiriman(ListDeliverFee data) {
-    if (data.selectedOngkir.name == null) {
-      return Text(
-        "Pilih",
-        style: subTextStyle(),
-      );
-    } else {
-      return Text(
-        data.selectedOngkir.name.toString() +
-            "\n" +
-            formatter.format(int.parse(data.selectedOngkir.price)).toString() +
-            " ( " +
-            data.selectedOngkir.etd.toString() +
-            " hari)",
-        maxLines: 3,
-        textAlign: TextAlign.right,
-        style: subTextStyle(),
-      );
-    }
-  }
 }
-
 TextStyle totalTextStyle() {
   return TextStyle(
       color: Colors.purple, fontSize: 18, fontWeight: FontWeight.bold);

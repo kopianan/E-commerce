@@ -52,7 +52,7 @@ class DataList extends StatelessWidget {
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
                         Text(
-                          'Qty : ${double.parse(data.totalQty.toString()).toStringAsFixed(0)}',
+                          'Qty : ${(double.parse(data.totalQty.toString())-1).toStringAsFixed(0)}',
 //                        'Qty : ${double.parse(int.parse(data.totalQty.toString()).toStringAsFixed(0)}',
                           style: TextStyle(fontSize: 16),
                         ),
