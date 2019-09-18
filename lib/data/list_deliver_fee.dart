@@ -90,15 +90,17 @@ class ListDeliverFee extends ChangeNotifier {
 
   }
 
-  int getProvinceIdFromList(String provinceName) {
-    var provId;
-    print(procitymodel.length);
+  getProvinceIdFromList(String provinceName) async {
+    String provId;
     procitymodel.map((obj) {
       if (obj.type + " " + obj.cityName == provinceName) {
         provId = obj.cityId;
+      }else{
+        provId = "20" ;
       }
     }).toList();
-    return int.parse(provId);
+    print(provId);
+    return provId;
 
   }
 

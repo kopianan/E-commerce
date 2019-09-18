@@ -1,10 +1,14 @@
+import 'dart:convert';
+
 import 'package:ecommerce_test/bloc/bloc.dart';
 import 'package:ecommerce_test/data/cart_list_data.dart';
 import 'package:ecommerce_test/data/list_deliver_fee.dart';
+import 'package:ecommerce_test/models/login_model.dart';
 import 'package:ecommerce_test/util/function.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddDeliverMethodBottomSheet extends StatefulWidget {
   @override
@@ -20,8 +24,18 @@ class _AddDeliverMethodBottomSheetState
 
   @override
   void initState() {
-    _btnBloc.dispatch(GetAllPriceOfDeliver(2000, 10, 21));
+    _getUserData().then((userData){
+    print(userData.province) ;
+    print(ListDeliverFee().getProvinceIdFromList(userData.province));
+    });
+    _btnBloc.dispatch(GetAllPriceOfDeliver(2000, 10, 10));
     super.initState();
+  }
+
+  Future<LoginModel> _getUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    LoginModel user = LoginModel.fromJson(json.decode(prefs.getString("user_data")));
+    return user ;
   }
 
   @override

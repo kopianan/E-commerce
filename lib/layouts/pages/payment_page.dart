@@ -50,9 +50,10 @@ class _PaymentPageState extends State<PaymentPage> {
   @override
   void initState() {
     super.initState();
+    ListDeliverFee().getAllProvinceAndCity();
     AddressData().getProvinceData();
-    getUserData();
 
+    getUserData();
   }
 
   Future getUserData() async {
@@ -159,8 +160,8 @@ class _PaymentPageState extends State<PaymentPage> {
                       ),
                       InkWell(
                         onTap: () {
-                          addressData.getProvinceData();
-                          data.getAllProvinceAndCity();
+
+
 //                          data.multipleRequest(
 //                              listData.getAllItemWeight(),
 //                              data.getProvinceIdFromList(

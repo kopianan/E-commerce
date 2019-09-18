@@ -101,6 +101,8 @@ class AddressData extends ChangeNotifier {
     var resBody = json.decode(res.body);
 
     var test = province.ProvinceModel.fromJson(resBody);
+    print(resBody.toString() );
+    print("ISI DATA LOL");
     setListOfProvince(test.rajaongkir.results);
   }
 }
