@@ -6,18 +6,10 @@ abstract class PaymentPaymentEvent extends Equatable {
   PaymentPaymentEvent([List props = const <dynamic>[]]) : super(props);
 }
 
-class GetDeliverFee extends PaymentPaymentEvent {
-  final String key;
+class GetArBalanceAsync extends PaymentPaymentEvent {
+  final String userId ;
 
-  final String origin;
+  GetArBalanceAsync(this.userId): super([userId]);
 
-  final String destination;
 
-  final int weight;
-
-  final String courier;
-
-  GetDeliverFee(
-      this.key, this.origin, this.destination, this.weight, this.courier)
-      : super([key, origin, destination, weight, courier]);
 }
