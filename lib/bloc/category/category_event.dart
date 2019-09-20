@@ -24,6 +24,11 @@ class GetAllCategoryByParentID extends CategoryEvent{
   GetAllCategoryByParentID(this.parentID, this.description);
 }
 
+class GetAllCategoryByParentIdLoading extends CategoryEvent{
+  GetAllCategoryByParentIdLoading();
+}
+
+
 class GetCategoryByParentId extends CategoryEvent{
   final String parentId ;
   final CategoryModel prevCategory;

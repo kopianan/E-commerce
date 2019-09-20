@@ -33,6 +33,7 @@ class _MyAppState extends State<MyApp> {
       print(userLocalData.fullName);
     } catch (Exception) {}
 
+    
     setState(() {
       if (userData != "") {
         hasUserData = true;

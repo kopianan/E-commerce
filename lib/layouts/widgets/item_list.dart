@@ -48,7 +48,7 @@ class _ItemListState extends State<ItemList> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 49, 49, 49),
-        title: Text(widget.desc + " Kategori"),
+        title: Text(widget.desc),
       ),
       body: CustomScrollView(slivers: <Widget>[
         Container(

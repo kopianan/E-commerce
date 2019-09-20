@@ -87,6 +87,9 @@ class _SubCategoryCopyState extends State<SubCategoryCopy> {
             child: BlocBuilder(
                 bloc: _btnBloc,
                 builder: (BuildContext context, CategoryState state) {
+                  if(state is CategoryLoading){
+                    return Center(child: CircularProgressIndicator(),);
+                  }
                   return Container(
                     child: Column(
                       children: <Widget>[
