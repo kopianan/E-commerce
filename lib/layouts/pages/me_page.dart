@@ -33,8 +33,8 @@ class _PageMeState extends State<PageMe> {
         LoginModel.fromJson(json.decode(prefs.getString("user_data")));
     localUser = user;
 
-    ApiService.getArBalance(localUser.userId);
-    ApiService.getPoint(localUser.userId);
+   await ApiService.getArBalance(localUser.userId);
+   await ApiService.getPoint(localUser.userId);
 
     setState(() {
       Ar = prefs.getString("user_ar");

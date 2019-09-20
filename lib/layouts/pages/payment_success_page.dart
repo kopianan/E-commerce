@@ -101,10 +101,12 @@ RaisedButton raisedButton(BuildContext context, int status) {
   } else {
     return RaisedButton(
       onPressed: () {
-        Navigator.of(context).pushReplacement(new MaterialPageRoute(
-            builder: (BuildContext context) => Home()));
-        Navigator.of(context).push(new MaterialPageRoute(
-            builder: (BuildContext context) => MyOrder()));
+        Navigator.of(context).pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
+        Navigator.of(context).pushNamed('/my_order');
+//        Navigator.of(context).pushReplacement(new MaterialPageRoute(
+//            builder: (BuildContext context) => Home()));
+//        Navigator.of(context).push(new MaterialPageRoute(
+//            builder: (BuildContext context) => MyOrder()));
 
       },
       color: Colors.blueAccent,

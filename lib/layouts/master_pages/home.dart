@@ -45,15 +45,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(builder: (context)=>CartListData(),),
-        ChangeNotifierProvider(builder: (context)=>ListDeliverFee(),),
-        ChangeNotifierProvider(builder: (context)=>PaymentMethod(),),
-        ChangeNotifierProvider(builder: (context)=>AddressData(),),
-      ],
-      child: MaterialApp(
-        home: Scaffold(
+    return Scaffold(
           drawer: Drawer(
             child: ListView(
               // Important: Remove any padding from the ListView.
@@ -82,9 +74,7 @@ class _HomeState extends State<Home> {
                   onTap: () async{
 
                     final prefs = await SharedPreferences.getInstance();
-
-                    SharedPreference localData = SharedPreference() ;
-                    localData.clearUserData();
+                      prefs.clear();
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context) => Login()),
@@ -128,8 +118,6 @@ class _HomeState extends State<Home> {
                   icon: Icon(Icons.person)),
             ],
           ),
-        ),
-      ),
     );
   }
 
