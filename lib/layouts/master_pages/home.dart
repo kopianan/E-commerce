@@ -191,7 +191,6 @@ class _HomeState extends State<Home> {
       ),
       style: const TextStyle(color: Colors.white, fontSize: 16.0),
       onChanged: updateSearchQuery,
-      onSubmitted: ,
     );
   }
 
