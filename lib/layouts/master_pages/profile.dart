@@ -29,8 +29,7 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: Scaffold(
+    return  Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 49, 49, 49),
         title: Text(""),
@@ -277,6 +276,6 @@ class _ProfileState extends State<Profile> {
           ),
         ],
       ),
-    ));
+    );
   }
 }
