@@ -1,4 +1,4 @@
-
+import 'package:ecommerce_test/models/check_onkir_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -9,20 +9,20 @@ abstract class PaymentPaymentState extends Equatable {
 
 class InitialPaymentPaymentState extends PaymentPaymentState {}
 
-class GetArBalanceLoading extends PaymentPaymentState{
+class GetPriceFeeLoading extends PaymentPaymentState{
 
 }
 
-class GetArBalanceSuccess extends PaymentPaymentState{
-  final String arBalance ;
+class GetPriceFeeSuccess extends PaymentPaymentState{
+  final CheckOngkirModel deliverFee ;
 
-  GetArBalanceSuccess(this.arBalance) : super([arBalance]);
+  GetPriceFeeSuccess(this.deliverFee) : super([deliverFee]);
 }
 
-class GetArBalanceFailed extends PaymentPaymentState {
+class GetPriceFeeFailed extends PaymentPaymentState {
 
   final String errorMessage ;
 
-  GetArBalanceFailed(this.errorMessage): super([errorMessage]);
+  GetPriceFeeFailed(this.errorMessage): super([errorMessage]);
 
 }

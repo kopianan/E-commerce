@@ -25,12 +25,5 @@ class SharedPreference{
     LoginModel userData = LoginModel.fromJson(json.decode(prefsValue));
     return userData;
   }
-  Future<LoginModel> getLoginModelUserDataAync() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    LoginModel user =
-    LoginModel.fromJson(json.decode(prefs.getString("user_data")));
-    return user;
-  }
-
 
 }
