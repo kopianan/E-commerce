@@ -77,14 +77,15 @@ class _CategoryChildState extends State<CategoryChild> {
                 }
 
                 if (state is GetAllCategoryByParentIdSuccess) {
+                  print(state.categories.length.toString() + "Panjang");
+
+
                   listData.addCategoryList(state.categories);
                   listData.addHistoryCategoryModel(state.prevCategoryModel);
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => SubCategoryCopy(
-                                prevCategory: state.prevCategoryModel,
-                                categoryList: state.categories,
                               )));
                 }
               },

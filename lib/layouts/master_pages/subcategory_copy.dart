@@ -10,57 +10,57 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 class SubCategoryCopy extends StatefulWidget {
-  final List<CategoryModel> categoryList;
-  final CategoryModel prevCategory;
-
-  SubCategoryCopy({this.categoryList, this.prevCategory});
 
   @override
   _SubCategoryCopyState createState() => _SubCategoryCopyState();
 }
 
 class _SubCategoryCopyState extends State<SubCategoryCopy> {
-  List<CategoryModel> list = List<CategoryModel>();
   CategoryBloc _btnBloc = CategoryBloc();
 
   @override
   Widget build(BuildContext context) {
     return Consumer<CartListData>(
-      builder: (context, listData, _) =>  WillPopScope(
-      onWillPop: () async {
-        if(listData.historyCategoryModel.length>0){
-          if(listData.historyCategoryModel.length ==1){
-            return true;
-          }else{
-          listData.clearCategoryListLastIndex();
-          listData.clearHistoryCategoryModelLastIndex();
+      builder: (context, listData, _) => WillPopScope(
+        onWillPop: () async {
+          if (listData.historyCategoryModel.length > 0) {
+            if (listData.historyCategoryModel.length == 1) {
+              return true;
+            } else {
+              listData.clearCategoryListLastIndex();
+              listData.clearHistoryCategoryModelLastIndex();
 //          _btnBloc.dispatch(GetCategoryByParentId(
 //              parentId: listData.getHistoryCategoryModel()[listData.getHistoryCategoryModel().length-1].kategoriId,
 //              prevCategory:listData.getHistoryCategoryModel()[listData.getHistoryCategoryModel().length-1]));
 //            listData.historyCategoryModel.removeAt(listData.getHistoryCategoryModel().length);
-          return false;
-          }
-        }else return true ;
-
-      },
-      child: Scaffold(
+              return false;
+            }
+          } else
+            return true;
+        },
+        child: Scaffold(
           appBar: AppBar(
-            title:ListView.builder(
+            title: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: listData.historyCategoryModel.length,
-                itemBuilder: (BuildContext context, int index){
+                itemBuilder: (BuildContext context, int index) {
                   return Row(
                     children: <Widget>[
                       InkWell(
-                          onTap: (){
-                            if(index == listData.historyCategoryModel.length-1){
-
-                            }else {
-                              listData.clearHistoryCategoryModelRange(index+1, listData.historyCategoryModel.length);
-                              listData.clearCategoryListRange(index+1, listData.listOfLIstCategory.length);
+                          onTap: () {
+                            if (index ==
+                                listData.historyCategoryModel.length - 1) {
+                            } else {
+                              listData.clearHistoryCategoryModelRange(index + 1,
+                                  listData.historyCategoryModel.length);
+                              listData.clearCategoryListRange(index + 1,
+                                  listData.listOfLIstCategory.length);
                             }
                           },
-                          child: Text(listData.historyCategoryModel[index].description,style: TextStyle(fontSize: 17),)),
+                          child: Text(
+                            listData.historyCategoryModel[index].description,
+                            style: TextStyle(fontSize: 17),
+                          )),
                       Text(" >")
                     ],
                   );
@@ -69,10 +69,12 @@ class _SubCategoryCopyState extends State<SubCategoryCopy> {
           ),
           body: BlocListener<CategoryBloc, CategoryState>(
             listener: (BuildContext context, CategoryState state) async {
+
               if (state is GetAllCategoryByParentIdSuccess) {
                 listData.addCategoryList(state.categories);
                 listData.addHistoryCategoryModel(state.prevCategoryModel);
               }
+
               if (state is GetAllCategoryByParentIdEnd) {
                 Navigator.push(
                   context,
@@ -87,8 +89,10 @@ class _SubCategoryCopyState extends State<SubCategoryCopy> {
             child: BlocBuilder(
                 bloc: _btnBloc,
                 builder: (BuildContext context, CategoryState state) {
-                  if(state is CategoryLoading){
-                    return Center(child: CircularProgressIndicator(),);
+                  if (state is CategoryLoading) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
                   }
                   return Container(
                     child: Column(
@@ -117,7 +121,8 @@ class _SubCategoryCopyState extends State<SubCategoryCopy> {
                                   child: Card(
                                     elevation: 4,
                                     child: Container(
-                                      padding: EdgeInsets.fromLTRB(15, 10, 10, 10),
+                                      padding:
+                                          EdgeInsets.fromLTRB(15, 10, 10, 10),
                                       alignment: Alignment.center,
                                       child: Row(
                                         children: <Widget>[
@@ -127,7 +132,8 @@ class _SubCategoryCopyState extends State<SubCategoryCopy> {
                                                   .getCategoryList()
                                                   .last[index]
                                                   .description,
-                                              style: TextStyle(fontWeight: FontWeight.bold),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
                                             ),
                                           ),
                                         ],

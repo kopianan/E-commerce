@@ -24,6 +24,10 @@ class CartListData extends ChangeNotifier {
     return listOfLIstCategory;
   }
 
+  void clearCategoryListAll(){
+    listOfLIstCategory.clear();
+    notifyListeners();
+  }
   void clearCategoryListLastIndex(){
     listOfLIstCategory.removeLast();
     notifyListeners();
@@ -45,6 +49,10 @@ class CartListData extends ChangeNotifier {
 
   void clearHistoryCategoryModelLastIndex(){
     historyCategoryModel.removeLast();
+    notifyListeners();
+  }
+  void clearHistoryCategoryModelAll(){
+    historyCategoryModel.clear();
     notifyListeners();
   }
   void clearHistoryCategoryModelRange(int start, int end){
